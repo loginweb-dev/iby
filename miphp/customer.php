@@ -1,5 +1,7 @@
 <?php 
     require_once('../../../../wp-load.php');
+
+
     if ($_GET["customer_id"]) {
         $uid = array( $_GET["customer_id"] );
         $args = array(
@@ -24,5 +26,16 @@
         echo json_encode($json);
 
     
+    }elseif ($_GET["customer_store"]){
+        // $userdata = compact( 'user_email', 'user_pass' );
+        $user_email = $_GET["user_email"];
+        $user_login = $_GET["user_login"];
+        $user_id = wc_create_new_customer( $user_email, $user_login, 'password');
+        update_user_meta( $user_id, "billing_first_name", $_GET["first_name"] );
+        update_user_meta( $user_id, "billing_last_name", $_GET["last_name"] );
+        update_user_meta( $user_id, "billing_phone", $_GET["billing_phone"] );
+        update_user_meta( $user_id, "billing_postcode", $_GET["billing_postcode"] );
+        
+        echo json_encode(array('message' => 'Cliente Create Correctamente..'.$user_login, 'customer_id' => $user_id));
     }
 ?>

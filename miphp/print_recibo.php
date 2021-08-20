@@ -6,7 +6,7 @@
         function Header()
         {
             // Logo
-            $this->Image('https://melo.loginweb.dev/wp-content/uploads/2021/07/logo_lw.jpg',10,8,33);
+            $this->Image('',10,8,33);
             // Arial bold 15
             $this->SetFont('Arial','B',15);
             // Movernos a la derecha

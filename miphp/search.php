@@ -8,15 +8,32 @@
             'order' => 'DESC',
             'status' => 'publish',
             'post_type'   => array('product', 'product_variation'),
-            's' => $_GET["get_products"],
+            'tax_query' => array(
+                array(
+                   'taxonomy' => 'product_tag',
+                   'field' => 'slug',
+                   'terms' => $_GET["get_products"],
+                   'operator' => 'IN',
+                )
+             ),
         );
+        //--------------------------------------type tags-----------
         $json = array();
         $loop = wc_get_products($args);
-     
+        if (count($loop) == 0 ) {
+            $args = array(
+                'orderby' => 'date',
+                'order' => 'DESC',
+                'status' => 'publish',
+                'post_type'   => array('product', 'product_variation'),
+                's' => $_GET["get_products"],
+            );
+            $loop = wc_get_products($args);
+        }
         
         foreach ($loop as $key) {
             $item = wc_get_product( $key->get_id() );
-            if ($item->get_type() == "variable") {
+            if ($item->get_type() == "variable") {//-------------------------------
                 foreach ($key->get_available_variations() as $variation) {
                     $provar = wc_get_product($variation['variation_id']);
                     array_push($json, array(
@@ -33,15 +50,13 @@
                         "lg_date" => $provar->get_meta('_expiration-date'), //lg_date
                         "brands" => json_encode(get_the_terms($item->id, 'product_brand') ? get_the_terms($item->id, 'product_brand') : get_the_terms($item->id, 'yith_product_brand')), //product_brand
                         "cats" => json_encode(get_the_terms($item->id, 'product_cat')),
+                        "tags" => json_encode(get_the_terms($item->id, 'product_tag')),
                     ));
                 }
                 // echo json_encode($json);
             } else {
-                # code...
-                // print_r($item);
                 $ed = get_post_meta($item->id,'_expiration-date',true);
     		    // echo ($ed ? get_date_from_gmt(gmdate('Y-m-d H:i:s',$ed),get_option('date_format').' '.get_option('time_format')) : __("Never",'post-expirator'));
-
                 array_push($json, array(
                     "id" => $item->id,
                     "name" => $item->name,
@@ -54,8 +69,9 @@
                     "lg_estante" => $item->get_meta('lg_estante'),
                     "lg_bloque" => $item->get_meta('lg_bloque'),
                     "lg_date" => get_date_from_gmt(gmdate('Y-m-d H:i:s',$ed),get_option('date_format').' '.get_option('time_format')), //lg_date
-                    "brands" => json_encode(get_the_terms($item->id, 'yith_product_brand')), //product_brand
+                    "brands" => json_encode(get_the_terms($item->id, 'yith_product_brand') ? get_the_terms($item->id, 'yith_product_brand') : get_the_terms($item->id, 'product_brand')), //product_brand
                     "cats" => json_encode(get_the_terms($item->id, 'product_cat')),
+                    "tags" => json_encode(get_the_terms($item->id, 'product_tag')),
                 ));
             }
         }

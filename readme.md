@@ -11,6 +11,12 @@ el TPV es plugin para wordpres desarrollado por la empresa **[LoginWeb](https://
 - **WoordPess.**
 - **WooCommerce.**
 
+## Plugins
+
+- **TPV - WooCommerce**
+- **Brands - WooCommerce.**
+- **Cost of Good - WooCommerce.**
+
 ## Características
 
 - **Administración de inventario.**

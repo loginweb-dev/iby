@@ -81,6 +81,7 @@
 </header>
 
 <div id="milistsearch"></div>
+<!-- <div id="milistcatgs"></div> -->
 
 <!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-content padding-y">
@@ -91,7 +92,11 @@
 		<div class="card">
 			<div id="mitabla"></div>
 		</div>
+		<div class="card">
+			<div id="milistcatgs"></div>
+		</div>
 	</main>
+	
 	<aside class="col-md-4 mt-1">
 		<div class="card mb-3">
 			<div class="card-body">
@@ -166,14 +171,15 @@
 					</dl>
 					<hr>
 					<p class="text-center mb-3">
-                        <button class="btn btn-light" id="btn_pago_efectivo" disabled> <i class="fa fa-money-bill-alt"></i> Pago en Efectivo</button>
+                        <button class="btn btn-light" id="btn_pago_efectivo" disabled> <i class="fa fa-money-bill-alt"></i> Efectivo</button>
 					</p>
 					<p class="text-center mb-3">
-                        <button class="btn btn-light" id="btn_delivery" disabled> <i class="fa fa-registered"></i> Envio por Delivery </button>
+                        <button class="btn btn-light" data-toggle="modal" data-target="#" disabled> <i class="fa fa-qrcode"></i> Proforma </button>
 					</p>
-					<!-- <p class="text-center mb-3">
-                        <button class="btn btn-light" data-toggle="modal" data-target="#" disabled> <i class="fa fa-qrcode"></i> Pago con QR</button>
-					</p> -->
+					<p class="text-center mb-3">
+                        <button class="btn btn-light" id="btn_delivery" disabled> <i class="fa fa-registered"></i> Delivery </button>
+					</p>
+					
 					<!-- <p class="text-center mb-3">
                         <button class="btn btn-light" data-toggle="modal" data-target="#" disabled> <i class="fa fa-registered"></i> Pago con Tigo Money</button>
 					</p> -->
@@ -501,9 +507,68 @@
 		});
 	}
 
+	function customer_create(){
+		$.ajax({
+			url: "miphp/modal_customer.php",
+			dataType: 'html',
+			contentType: 'text/html',
+			success: function (response) {
+				$('#box_body').html(response);	
+				$("#modalBox").modal('show');
+			}
+		});
+	}
+	function customer_store(){
+		let user_email = $("#user_email").val();
+		let first_name = $("#first_name").val();
+		let last_name = $("#last_name").val();
+		let billing_phone = $("#billing_phone").val();
+		let billing_postcode = $("#billing_postcode").val();
+		let user_login =first_name+'.'+last_name;
+		$.ajax({
+			url: "miphp/customer.php",
+			dataType: "json",
+			data: {
+				"customer_store": true, 
+				"user_email":  user_email, 
+				"user_login":  user_login, 
+				"first_name":  first_name, 
+				"last_name":  last_name, 
+				"billing_phone":  billing_phone, 
+				"billing_postcode":  billing_postcode },
+			success: function (response) {
+				$.ajax({
+					url: "miphp/search.php",
+					dataType: "json",
+					data: {"get_customers": user_email },
+					success: function (response) {
+						let  customer = "<ul class='list-group list-group-flush'>";
+							customer += "<li class='list-group-item'><span>Cliente: </span><small>"+response[0].billing_first_name+"  "+response[0].billing_last_name+"</small></li>";
+							customer += "<li class='list-group-item'><span>NIT O Carnet: </span><small>"+response[0].billing_postcode+"</small></li>";
+							customer += "<li class='list-group-item'><span>Correo: </span><small>"+response[0].user_email+"</small></li>";
+							customer += "<li class='list-group-item'><span>Telefono: </span><small>"+response[0].billing_phone+"</small></li>";
+							customer += "</ul>";
+						$('#list_search_customers').html(customer);	
+						$("#id_customer").val(response[0].id);
+					}
+				});
+				$.notify(response.message);
+				// console.log(user_email);
+				$('#modalBox').modal('toggle');
+			}
+		});
+	}
+	
 
 //----  load JQUERY --------------------
 $(document).ready(function() {
+
+	// show box -------------------------------------------------------
+	// $("#customer_create").click(function (e) { 
+		// e.preventDefault();		
+		
+	// });
+
 
 	// show box -------------------------------------------------------
 	$("#box_show").click(function (e) { 
@@ -592,20 +657,32 @@ $(document).ready(function() {
 						for(var i=0; i< response.length; i++){
 							var userObjList = JSON.parse(response[i].brands);
 							let roleList = '';
-							userObjList.forEach(userObj => {
-								roleList += userObj.name+', ';
-							});
+							if (userObjList.length > 0) {								
+								userObjList.forEach(userObj => {
+									roleList += userObj.name+', ';
+								});
+							}
+							
 							var userObjList2 = JSON.parse(response[i].cats);
 							let roleList2 = '';
-							userObjList2.forEach(userObj => {
-								roleList2 += userObj.name+', ';
-							});
+							if (userObjList2.length > 0) {
+								userObjList2.forEach(userObj => {
+									roleList2 += userObj.name+', ';
+								});
+							}
+							var userObjList3 = JSON.parse(response[i].tags);
+							let roleList3 = '';
+							if (userObjList3.length > 0) {
+								userObjList3.forEach(userObj => {
+									roleList3 += userObj.name+', ';
+								});
+							}
 							table += "<tr><td><figure class='itemside'><div class='aside'><img src="+response[i].image+
 								" class='img-sm'></div><figcaption class='info'><h6>"+response[i].name+
 								"</h6><p class='text-muted small'>  Precio Venta: "+response[i].regular_price+
 								"<p class='text-muted small'>  Stock: "+response[i].stock_quantity+
 								"<br> ID: "+response[i].id+"<br> SKU: "+response[i].sku+"<br> MARCAS: "+roleList+"<br> CATEGORIAS: "+roleList2+"</p></figcaption></figure></td>"+
-								"<td><strong>Detalles</strong><br><small>Precio Compra: "+response[i].bought_price+"<br> Estante: "+response[i].lg_estante+"<br> Bloque: "+response[i].lg_bloque+"<br> Vence: "+response[i].lg_date+"</small></td>"+
+								"<td><strong>Detalles</strong><br><small>Precio Compra: "+response[i].bought_price+"<br> Estante: "+response[i].lg_estante+"<br> Bloque: "+response[i].lg_bloque+"<br> Vence: "+response[i].lg_date+"</small><br> Etiquetas: "+roleList3+"<br></td>"+
 								"<td><button onclick='product_add("+response[i].id+")' type='button' class='btn btn-sm btn-primary'><i class='fa fa-shopping-cart'></i></button></td></tr>";
 						}	
 						table += "</tbody></table>";
@@ -629,7 +706,8 @@ $(document).ready(function() {
 				data: { "get_customers": criterio },
 				success: function (response) {
 					if (response.length == 0) {
-						$('#list_search_customers').html("<p>Sin Resultados  <a href='<?php echo get_site_url(); ?>/wp-admin/admin.php?page=wccm-add-new-customer' target='_blank' class='btn btn-sm btn-primary'>Crear Nuevo</a></p>");	
+                        
+						$('#list_search_customers').html("<p>Sin Resultados  <button class='btn btn-light' onclick='customer_create()' type='button'> Crear Nuevo </button> </p>");	
 					} else {
 						let table = "";
 						table += "<table class='table' style='overflow:auto; border-collapse: collapse; table-layout:fixed;'><tbody>";
