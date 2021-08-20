@@ -143,7 +143,7 @@ function lw_add_menu() {
 	//MENU TPV
 	add_menu_page('Punto de Venta', //page title
         'Punto de Venta', //menu title
-        'shop_manager', //capabilities
+        'manage_options', //capabilities
         'terminal-punto-venta', //menu slug
         'lw_boxs_list', //function
         'dashicons-align-full-width'
@@ -153,7 +153,7 @@ function lw_add_menu() {
 		add_submenu_page('terminal-punto-venta', //parent slug
 			'Cajas', //page title
 			'Cajas', //menu title
-			'shop_manager', //capability
+			'manage_options', //capability
 			'cajas', //menu slug
 			'lw_boxs_list' //function
 		);
@@ -161,21 +161,21 @@ function lw_add_menu() {
 			add_submenu_page('terminal-punto-venta', //parent slug
 			'Tiendas', //page title
 			'Tiendas', //menu title
-			'shop_manager', //capability
+			'manage_options', //capability
 			'tiendas', //menu slug
 			'lw_outlet_list' //function
 		);
 		add_submenu_page('null', //parent slug
 			'Nueva Caja', //page title
 			'Nueva Caja', //menu title
-			'shop_manager', //capability
+			'manage_options', //capability
 			'boxs-create', //menu slug
 			'lw_boxs_create' //function
 		);
 		add_submenu_page('null', //parent slug
 			'Editar Caja', //page title
 			'Editar Caja', //menu title
-			'shop_manager', //capability
+			'manage_options', //capability
 			'boxs-edit', //menu slug
 			'lw_boxs_edit' //function
 		);
@@ -184,21 +184,21 @@ function lw_add_menu() {
 	add_submenu_page('terminal-punto-venta', //parent slug
 	'Dosificaciones', //page title
 	'Dosificaciones', //menu title
-	'shop_manager', //capability
+	'manage_options', //capability
 	'dosifications', //menu slug
 	'lw_dosifications_list'); //function
 
 		add_submenu_page('null', //parent slug
 			'Nueva Dosification', //page title
 			'Nueva Dosification', //menu title
-			'shop_manager', //capability
+			'manage_options', //capability
 			'dosification-create', //menu slug
 			'lw_dosification_create' //function
 		);
 		add_submenu_page('null', //parent slug
 			'Editar Dosification', //page title
 			'Editar Dosification', //menu title
-			'shop_manager', //capability
+			'manage_options', //capability
 			'dosification-edit', //menu slug
 			'lw_dosification_edit' //function
 		);
@@ -207,7 +207,7 @@ function lw_add_menu() {
 	add_submenu_page('terminal-punto-venta', //parent slug
 	'Compras', //page title
 	'Compras', //menu title
-	'shop_manager', //capability
+	'manage_options', //capability
 	'compras', //menu slug
 	'lw_compras_list'); //function
 
@@ -215,7 +215,7 @@ function lw_add_menu() {
 	add_submenu_page('terminal-punto-venta', //parent slug
 	'Proformas', //page title
 	'Proformas', //menu title
-	'shop_manager', //capability
+	'manage_options', //capability
 	'proformas', //menu slug
 	'lw_proformas_list'); //function
 
@@ -223,7 +223,7 @@ function lw_add_menu() {
 	add_submenu_page('terminal-punto-venta', //parent slug
 	'Configuracion', //page title
 	'Configuracion', //menu title
-	'shop_manager', //capability
+	'manage_options', //capability
 	'setting', //menu slug
 	'lw_setting'); //function
 }
@@ -235,7 +235,7 @@ function lw_add_menu_conta() {
 	//MENU TPV
 	add_menu_page('Contabilidad', //page title
         'Contabilidad', //menu title
-        'shop_manager', //capabilities
+        'manage_options', //capabilities
         'contabilidad', //menu slug
         //'lw_bg', //function
         'dashicons-dashboard',
