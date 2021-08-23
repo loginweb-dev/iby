@@ -31,6 +31,7 @@
     $pdf->SetMargins(1, 8, 1);
     $pdf->SetFont($type_font, '', $size_font);
     $pdf->AddPage();
+    // echo $datos_factura[0]->ID;
         // Encabezado------------------------------------------
         $pdf->Image(get_post_meta($datos_factura[0]->ID, 'lw_image', true),15,1,12,12,'PNG');
         $pdf->Ln(6);

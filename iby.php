@@ -214,20 +214,20 @@ function lw_add_menu() {
 		);
 
     //MENU Compras ---------------------------------------------------------------
-	add_submenu_page('terminal-punto-venta', //parent slug
-	'Compras', //page title
-	'Compras', //menu title
-	'manage_options', //capability
-	'compras', //menu slug
-	'lw_compras_list'); //function
+	// add_submenu_page('terminal-punto-venta', //parent slug
+	// 'Compras', //page title
+	// 'Compras', //menu title
+	// 'manage_options', //capability
+	// 'compras', //menu slug
+	// 'lw_compras_list'); //function
 
-     //MENU Proformas ---------------------------------------------------------------
-	add_submenu_page('terminal-punto-venta', //parent slug
-	'Proformas', //page title
-	'Proformas', //menu title
-	'manage_options', //capability
-	'proformas', //menu slug
-	'lw_proformas_list'); //function
+    //  //MENU Proformas ---------------------------------------------------------------
+	// add_submenu_page('terminal-punto-venta', //parent slug
+	// 'Proformas', //page title
+	// 'Proformas', //menu title
+	// 'manage_options', //capability
+	// 'proformas', //menu slug
+	// 'lw_proformas_list'); //function
 
     //MENU Settings ---------------------------------------------------------------
 	add_submenu_page('terminal-punto-venta', //parent slug

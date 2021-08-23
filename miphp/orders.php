@@ -83,7 +83,9 @@
             update_post_meta($order->id, 'lw_codigo_qr', $newcodeqr);
             echo json_encode(array('cod_order' => $order->id, 'text_qr' => $newcodeqr));
     }else {
-        echo json_encode(array('cod_order' => $order->id));
+        // echo json_encode(array('cod_order' => $order->id));
+        $newcodeqr = 'GRACIAS POR TU PREFERENCIA';
+        echo json_encode(array('cod_order' => $order->id, 'text_qr' => $newcodeqr));
     }
     $cart->clear();
 ?>

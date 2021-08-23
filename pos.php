@@ -92,29 +92,7 @@
 	</main>
 	
 	<aside class="col-md-4">
-		<div class="card mb-3">
-			<article class="filter-group">
-				<header class="card-header">
-					<a href="#" data-toggle="collapse" data-target="#collapse33">
-						<i class="icon-control fa fa-chevron-down"></i>
-						<h6 class="title"> Cliente </h6>
-					</a>
-				</header>
-				<div class="filter-content collapse show" id="collapse33">
-					<div class="card-body">
-						<form>
-							<div class="form-group">
-								<label>Cliente</label>
-									<input id="customer_search" type="text" class="form-control" placeholder="Buscar cliente">
-									<input class="form-control" type="text" id="id_customer" hidden>
-									<div id="list_search_customers"></div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</article>
-		</div>
-		<?php if(get_post_meta($post->ID, 'lw_or', true) == 'true'){ ?>
+	<?php if(get_post_meta($post->ID, 'lw_or', true) == 'true'){ ?>
 			<div class="card mb-3">
 			<article class="filter-group">
 				<header class="card-header">
@@ -164,6 +142,29 @@
 			</article>
 		</div>
 		<?php } ?>
+		<div class="card mb-3">
+			<article class="filter-group">
+				<header class="card-header">
+					<a href="#" data-toggle="collapse" data-target="#collapse33">
+						<i class="icon-control fa fa-chevron-down"></i>
+						<h6 class="title"> Cliente </h6>
+					</a>
+				</header>
+				<div class="filter-content collapse show" id="collapse33">
+					<div class="card-body">
+						<form>
+							<div class="form-group">
+								<label>Cliente</label>
+									<input id="customer_search" type="text" class="form-control" placeholder="Buscar cliente">
+									<input class="form-control" type="text" id="id_customer" hidden>
+									<div id="list_search_customers"></div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</article>
+		</div>
+	
 
 		<div class="card mb-3">
 			<article class="filter-group">
@@ -341,11 +342,18 @@
 					dataType: "json",
 					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant },
 					success: function (response) {
-						build_cart();
-						build_costumer();
-						build_extras();
-						$.notify("Venta Tipo Recibo Con Impresion, Realizada Correctamente..", "info");
-						window.open('<?php echo admin_url('admin.php?print_pos_receipt=true&print_from_wc=true&order_id=') ?>'+response.cod_order+'&_wpnonce=444114a87f', '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
+						// $.notify("Creando QR..", "info");
+						$.ajax({
+							url: "miphp/barcode.php",
+							data: {"cod_order": response.cod_order, "text_qr": response.text_qr },
+							success: function () {
+								build_cart();
+								build_costumer();
+								build_extras();
+							}
+						});
+						$.notify("Abriendo PDF..", "info");
+						window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby/miphp/print_recibo.php?cod_order='+response.cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
 					}
 				});
 			} else {
@@ -367,7 +375,7 @@
 					dataType: "json",
 					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant },
 					success: function (response) {
-						$.notify("Creando QR..");
+						// $.notify("Creando QR..", "info");
 						$.ajax({
 							url: "miphp/barcode.php",
 							data: {"cod_order": response.cod_order, "text_qr": response.text_qr },
@@ -377,7 +385,7 @@
 								build_extras();
 							}
 						});
-						$.notify("Abriendo PDF..");
+						$.notify("Abriendo PDF..", "info");
 						window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby/miphp/print_factura.php?cod_order='+response.cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
 					}
 				});
@@ -388,7 +396,7 @@
 					dataType: "json",
 					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant },
 					success: function (response) {
-						$.notify("Creando QR..");
+						$.notify("Creando QR..", "info");
 						$.ajax({
 							url: "miphp/barcode.php",
 							data: {"cod_order": response.cod_order, "text_qr": response.text_qr },
@@ -412,7 +420,7 @@
 			dataType: "json",
 			data : {"box_id": '<?php echo $_GET["box_id"]; ?>', "nota_apertura": $("#nota_apertura").val(), "monto_inicial": $("#monto_inicial").val() },
 			success: function (response) {
-				$.notify(response.message);
+				$.notify(response.message, "info");
 				$('#modalBox').modal('toggle');
 				location.reload();
 			}
@@ -427,7 +435,7 @@
 			dataType: "json",
 			data: {"update_sum": product_id},
 			success: function (response) {
-				$.notify(response.message);
+				$.notify(response.message, "info");
 				build_cart();
 			}
 		});
@@ -839,7 +847,8 @@ $(document).ready(function() {
 									roleList3 += userObj.name+', ';
 								});
 							}
-							table += "<tr><td><figure class='itemside'><div class='aside'><img src="+response[i].image+
+							let img = response[i].image ? response[i].image : 'resources/default_product.png';
+							table += "<tr><td><figure class='itemside'><div class='aside'><img src="+img+
 								" class='img-sm'></div><figcaption class='info'><h6>"+response[i].name+
 								"</h6><p class='text-muted small'>  Precio Venta: "+response[i].regular_price+
 								"<p class='text-muted small'>  Stock: "+response[i].stock_quantity+
