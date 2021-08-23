@@ -15,12 +15,10 @@
     $formatter = new NumeroALetras();
     //--------------------------------------------------
     if ($_GET["add"]) {
+        
         $item = wc_get_product( $_GET["add"] );
-        // $stock = $item->get_stock_quantity();
-        if ($item->get_stock_quantity() < $_GET["stock"]) {
-            # code...
-            echo json_encode(array("message" => "La cantidad solicitada supera el STOCK."));
-        } else {
+        // $stock = $item->get_stock_quantity();_manage_stock
+        if (get_post_meta($_GET["add"], "_manage_stock" == "no")) {
             # code...
             $cart->add($_GET["add"], $_GET["stock"], [
                 "name" => $item->name,
@@ -30,9 +28,33 @@
                 "image" => get_the_post_thumbnail_url($item->id)
             ]);
             echo json_encode(array("message" => "Producto Agredado Correctamente."));
+        } else {
+            if ($item->get_stock_quantity() < $_GET["stock"]) {
+                # code...
+                echo json_encode(array("message" => "La cantidad solicitada supera el STOCK."));
+            } else {
+                # code...
+                $cart->add($_GET["add"], $_GET["stock"], [
+                    "name" => $item->name,
+                    "description" => $item->description, 
+                    "price" => $item->price,  
+                    "sku" => $item->sku, 
+                    "image" => get_the_post_thumbnail_url($item->id)
+                ]);
+                echo json_encode(array("message" => "Producto Agredado Correctamente."));
+            }
         }
         
-        
+       
+    } elseif ($_GET["extra"]){
+        $cart->add($_GET["id"], 1, [
+            "name" => $_GET["title"],
+            "description" => "", 
+            "price" => $_GET["price"],  
+            "sku" => "extra", 
+            "image" => ""
+        ]);
+        echo json_encode(array("message" => "Extra registrado correctamente.."));
     } elseif ($_GET["clear"]){
         $cart->clear();
         echo json_encode(array("message" => "Carrito Vacio."));

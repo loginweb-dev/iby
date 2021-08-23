@@ -26,17 +26,9 @@
 <title>POS</title>
 
 <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
-
-<!-- jQuery -->
-<script src="js/jquery-2.0.0.min.js" type="text/javascript"></script>
-
-<!-- Bootstrap4 files-->
-<script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
-
 <!-- Font awesome 5 -->
 <link href="fonts/fontawesome/css/all.min.css" type="text/css" rel="stylesheet">
-
 <!-- custom style -->
 <link href="css/ui.css" rel="stylesheet" type="text/css"/>
 <link href="css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
@@ -90,32 +82,50 @@
 <div class="row">
 	<main class="col-md-8">
 		<div class="card">
-			<div id="mitabla"></div>
-		</div>
-		<div class="card">
 			<div id="milistcatgs"></div>
 		</div>
+		
+		<div class="card mt-3">
+			<div id="mitabla"></div>
+		</div>
+		
 	</main>
 	
-	<aside class="col-md-4 mt-1">
+	<aside class="col-md-4">
 		<div class="card mb-3">
-			<div class="card-body">
-			<form>
-				<div class="form-group">
-					<label>Cliente</label>
-						<input id="customer_search" type="text" class="form-control" placeholder="Buscar cliente">
-						<input class="form-control" type="text" id="id_customer" hidden>
-						<div id="list_search_customers"></div>
+			<article class="filter-group">
+				<header class="card-header">
+					<a href="#" data-toggle="collapse" data-target="#collapse33">
+						<i class="icon-control fa fa-chevron-down"></i>
+						<h6 class="title"> Cliente </h6>
+					</a>
+				</header>
+				<div class="filter-content collapse show" id="collapse33">
+					<div class="card-body">
+						<form>
+							<div class="form-group">
+								<label>Cliente</label>
+									<input id="customer_search" type="text" class="form-control" placeholder="Buscar cliente">
+									<input class="form-control" type="text" id="id_customer" hidden>
+									<div id="list_search_customers"></div>
+							</div>
+						</form>
+					</div>
 				</div>
-			</form>
-			</div>
+			</article>
 		</div>
 		<?php if(get_post_meta($post->ID, 'lw_or', true) == 'true'){ ?>
 			<div class="card mb-3">
-			<div class="card-body">
-				<label for="">Opciones Restaurant</label>
-				<hr>
-				<div class="form-group">
+			<article class="filter-group">
+				<header class="card-header">
+					<a href="#" data-toggle="collapse" data-target="#collapse34">
+						<i class="icon-control fa fa-chevron-down"></i>
+						<h6 class="title"> Opciones de Restaurant </h6>
+					</a>
+				</header>
+				<div class="filter-content collapse show" id="collapse34">
+					<div class="card-body">
+					<div class="form-group">
 					<label class="custom-control custom-radio custom-control-inline">
 						<input class="custom-control-input" type="radio"  id="rt" name="option_restaurant" value="option1">
 						<span class="custom-control-label"> Recoger en Tienda </span>
@@ -132,33 +142,39 @@
 					</label>
 				</div>
 				<hr>
-				<div class="form-group">
-					<strong>Extras</strong>
-					<?php 
-						$results = $wpdb->get_row('SELECT meta_value FROM wp_postmeta WHERE post_id = 366 AND  meta_key = "_product_addons"');
-						$results = unserialize($results->meta_value);
-						foreach ( $results  as $j => $fieldoption ) {
-							if($fieldoption['type'] == "checkbox"){
-								foreach ( $fieldoption['options'] as $i => $option ) {
-									$price = $option['price'];
-									$name = $option['label'];
-									?>
-										<div class="form-check" id="miextra" disabled>
-											<input  onclick="extras(<?php echo $price; ?>, '<?php echo $name; ?>')" class="form-check-input" type="checkbox">
-											<label for="my-input" class="form-check-label"> <?php echo $name; echo ' - '; echo $price; ?> Bs.</label>
-										</div>
-									<?php
-								}
+				<?php 
+					$results = $wpdb->get_row('SELECT meta_value FROM wp_postmeta WHERE post_id = 366 AND  meta_key = "_product_addons"');
+					$results = unserialize($results->meta_value);
+					foreach ( $results  as $j => $fieldoption ) {
+						if($fieldoption['type'] == "checkbox"){
+							foreach ( $fieldoption['options'] as $i => $option ) {
+								// $id = $option['id'];
+								$title = $option['label'];
+								$price = $option['price'];
+								?>
+									<div class="form-check" id="miextra" disabled>
+										<input id='<?php echo $i+1; ?>' onclick="extras('<?php echo $i+1; ?>', '<?php echo $title; ?>', <?php echo $price; ?>)" class="form-check-input" type="checkbox">
+										<label for="my-input" class="form-check-label"> <?php echo $title; echo ' - '; echo $price; ?> Bs.</label>
+									</div>
+								<?php
 							}
 						}
-					?> 
-				</div>
-			</div> 
+					}
+				?> 
+			</article>
 		</div>
 		<?php } ?>
 
-		<div class="card">
-			<div class="card-body">
+		<div class="card mb-3">
+			<article class="filter-group">
+				<header class="card-header">
+					<a href="#" data-toggle="collapse" data-target="#collapse35">
+						<i class="icon-control fa fa-chevron-down"></i>
+						<h6 class="title">Resumen del Carrito </h6>
+					</a>
+				</header>
+				<div class="filter-content collapse show" id="collapse35">
+					<div class="card-body">
 					<dl class="dlist-align">
 					  <dt>Total:</dt>
 					  <dd class="text-right  h5"><div id="total_numeral"></div></dd>
@@ -170,26 +186,66 @@
 					  <dd class="text-right  h5"><div id="cant_items"></div></dd>
 					</dl>
 					<hr>
-					<p class="text-center mb-3">
-                        <button class="btn btn-light" id="btn_pago_efectivo" disabled> <i class="fa fa-money-bill-alt"></i> Efectivo</button>
-					</p>
-					<p class="text-center mb-3">
-                        <button class="btn btn-light" data-toggle="modal" data-target="#" disabled> <i class="fa fa-qrcode"></i> Proforma </button>
-					</p>
-					<p class="text-center mb-3">
-                        <button class="btn btn-light" id="btn_delivery" disabled> <i class="fa fa-registered"></i> Delivery </button>
-					</p>
-					
-					<!-- <p class="text-center mb-3">
-                        <button class="btn btn-light" data-toggle="modal" data-target="#" disabled> <i class="fa fa-registered"></i> Pago con Tigo Money</button>
-					</p> -->
-			</div> 
+					</div>
+				</div>
+			</article>
 		</div>
 
+
+		<div class="card mb-3">
+			<article class="filter-group">
+				<header class="card-header">
+					<a href="#" data-toggle="collapse" data-target="#collapse36">
+						<i class="icon-control fa fa-chevron-down"></i>
+						<h6 class="title">Pasarela de Pago </h6>
+					</a>
+				</header>
+				<div class="filter-content collapse show" id="collapse36">
+					<div class="card-body">
+						<p class="text-center mb-3">
+							<button class="btn btn-light" id="btn_pago_efectivo" disabled> <i class="fa fa-money-bill-alt"></i> Efectivo</button>
+						</p>
+						<!-- <p class="text-center mb-3">
+							<button class="btn btn-light" id="btn_pago_delivery" disabled> <i class="fa fa-registered"></i> Delivery </button>
+						</p> -->
+						<p class="text-center mb-3">
+							<button class="btn btn-light" id="btn_pago_tigo_money" disabled> <i class="fa fa-registered"></i>Tigo Money</button>
+						</p>
+						<p class="text-center mb-3">
+							<button class="btn btn-light" id="btn_pago_qr_simple" disabled> <i class="fa fa-registered"></i>QR Simple</button>
+						</p>
+						<p class="text-center mb-3">
+							<button class="btn btn-light" id="btn_pago_transferencia" disabled> <i class="fa fa-registered"></i>Transferencia</button>
+						</p>
+					</div>
+				</div>
+				</article>
+			</div>
+
+			<div class="card">
+				<article class="filter-group">
+					<header class="card-header">
+						<a href="#" data-toggle="collapse" data-target="#collapse37">
+							<i class="icon-control fa fa-chevron-down"></i>
+							<h6 class="title">Otras Opciones </h6>
+						</a>
+					</header>
+					<div class="filter-content collapse show" id="collapse37">
+						<div class="card-body">
+							<p class="text-center mb-3">
+								<button class="btn btn-light" id="btn_proforma" disabled> <i class="fa fa-registered"></i>Proforma</button>
+							</p>
+							<p class="text-center mb-3">
+								<button class="btn btn-light" id="btn_compra" disabled> <i class="fa fa-registered"></i>Compra</button>
+							</p>
+						</div>
+					</div>
+				</article>
+			</div>
 	</aside> 
 
 </div> 
-</section>
+<!-- </section> -->
 <!-- ========================= SECTION CONTENT END// ========================= -->
 
 
@@ -210,13 +266,29 @@
 
 
 <!-- custom javascript -->
+<!-- jQuery -->
+<script src="js/jquery-2.0.0.min.js" type="text/javascript"></script>
+<!-- Bootstrap4 files-->
+<script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
 <script src="js/script.js" type="text/javascript"></script>
 <script src="js/notify.js" type="text/javascript"></script>
+<script src="src/index.js"></script>
 <script type="text/javascript">
-
+	// let notifier = new AWN(globalOptions);
 	//Extras -----------------------------------------------------
-	function extras(price, name){
-		console.log(price+name);
+	function extras(id, title, price){
+		$('#'+id).attr("disabled", true);
+		$.ajax({
+			url: "miphp/micart.php",
+			dataType: "json",
+			data: {"extra": true, "id": id, "title": title, "price": price },
+			success: function (response) {
+				$.notify(response.message, "info");
+				build_cart();
+				
+			}
+		});
+		
 	}
 	//Cerrando Caja------------------------------------------------
 	function box_close(){
@@ -271,7 +343,8 @@
 					success: function (response) {
 						build_cart();
 						build_costumer();
-						$.notify("Venta Tipo Recibo Con Impresion, Realizada Correctamente..");
+						build_extras();
+						$.notify("Venta Tipo Recibo Con Impresion, Realizada Correctamente..", "info");
 						window.open('<?php echo admin_url('admin.php?print_pos_receipt=true&print_from_wc=true&order_id=') ?>'+response.cod_order+'&_wpnonce=444114a87f', '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
 					}
 				});
@@ -282,7 +355,8 @@
 					success: function () {
 						build_cart();
 						build_costumer();
-						$.notify("Venta Tipo Recibo Sin Imprimir, Realizada Correctamente..");
+						build_extras();
+						$.notify("Venta Tipo Recibo Sin Imprimir, Realizada Correctamente..", "info");
 					}
 				});
 			}
@@ -300,6 +374,7 @@
 							success: function () {
 								build_cart();
 								build_costumer();
+								build_extras();
 							}
 						});
 						$.notify("Abriendo PDF..");
@@ -320,7 +395,8 @@
 							success: function () {
 								build_cart();
 								build_costumer();
-								$.notify("Venta Realizada sin Imprecion..");
+								build_extras();
+								$.notify("Venta Realizada sin Imprecion..", "info");
 							}
 						});
 					}
@@ -363,7 +439,7 @@
 			dataType: "json",
 			data: {"update_rest": product_id},
 			success: function (response) {
-				$.notify(response.message);
+				$.notify(response.message, "info");
 				build_cart();
 			}
 		});
@@ -378,7 +454,7 @@
 				dataType: "json",
 				data: {"add": product_id, "stock": stock },
 				success: function (response) {
-					$.notify(response.message);
+					$.notify(response.message, "info");	
 					build_cart();
 				}
 			});
@@ -386,13 +462,15 @@
 	}
 	// -------------  REMOVE ITEM ---------------------------------------------------------
 	function remove(product_id){
+		console.log(product_id);
 		$.ajax({
 			url: "miphp/micart.php",
 			dataType: "json",
 			data: {"remove": product_id },
 			success: function (response) {
-				$.notify(response.message);
+				$.notify(response.message, "info");
 				build_cart();
+				build_extras();
 			}
 		});
 	}
@@ -402,8 +480,29 @@
 		$('#milistsearch').html("<img src='resources/reload.gif'>");	
 		$('#milistsearch').html("");
 		$("#criterio_id").focus();
-	}
 
+	}
+	// EXTRAS ----------------------------------------------------------------------------
+	function build_extras(){
+		for (let index = 1; index < 10; index++) {
+			$('#'+index).prop("checked", false);
+			$('#'+index).attr("disabled", false);
+		}
+			
+		$.ajax({
+				url: "miphp/micart.php",
+				dataType: "json",
+				success: function (response) {
+					for(var i=0; i < response.length; i++){
+						if(response[i].sku == 'extra'){
+							$('#'+response[i].id).prop("checked", true);
+							$('#'+response[i].id).attr("disabled", true);	
+						}
+					}
+				}
+			});
+				
+	}
 	// building cart list ----------------------------------------------------------------------------
 	function build_cart(){
 		$('#mitabla').html("<center><img class='img-sm' src='resources/reload.gif'></center>");	
@@ -414,27 +513,51 @@
 			success: function (response) {
 				if (response.length == 0) {
 					$('#mitabla').html("<center><h2>Carrito Vacio</h2><img class='img-lg' src='resources/car.png' accept='.png'></center>");						
-					$('#btn_pago_efectivo').prop("disabled", true);
-					$('#btn_delivery').prop("disabled", true);
 					$('#miextra').prop("disabled", true);
+
+					$('#btn_pago_efectivo').prop("disabled", true);
+					$('#btn_pago_delivery').prop("disabled", true);
+					$('#btn_pago_tigo_money').prop("disabled", true);
+					$('#btn_pago_qr_simple').prop("disabled", true);
+					$('#btn_pago_transferencia').prop("disabled", true);
+
+					$('#btn_proforma').prop("disabled", true);
+					$('#btn_compra').prop("disabled", true);
 				} else {
 					let table = "";
 					table += "<table class='table'><thead class='text-muted'><tr class='small text-uppercase'><th scope='col'>Productos</th><th scope='col' class='text-center'>Cantidad</th><th scope='col' class='text-center'>Sub Total</th></tr></thead>";
 					for(var i=0; i < response.length; i++){
+						if (response[i].sku == 'extra') {
+							table += "<tr><td><figure class='itemside'><div class='aside'><img src="+response[i].image+
+							" class='img-sm'></div><figcaption class='info'><h6>"+response[i].name+
+							"</h6><p class='text-muted small'>  Precio Venta: "+response[i].price+
+							"<br> ID: "+response[i].id+"<br> SKU: "+response[i].sku+"</p></figcaption></figure></td>"+
+							"<td class='text-center'><p>EXTRA</p></td>"+
+							"<td class='text-center'><div class='price-wrap'><var class='price h5'>"+response[i].price * response[i].quantity+"</var></div><div class='btn-group' role='group'><button onclick='remove("+response[i].id+")' type='button' class='btn btn-sm btn-warning'><i class='fa fa-trash'></button></div></td></tr>";
+						} else {
 						table += "<tr><td><figure class='itemside'><div class='aside'><img src="+response[i].image+
 							" class='img-sm'></div><figcaption class='info'><h6>"+response[i].name+
 							"</h6><p class='text-muted small'>  Precio Venta: "+response[i].price+
 							"<br> ID: "+response[i].id+"<br> SKU: "+response[i].sku+"</p></figcaption></figure></td>"+
 							"<td class='text-center'><div class='btn-group' role='group'><button onclick='update_rest("+response[i].id+")' type='button' class='btn btn-sm btn-light'>-</button><h5> "+response[i].quantity+" </h5><button onclick='update_sum("+response[i].id+")' type='button' class='btn btn-sm btn-light'>+</button></div></td>"+
 							"<td class='text-center'><div class='price-wrap'><var class='price h5'>"+response[i].price * response[i].quantity+"</var></div><div class='btn-group' role='group'><button onclick='remove("+response[i].id+")' type='button' class='btn btn-sm btn-warning'><i class='fa fa-trash'></button></div></td></tr>";
+						}
 					}	
 					table += "</tbody></table>";
-					table += "<div class='card-body border-top'><button onclick='cart_clear()' class='btn btn-light'>Limpiar Carrito </button></div>";
+					table += "<div class='card-body border-top'><button onclick='cart_clear()' class='btn btn-light'>Limpiar</button></div>";
 					
 					$('#mitabla').html(table);
-					$('#btn_pago_efectivo').prop("disabled", false);
-					$('#btn_delivery').prop("disabled", false);
+					
 					$('#miextra').prop("disabled", false);
+
+					$('#btn_pago_efectivo').prop("disabled", false);
+					$('#btn_pago_delivery').prop("disabled", false);
+					$('#btn_pago_tigo_money').prop("disabled", false);
+					$('#btn_pago_qr_simple').prop("disabled", false);
+					$('#btn_pago_transferencia').prop("disabled", false);
+
+					$('#btn_proforma').prop("disabled", false);
+					$('#btn_compra').prop("disabled", false);
 					
 				}
 			}
@@ -463,8 +586,9 @@
 			dataType: "json",
 			data: {"clear": true },
 			success: function (response) {
-				$.notify(response.message);
+				$.notify(response.message, "info");
 				build_cart();
+				build_extras();
 			}
 		});
 	}
@@ -552,17 +676,24 @@
 						$("#id_customer").val(response[0].id);
 					}
 				});
-				$.notify(response.message);
+				$.notify(response.message, "info");
 				// console.log(user_email);
 				$('#modalBox').modal('toggle');
 			}
 		});
 	}
-	
-
 //----  load JQUERY --------------------
 $(document).ready(function() {
 
+	$('#milistcatgs').html("<center><img class='img-sm' src='resources/reload.gif'></center>");	
+	$.ajax({
+		url: "miphp/catalogo.php",
+		dataType: 'html',
+		contentType: 'text/html',
+		success: function (response) {
+			$('#milistcatgs').html(response);	
+		}
+	});
 	// show box -------------------------------------------------------
 	// $("#customer_create").click(function (e) { 
 		// e.preventDefault();		
@@ -587,22 +718,53 @@ $(document).ready(function() {
 
 
 
-	// Obteniendo Cambio---------------------------------------------------- 
+	// Open cash---------------------------------------------------- 
 	$("#btn_pago_efectivo").click(function (e) { 
 		e.preventDefault();
-
+		let total = 0;
 		$.ajax({
-			url: "miphp/modal_efectivo.php",
-			dataType: 'html',
-			contentType: 'text/html',
-			data: {"box_id": box_id },
+			url: "miphp/micart.php",
+			dataType: "json",
+			data: { "get_totals": true },
 			success: function (response) {
-				$('#box_body').html(response);	
-				$('#modalBox').modal('show');
+				total = response.total_numeral;	
+				$.ajax({
+					url: "miphp/modal_efectivo.php",
+					dataType: 'html',
+					contentType: 'text/html',
+					data: {"box_id": box_id, "total" : total },
+					success: function (response) {
+						$('#box_body').html(response);	
+						$('#modalBox').modal('show');
+						$("#entregado").focus();
+					}
+				});
 			}
 		});
-		
-		
+	});
+	// Open cash---------------------------------------------------- 
+	$("#btn_pago_delivery").click(function (e) { 
+		e.preventDefault();
+		// let total = 0;
+		// $.ajax({
+		// 	url: "miphp/micart.php",
+		// 	dataType: "json",
+		// 	data: { "get_totals": true },
+		// 	success: function (response) {
+		// 		total = response.total_numeral;	
+		// 		$.ajax({
+		// 			url: "miphp/modal_efectivo.php",
+		// 			dataType: 'html',
+		// 			contentType: 'text/html',
+		// 			data: {"box_id": box_id, "total" : total },
+		// 			success: function (response) {
+		// 				$('#box_body').html(response);	
+		// 				$('#modalBox').modal('show');
+		// 				$("#entregado").focus();
+		// 			}
+		// 		});
+		// 	}
+		// });
 	});
 	//--- Cargando Caja ---------------------------------------------------------
 	$("#criterio_id").focus();
@@ -635,7 +797,7 @@ $(document).ready(function() {
 	}
 	build_cart();
 	build_costumer();
-
+	build_extras();
 
 	// searchs products --------------------------------------------------------------
 	$("#criterio_id").on('keyup', function (e) {

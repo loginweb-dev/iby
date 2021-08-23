@@ -35,7 +35,7 @@ require_once('../../../../wp-load.php');
 		</div>
 		<div class="col form-group text-center">
 			<label><u>Efectivo Entregado</u></label>
-			<input id="entregado" onchange="entregado()" type="text" class="form-control" placeholder="" value="0" autofocus>
+			<input id="entregado" onchange="entregado()" type="text" class="form-control" placeholder="<?php echo $_GET["total"] ?>" value="" autofocus>
 		</div> 
 		<div class="col form-group text-center">
 			<label><u>Cambio en Efectivo</u></label>
