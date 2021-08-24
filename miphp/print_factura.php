@@ -27,7 +27,7 @@
     $type_font = 'Arial';
     $higth_qr = 77;
 
-    $pdf = new FPDF('P','mm',array(40,160));
+    $pdf = new FPDF('P','mm',array(40,140));
     $pdf->SetMargins(1, 8, 1);
     $pdf->SetFont($type_font, '', $size_font);
     $pdf->AddPage();

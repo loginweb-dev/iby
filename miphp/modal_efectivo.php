@@ -1,10 +1,8 @@
 <?php 
 require_once('../../../../wp-load.php');
-    $post = get_post( $_GET["box_id"] );
-	// $option_rest = get_post( $_GET["box_id"] );
     ?>
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Detalle de la Venta</h5>
+        <div class="modal-header text-center">
+            <h5 class="modal-title text-center" id="exampleModalLabel">Detalle de la Venta <p><?php echo $_GET["type_payment"]; ?></p></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -33,16 +31,50 @@ require_once('../../../../wp-load.php');
 				<span class="custom-control-label"> Imprimir </span>
 			</label>
 		</div>
-		<div class="col form-group text-center">
-			<label><u>Efectivo Entregado</u></label>
-			<input id="entregado" onchange="entregado()" type="text" class="form-control" placeholder="<?php echo $_GET["total"] ?>" value="" autofocus>
-		</div> 
-		<div class="col form-group text-center">
-			<label><u>Cambio en Efectivo</u></label>
-			<input id="cambio" type="text" class="form-control" placeholder="" value="0" readonly>
-		</div> 
-      </div>
-      <div class="modal-footer">
-        <button href="#" id="new_shop_order" onclick="new_shop_order()" type="button" class="btn btn-primary" disabled> Finalizar </button>
-      </div>
+		<?php if($_GET['type_payment'] == 'Efectivo'){?>
+			<div class="col form-group text-center">
+				<label><u>Efectivo Entregado</u></label>
+				<input id="entregado" onchange="entregado()" type="text" class="form-control" placeholder="<?php echo $_GET["total"] ?>" value="" autofocus>
+			</div> 
+			<div class="col form-group text-center">
+				<label><u>Cambio en Efectivo</u></label>
+				<input id="cambio" type="text" class="form-control" placeholder="" value="0" readonly>
+			</div> 
+		</div>
+		<div class="modal-footer">
+			<button href="#" id="new_shop_order" onclick="new_shop_order('<?php echo $_GET['type_payment']; ?>')" type="button" class="btn btn-primary" disabled> Finalizar </button>
+		</div>
+	  	<?php }else if($_GET['type_payment'] == 'Tigo Money'){ ?>
+			<div class="col form-group text-center">
+				<img class="img-thumbnail img-md text-center" src="resources/tigo_money.png" alt="">
+			</div> 
+		</div>
+		<div class="modal-footer">
+			<button href="#" id="new_shop_order" onclick="new_shop_order('<?php echo $_GET['type_payment']; ?>')" type="button" class="btn btn-primary" > Guardar </button>
+		</div>
+		<?php }else if($_GET['type_payment'] == 'QR Simple'){ ?>
+			<div class="col form-group text-center">
+			<img class="img-thumbnail img-md text-center" src="resources/qr_simple.jpg" alt="">
+			</div> 
+			</div>
+		<div class="modal-footer">
+			<button href="#" id="new_shop_order" onclick="new_shop_order('<?php echo $_GET['type_payment']; ?>')" type="button" class="btn btn-primary" > Guardar </button>
+		</div>
+		<?php }else if($_GET['type_payment'] == 'Transferencia Bancaria'){ ?>
+			<div class="col form-group text-center">
+			<img class="img-thumbnail img-md text-center" src="resources/tranferencia.jpg" alt="">
+			</div> 
+			</div>
+		<div class="modal-footer">
+			<button href="#" id="new_shop_order" onclick="new_shop_order('<?php echo $_GET['type_payment']; ?>')" type="button" class="btn btn-primary" > Guardar </button>
+		</div>
+		<?php }else if($_GET['type_payment'] == 'Tarjeta Credito/Debito'){ ?>
+			<div class="col form-group text-center">
+			<img class="img-thumbnail img-md text-center" src="resources/tarjeta_cd.jpeg" alt="">
+			</div> 
+			</div>
+		<div class="modal-footer">
+			<button href="#" id="new_shop_order" onclick="new_shop_order('<?php echo $_GET['type_payment']; ?>')" type="button" class="btn btn-primary" > Guardar </button>
+		</div>
+		<?php } ?>
 <?php 

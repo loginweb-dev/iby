@@ -73,6 +73,7 @@ function custom_shop_order_column($columns)
         if( $key ==  'order_status' ){
             $reordered_columns['my-column1'] = __( 'Tipo','theme_domain');
 			$reordered_columns['my-column2'] = __( 'Tickes','theme_domain');
+			$reordered_columns['my-column3'] = __( 'Pago por:','theme_domain');
         }
     }
     return $reordered_columns;
@@ -97,6 +98,13 @@ function custom_orders_list_column_content( $column, $post_id )
 				else
 					echo '<small>(<em>no value</em>)</small>';
 				break;
+				case 'my-column3' :
+					$my_var_one2 = get_post_meta( $post_id, '_payment_method_title', true );
+					if(!empty($my_var_one2))
+						echo $my_var_one2;
+					else
+						echo '<small>(<em>no value</em>)</small>';
+					break;
     }
 }
 

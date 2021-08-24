@@ -203,21 +203,26 @@
 				</header>
 				<div class="filter-content collapse show" id="collapse36">
 					<div class="card-body">
-						<p class="text-center mb-3">
-							<button class="btn btn-light" id="btn_pago_efectivo" disabled> <i class="fa fa-money-bill-alt"></i> Efectivo</button>
-						</p>
-						<!-- <p class="text-center mb-3">
-							<button class="btn btn-light" id="btn_pago_delivery" disabled> <i class="fa fa-registered"></i> Delivery </button>
-						</p> -->
-						<p class="text-center mb-3">
-							<button class="btn btn-light" id="btn_pago_tigo_money" disabled> <i class="fa fa-registered"></i>Tigo Money</button>
-						</p>
-						<p class="text-center mb-3">
-							<button class="btn btn-light" id="btn_pago_qr_simple" disabled> <i class="fa fa-registered"></i>QR Simple</button>
-						</p>
-						<p class="text-center mb-3">
-							<button class="btn btn-light" id="btn_pago_transferencia" disabled> <i class="fa fa-registered"></i>Transferencia</button>
-						</p>
+						<div class= "row">
+							<p class="text-center mb-6 mr-2">
+								<button class="btn btn-light" id="btn_pago_efectivo" onclick="pasarela('Efectivo')" disabled> <i class="fa fa-money-bill-alt"></i> Efectivo</button>
+							</p>
+							<!-- <p class="text-center mb-3">btn_pago_delivery
+								<button class="btn btn-light" id="btn_pago_delivery" disabled> <i class="fa fa-registered"></i> Delivery </button>
+							</p> -->
+							<p class="text-center mb-6">
+								<button class="btn btn-light" id="btn_pago_tigo_money" onclick="pasarela('Tigo Money')" disabled> <i class="fa fa-registered"></i>Tigo Money</button>
+							</p>
+							<p class="text-center mb-6 mr-2">
+								<button class="btn btn-light" id="btn_pago_qr_simple" onclick="pasarela('QR Simple')" disabled> <i class="fa fa-registered"></i>QR Simple</button>
+							</p>
+							<p class="text-center mb-6">
+								<button class="btn btn-light" id="btn_pago_transferencia" onclick="pasarela('Transferencia Bancaria')"  disabled> <i class="fa fa-registered"></i>Transferencia</button>
+							</p>
+							<p class="text-center mb-6 mr-2">
+								<button class="btn btn-light" id="btn_pago_tarjeta_cd" onclick="pasarela('Tarjeta Credito/Debito')" disabled> <i class="fa fa-registered"></i>Tarjerta Debito/Credito</button>
+							</p>
+						</div>
 					</div>
 				</div>
 				</article>
@@ -226,12 +231,12 @@
 			<div class="card">
 				<article class="filter-group">
 					<header class="card-header">
-						<a href="#" data-toggle="collapse" data-target="#collapse37">
+						<a href="#" data-toggle="collapse" data-target="#collapse37" class="collapsed" aria-expanded="false">
 							<i class="icon-control fa fa-chevron-down"></i>
 							<h6 class="title">Otras Opciones </h6>
 						</a>
 					</header>
-					<div class="filter-content collapse show" id="collapse37">
+					<div class="filter-content collapse" id="collapse37">
 						<div class="card-body">
 							<p class="text-center mb-3">
 								<button class="btn btn-light" id="btn_proforma" disabled> <i class="fa fa-registered"></i>Proforma</button>
@@ -276,6 +281,35 @@
 <script src="src/index.js"></script>
 <script type="text/javascript">
 	// let notifier = new AWN(globalOptions);
+		// Open cash---------------------------------------------------- 
+		// $("#btn_pago_efectivo").click(function (e) { 
+		// e.preventDefault();-----------------------------------------------
+		function pasarela(type_payment) {
+			let total = 0;
+			$.ajax({
+				url: "miphp/micart.php",
+				dataType: "json",
+				data: { "get_totals": true },
+				success: function (response) {
+					total = response.total_numeral;	
+		
+						$.ajax({
+							url: "miphp/modal_efectivo.php",
+							dataType: 'html',
+							contentType: 'text/html',
+							data: {"total" : total, "type_payment" : type_payment},
+							success: function (response) {
+								$('#box_body').html(response);	
+								$('#modalBox').modal('show');
+								$("#entregado").focus();
+							}
+						});
+			
+				}
+			});	
+		}
+	// });
+
 	//Extras -----------------------------------------------------
 	function extras(id, title, price){
 		$('#'+id).attr("disabled", true);
@@ -326,21 +360,21 @@
 		});
 	}
 	// Create new Shop Order----------------------------------------------
-	function new_shop_order(){
+	function new_shop_order(type_payment){
 		$('#modalBox').modal('toggle');
 		let id_customer = $("#id_customer").val();
 		let cod_box = $("#cod_box").val();
 		let entregado = $("#entregado").val();
 		let cambio = $("#cambio").val();
 		let tipo_venta = $("#no_estado").is(":checked") ? "recibo" : "factura";
-		let option_restaurant = $("#em").is(":checked") ? "En Mesa" : $("#rt").is(":checked") ? "Recoger en Tienda" : $("#de").is(":checked") ? "Recoger en Tienda" : null;
+		let option_restaurant = $("#em").is(":checked") ? "En Mesa" : $("#rt").is(":checked") ? "Recoger en Tienda" : $("#de").is(":checked") ? "Delivery" : null;
 		let opciones_print = $("#volver").is(":checked") ? false : true;
 		if (tipo_venta == "recibo" ) {
 			if (opciones_print) {
 				$.ajax({
 					url: "miphp/orders.php",
 					dataType: "json",
-					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant },
+					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment },
 					success: function (response) {
 						// $.notify("Creando QR..", "info");
 						$.ajax({
@@ -359,7 +393,7 @@
 			} else {
 				$.ajax({
 					url: "miphp/orders.php",
-					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant  },
+					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment },
 					success: function () {
 						build_cart();
 						build_costumer();
@@ -373,7 +407,7 @@
 				$.ajax({
 					url: "miphp/orders.php",
 					dataType: "json",
-					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant },
+					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment },
 					success: function (response) {
 						// $.notify("Creando QR..", "info");
 						$.ajax({
@@ -394,7 +428,7 @@
 				$.ajax({
 					url: "miphp/orders.php",
 					dataType: "json",
-					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant },
+					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment },
 					success: function (response) {
 						$.notify("Creando QR..", "info");
 						$.ajax({
@@ -524,10 +558,11 @@
 					$('#miextra').prop("disabled", true);
 
 					$('#btn_pago_efectivo').prop("disabled", true);
-					$('#btn_pago_delivery').prop("disabled", true);
+					// $('#btn_pago_delivery').prop("disabled", true);
 					$('#btn_pago_tigo_money').prop("disabled", true);
 					$('#btn_pago_qr_simple').prop("disabled", true);
 					$('#btn_pago_transferencia').prop("disabled", true);
+					$('#btn_pago_tarjeta_cd').prop("disabled", true);
 
 					$('#btn_proforma').prop("disabled", true);
 					$('#btn_compra').prop("disabled", true);
@@ -559,10 +594,11 @@
 					$('#miextra').prop("disabled", false);
 
 					$('#btn_pago_efectivo').prop("disabled", false);
-					$('#btn_pago_delivery').prop("disabled", false);
+					// $('#btn_pago_delivery').prop("disabled", false);
 					$('#btn_pago_tigo_money').prop("disabled", false);
 					$('#btn_pago_qr_simple').prop("disabled", false);
 					$('#btn_pago_transferencia').prop("disabled", false);
+					$('#btn_pago_tarjeta_cd').prop("disabled", false);
 
 					$('#btn_proforma').prop("disabled", false);
 					$('#btn_compra').prop("disabled", false);
@@ -726,30 +762,30 @@ $(document).ready(function() {
 
 
 
-	// Open cash---------------------------------------------------- 
-	$("#btn_pago_efectivo").click(function (e) { 
-		e.preventDefault();
-		let total = 0;
-		$.ajax({
-			url: "miphp/micart.php",
-			dataType: "json",
-			data: { "get_totals": true },
-			success: function (response) {
-				total = response.total_numeral;	
-				$.ajax({
-					url: "miphp/modal_efectivo.php",
-					dataType: 'html',
-					contentType: 'text/html',
-					data: {"box_id": box_id, "total" : total },
-					success: function (response) {
-						$('#box_body').html(response);	
-						$('#modalBox').modal('show');
-						$("#entregado").focus();
-					}
-				});
-			}
-		});
-	});
+	// // Open cash---------------------------------------------------- 
+	// $("#btn_pago_efectivo").click(function (e) { 
+	// 	e.preventDefault();
+	// 	let total = 0;
+	// 	$.ajax({
+	// 		url: "miphp/micart.php",
+	// 		dataType: "json",
+	// 		data: { "get_totals": true },
+	// 		success: function (response) {
+	// 			total = response.total_numeral;	
+	// 			$.ajax({
+	// 				url: "miphp/modal_efectivo.php",
+	// 				dataType: 'html',
+	// 				contentType: 'text/html',
+	// 				data: {"box_id": box_id, "total" : total },
+	// 				success: function (response) {
+	// 					$('#box_body').html(response);	
+	// 					$('#modalBox').modal('show');
+	// 					$("#entregado").focus();
+	// 				}
+	// 			});
+	// 		}
+	// 	});
+	// });
 	// Open cash---------------------------------------------------- 
 	$("#btn_pago_delivery").click(function (e) { 
 		e.preventDefault();

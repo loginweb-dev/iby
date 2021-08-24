@@ -53,14 +53,15 @@
     update_post_meta($order->id, 'lw_pos_type_order', $_GET["tipo_venta"] );
     update_post_meta($order->id, 'lw_pos_tickes', $num_tickets);
     update_post_meta($order->id, 'lw_or', $_GET["option_restaurant"]);
-    update_post_meta($order->id, '_payment_method', 'pos_cash');
-    update_post_meta($order->id, '_payment_method_title', 'Efectivo');
-    update_post_meta($order->id, '_order_total', $cart->getAttributeTotal('price') );
     update_post_meta($order->id, 'wc_pos_order_type', 'POS');
     update_post_meta($order->id, 'wc_pos_register_id', $_GET["cod_box"]);
     update_post_meta($order->id, 'wc_pos_served_by_name', $current_user->user_login);
     update_post_meta($order->id, 'wc_pos_amount_change', $_GET["cambio"] );
     update_post_meta($order->id, 'wc_pos_amount_pay', $_GET["entregado"] );
+    update_post_meta($order->id, '_payment_method', 'pos_cash');
+    update_post_meta($order->id, '_payment_method_title', $_GET["type_payment"] );
+    update_post_meta($order->id, '_order_total', $cart->getAttributeTotal('price') );
+
     
     
     

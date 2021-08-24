@@ -27,7 +27,7 @@
     $type_font = 'Arial';
     $higth_qr = 77;
 
-    $pdf = new FPDF('P','mm',array(40,160));
+    $pdf = new FPDF('P','mm',array(40,90));
     $pdf->SetMargins(1, 8, 1);
     $pdf->SetFont($type_font, '', $size_font);
     $pdf->AddPage();
@@ -100,7 +100,7 @@
     $pdf->Cell(0, 0, '', 1 , 1, 'C');
         $pdf->Cell(0, $higth, 'ATENDIDO POR: '.$order->get_meta('wc_pos_served_by_name'), 0, 1, 'L');
         $pdf->Cell(0, $higth, 'TICKES # : '.$order->get_meta('lw_pos_tickes'), 0, 1, 'L');
-        $pdf->Image($QR_BASEDIR.'qrcode/temp/'.$order->id.'.jpg', 9, $higth_qr-20, 20, 20, 'JPG');
+        $pdf->Image($QR_BASEDIR.'qrcode/temp/'.$order->id.'.jpg', 9, $higth_qr-18, 20, 20, 'JPG');
         
     $pdf->Output();
 ?>
