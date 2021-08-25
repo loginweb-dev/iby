@@ -32,26 +32,32 @@
 <!-- custom style -->
 <link href="css/ui.css" rel="stylesheet" type="text/css"/>
 <link href="css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
-
+<script>
+	let isMobile = {
+		mobilecheck : function() {
+			return (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i.test(navigator.userAgent||navigator.vendor||window.opera)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test((navigator.userAgent||navigator.vendor||window.opera).substr(0,4)))
+		}
+	}
+</script>
 </head>
 <body style="background-color: #F6F7F9;">
 <header class="section-header" style="background-color: #FFFFFF;">
 	<section class="header-main border-bottom">
 		<div class="container-fluid">
 			<div class="row align-items-center">
-				<div class="col-lg-8 col-md-8 col-sm-12">
+				<div class="col-lg-6 col-md-6 col-sm-12">
 					<div class="form-group">
 						<input type="text" class="form-control" placeholder="Buscar Productos" id="criterio_id">
 					</div>
 				</div>
-				<div class="col-lg-4 col-md-4 col-sm-12">
-					<div class="widgets-wrap float-md-right">
+				<div class="col-lg-6 col-md-6 col-sm-12">
+					<!-- <div class="widgets-wrap float-md-right"> -->
 						<div class="widget-header icontext">
 							<a href="#" class="icon icon-sm rounded-circle border"><i class="fa fa-address-book"></i></a>
 							<div class="text">
 								<span class="text-muted"><?php echo $post->post_title; ?></span>
 								<input class="form-control" type="text" id="cod_box" value="<?php echo $_GET["box_id"]; ?>" hidden>
-								<br><button class="btn btn-light" id="box_show">Cerrar Caja</button>
+								<br><button class="btn btn-light btn-sm" id="box_show">Cerrar Caja</button>
 								
 							</div>
 						</div>
@@ -64,8 +70,7 @@
 								</div>
 							</div>
 						</div>
-
-					</div>
+					<!-- </div> -->
 				</div>
 			</div>
 		</div>
@@ -76,188 +81,190 @@
 <!-- <div id="milistcatgs"></div> -->
 
 <!-- ========================= SECTION CONTENT ========================= -->
-<section class="section-content padding-y">
-<div class="container-fluid">
-
-<div class="row">
-	<main class="col-md-8">
-		<div class="card">
-			<div id="milistcatgs"></div>
-		</div>
-		
-		<div class="card mt-3">
-			<div id="mitabla"></div>
-		</div>
-		
-	</main>
-	
-	<aside class="col-md-4">
-	<?php if(get_post_meta($post->ID, 'lw_or', true) == 'true'){ ?>
-			<div class="card mb-3">
-			<article class="filter-group">
-				<header class="card-header">
-					<a href="#" data-toggle="collapse" data-target="#collapse34">
-						<i class="icon-control fa fa-chevron-down"></i>
-						<h6 class="title"> Opciones de Restaurant </h6>
-					</a>
-				</header>
-				<div class="filter-content collapse show" id="collapse34">
-					<div class="card-body">
-					<div class="form-group">
-					<label class="custom-control custom-radio custom-control-inline">
-						<input class="custom-control-input" type="radio"  id="rt" name="option_restaurant" value="option1">
-						<span class="custom-control-label"> Recoger en Tienda </span>
-					</label>
-					<br>
-					<label class="custom-control custom-radio custom-control-inline">
-						<input class="custom-control-input" checked type="radio" id="em"  name="option_restaurant" value="option2">
-						<span class="custom-control-label"> En Mesa </span>
-					</label>
-					<br>
-					<label class="custom-control custom-radio custom-control-inline">
-						<input class="custom-control-input" type="radio" id="de" name="option_restaurant" value="option3">
-						<span class="custom-control-label"> Delivery </span>
-					</label>
-				</div>
-				<hr>
-				<?php 
-					$results = $wpdb->get_row('SELECT meta_value FROM wp_postmeta WHERE post_id = 366 AND  meta_key = "_product_addons"');
-					$results = unserialize($results->meta_value);
-					foreach ( $results  as $j => $fieldoption ) {
-						if($fieldoption['type'] == "checkbox"){
-							foreach ( $fieldoption['options'] as $i => $option ) {
-								// $id = $option['id'];
-								$title = $option['label'];
-								$price = $option['price'];
-								?>
-									<div class="form-check" id="miextra" disabled>
-										<input id='<?php echo $i+1; ?>' onclick="extras('<?php echo $i+1; ?>', '<?php echo $title; ?>', <?php echo $price; ?>)" class="form-check-input" type="checkbox">
-										<label for="my-input" class="form-check-label"> <?php echo $title; echo ' - '; echo $price; ?> Bs.</label>
-									</div>
-								<?php
-							}
-						}
-					}
-				?> 
-			</article>
-		</div>
-		<?php } ?>
-		<div class="card mb-3">
-			<article class="filter-group">
-				<header class="card-header">
-					<a href="#" data-toggle="collapse" data-target="#collapse33">
-						<i class="icon-control fa fa-chevron-down"></i>
-						<h6 class="title"> Cliente </h6>
-					</a>
-				</header>
-				<div class="filter-content collapse show" id="collapse33">
-					<div class="card-body">
-						<form>
-							<div class="form-group">
-								<label>Cliente</label>
-									<input id="customer_search" type="text" class="form-control" placeholder="Buscar cliente">
-									<input class="form-control" type="text" id="id_customer" hidden>
-									<div id="list_search_customers"></div>
+<section class="section-content">
+	<div class="container-fluid">
+		<div class="row">
+			<main class="col-md-8">
+				<div class="card mt-1">
+					<article class="filter-group">
+						<header class="card-header">
+							<a href="#" data-toggle="collapse" data-target="#collapse100">
+								<i class="icon-control fa fa-chevron-down"></i>
+								<h6 class="title"> Carrito </h6>
+							</a>
+						</header>
+						<div class="filter-content collapse show" id="collapse100">
+							<div class="card-body">
+								<div id="mitabla"></div>
 							</div>
-						</form>
-					</div>
-				</div>
-			</article>
-		</div>
-	
-
-		<div class="card mb-3">
-			<article class="filter-group">
-				<header class="card-header">
-					<a href="#" data-toggle="collapse" data-target="#collapse35">
-						<i class="icon-control fa fa-chevron-down"></i>
-						<h6 class="title">Resumen del Carrito </h6>
-					</a>
-				</header>
-				<div class="filter-content collapse show" id="collapse35">
-					<div class="card-body">
-					<dl class="dlist-align">
-					  <dt>Total:</dt>
-					  <dd class="text-right  h5"><div id="total_numeral"></div></dd>
-					</dl>
-					<div id="total_literal"></div>
-					<hr>
-					<dl class="dlist-align">
-					  <dt>Cantidad:</dt> 
-					  <dd class="text-right  h5"><div id="cant_items"></div></dd>
-					</dl>
-					<hr>
-					</div>
-				</div>
-			</article>
-		</div>
-
-
-		<div class="card mb-3">
-			<article class="filter-group">
-				<header class="card-header">
-					<a href="#" data-toggle="collapse" data-target="#collapse36">
-						<i class="icon-control fa fa-chevron-down"></i>
-						<h6 class="title">Pasarela de Pago </h6>
-					</a>
-				</header>
-				<div class="filter-content collapse show" id="collapse36">
-					<div class="card-body">
-						<div class= "row">
-							<p class="text-center mb-6 mr-2">
-								<button class="btn btn-light" id="btn_pago_efectivo" onclick="pasarela('Efectivo')" disabled> <i class="fa fa-money-bill-alt"></i> Efectivo</button>
-							</p>
-							<!-- <p class="text-center mb-3">btn_pago_delivery
-								<button class="btn btn-light" id="btn_pago_delivery" disabled> <i class="fa fa-registered"></i> Delivery </button>
-							</p> -->
-							<p class="text-center mb-6">
-								<button class="btn btn-light" id="btn_pago_tigo_money" onclick="pasarela('Tigo Money')" disabled> <i class="fa fa-registered"></i>Tigo Money</button>
-							</p>
-							<p class="text-center mb-6 mr-2">
-								<button class="btn btn-light" id="btn_pago_qr_simple" onclick="pasarela('QR Simple')" disabled> <i class="fa fa-registered"></i>QR Simple</button>
-							</p>
-							<p class="text-center mb-6">
-								<button class="btn btn-light" id="btn_pago_transferencia" onclick="pasarela('Transferencia Bancaria')"  disabled> <i class="fa fa-registered"></i>Transferencia</button>
-							</p>
-							<p class="text-center mb-6 mr-2">
-								<button class="btn btn-light" id="btn_pago_tarjeta_cd" onclick="pasarela('Tarjeta Credito/Debito')" disabled> <i class="fa fa-registered"></i>Tarjerta Debito/Credito</button>
-							</p>
 						</div>
-					</div>
+					</article>
 				</div>
-				</article>
-			</div>
-
-			<div class="card">
-				<article class="filter-group">
-					<header class="card-header">
-						<a href="#" data-toggle="collapse" data-target="#collapse37" class="collapsed" aria-expanded="false">
-							<i class="icon-control fa fa-chevron-down"></i>
-							<h6 class="title">Otras Opciones </h6>
-						</a>
-					</header>
-					<div class="filter-content collapse" id="collapse37">
-						<div class="card-body">
-							<p class="text-center mb-3">
-								<button class="btn btn-light" id="btn_proforma" disabled> <i class="fa fa-registered"></i>Proforma</button>
-							</p>
-							<p class="text-center mb-3">
-								<button class="btn btn-light" id="btn_compra" disabled> <i class="fa fa-registered"></i>Compra</button>
-							</p>
-						</div>
+				<div class="card mt-1">
+					<div id="milistcatgs"></div>
+				</div>
+			</main>
+			<aside class="col-md-4">
+				<?php if(get_post_meta($post->ID, 'lw_or', true) == 'true'){ ?>
+					<div class="card mt-1">
+						<article class="filter-group">
+							<header class="card-header">
+								<a href="#" data-toggle="collapse" data-target="#collapse34">
+									<i class="icon-control fa fa-chevron-down"></i>
+									<h6 class="title"> Opciones de Restaurant </h6>
+								</a>
+							</header>
+							<div class="filter-content collapse show" id="collapse34">
+								<div class="card-body">
+								<div class="form-group">
+								<label class="custom-control custom-radio custom-control-inline">
+									<input class="custom-control-input" type="radio"  id="rt" name="option_restaurant" value="option1">
+									<span class="custom-control-label"> Recoger en Tienda </span>
+								</label>
+								<br>
+								<label class="custom-control custom-radio custom-control-inline">
+									<input class="custom-control-input" checked type="radio" id="em"  name="option_restaurant" value="option2">
+									<span class="custom-control-label"> En Mesa </span>
+								</label>
+								<br>
+								<label class="custom-control custom-radio custom-control-inline">
+									<input class="custom-control-input" type="radio" id="de" name="option_restaurant" value="option3">
+									<span class="custom-control-label"> Delivery </span>
+								</label>
+							</div>
+							<hr>
+							<?php 
+								$results = $wpdb->get_row('SELECT meta_value FROM wp_postmeta WHERE post_id = 366 AND  meta_key = "_product_addons"');
+								$results = unserialize($results->meta_value);
+								foreach ( $results  as $j => $fieldoption ) {
+									if($fieldoption['type'] == "checkbox"){
+										foreach ( $fieldoption['options'] as $i => $option ) {
+											// $id = $option['id'];
+											$title = $option['label'];
+											$price = $option['price'];
+											?>
+												<div class="form-check" id="miextra" disabled>
+													<input id='<?php echo $i+1; ?>' onclick="extras('<?php echo $i+1; ?>', '<?php echo $title; ?>', <?php echo $price; ?>)" class="form-check-input" type="checkbox">
+													<label for="my-input" class="form-check-label"> <?php echo $title; echo ' - '; echo $price; ?> Bs.</label>
+												</div>
+											<?php
+										}
+									}
+								}
+							?> 
+						</article>
 					</div>
-				</article>
-			</div>
-	</aside> 
-
-</div> 
-<!-- </section> -->
+				<?php } ?>
+				<div class="card mt-1">
+					<article class="filter-group">
+						<header class="card-header">
+							<a href="#" data-toggle="collapse" data-target="#collapse33">
+								<i class="icon-control fa fa-chevron-down"></i>
+								<h6 class="title"> Cliente </h6>
+							</a>
+						</header>
+						<div class="filter-content collapse show" id="collapse33">
+							<div class="card-body">
+								<form>
+									<div class="form-group">
+											<input id="customer_search" type="text" class="form-control" placeholder="Buscar cliente">
+											<input class="form-control" type="text" id="id_customer" hidden>
+											<div id="list_search_customers"></div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</article>
+				</div>
+				<div class="card mt-1">
+					<article class="filter-group">
+						<header class="card-header">
+							<a href="#" data-toggle="collapse" data-target="#collapse35">
+								<i class="icon-control fa fa-chevron-down"></i>
+								<h6 class="title">Resumen del Carrito </h6>
+							</a>
+						</header>
+						<div class="filter-content collapse show" id="collapse35">
+							<div class="card-body">
+							<dl class="dlist-align">
+							<dt>Total:</dt>
+							<dd class="text-right  h5"><div id="total_numeral"></div></dd>
+							</dl>
+							<div id="total_literal"></div>
+							<hr>
+							<dl class="dlist-align">
+							<dt>Cantidad:</dt> 
+							<dd class="text-right  h5"><div id="cant_items"></div></dd>
+							</dl>
+							<hr>
+							</div>
+						</div>
+					</article>
+				</div>
+				<div class="card mt-1">
+					<article class="filter-group">
+						<header class="card-header">
+							<a href="#" data-toggle="collapse" data-target="#collapse36">
+								<i class="icon-control fa fa-chevron-down"></i>
+								<h6 class="title">Pasarela de Pago </h6>
+							</a>
+						</header>
+						<div class="filter-content collapse show" id="collapse36">
+							<div class="card-body">
+								<div class= "row">
+									<p class="text-center mb-6 mr-2">
+										<button class="btn btn-light" id="btn_pago_efectivo" onclick="pasarela('Efectivo')" disabled> <i class="fa fa-money-bill-alt"></i> Efectivo</button>
+									</p>
+									<!-- <p class="text-center mb-3">btn_pago_delivery
+										<button class="btn btn-light" id="btn_pago_delivery" disabled> <i class="fa fa-registered"></i> Delivery </button>
+									</p> -->
+									<p class="text-center mb-6">
+										<button class="btn btn-light" id="btn_pago_tigo_money" onclick="pasarela('Tigo Money')" disabled> <i class="fa fa-registered"></i>Tigo Money</button>
+									</p>
+									<p class="text-center mb-6 mr-2">
+										<button class="btn btn-light" id="btn_pago_qr_simple" onclick="pasarela('QR Simple')" disabled> <i class="fa fa-registered"></i>QR Simple</button>
+									</p>
+									<p class="text-center mb-6">
+										<button class="btn btn-light" id="btn_pago_transferencia" onclick="pasarela('Transferencia Bancaria')"  disabled> <i class="fa fa-registered"></i>Transferencia</button>
+									</p>
+									<p class="text-center mb-6 mr-2">
+										<button class="btn btn-light" id="btn_pago_tarjeta_cd" onclick="pasarela('Tarjeta Credito/Debito')" disabled> <i class="fa fa-registered"></i>Tarjerta Debito/Credito</button>
+									</p>
+								</div>
+							</div>
+						</div>
+					</article>
+				</div>
+				<div class="card mt-1">
+					<article class="filter-group">
+						<header class="card-header">
+							<a href="#" data-toggle="collapse" data-target="#collapse37" class="collapsed" aria-expanded="false">
+								<i class="icon-control fa fa-chevron-down"></i>
+								<h6 class="title">Otras Opciones </h6>
+							</a>
+						</header>
+						<div class="filter-content collapse" id="collapse37">
+							<div class="card-body">
+								<p class="text-center mb-3">
+									<button class="btn btn-light" id="btn_proforma" disabled> <i class="fa fa-registered"></i>Proforma</button>
+								</p>
+								<p class="text-center mb-3">
+									<button class="btn btn-light" id="btn_compra" disabled> <i class="fa fa-registered"></i>Compra</button>
+								</p>
+							</div>
+						</div>
+					</article>
+				</div>
+			</aside> 
+		</div> 
+	</div> 
+</section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
 
 
 <!-- ========================= FOOTER ========================= -->
-<footer class="section-footer border-top padding-y">
-
+<footer class="section-footer border-top text-center mt-1">
+	<small>App Creada por la Empresa LoginWeb @2021</small>
 </footer>
 <!-- ========================= FOOTER END // ========================= -->
 
@@ -362,6 +369,7 @@
 	// Create new Shop Order----------------------------------------------
 	function new_shop_order(type_payment){
 		$('#modalBox').modal('toggle');
+		$.notify("Pedido en Proceso", "info");
 		let id_customer = $("#id_customer").val();
 		let cod_box = $("#cod_box").val();
 		let entregado = $("#entregado").val();
@@ -376,7 +384,6 @@
 					dataType: "json",
 					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment },
 					success: function (response) {
-						// $.notify("Creando QR..", "info");
 						$.ajax({
 							url: "miphp/barcode.php",
 							data: {"cod_order": response.cod_order, "text_qr": response.text_qr },
@@ -384,10 +391,15 @@
 								build_cart();
 								build_costumer();
 								build_extras();
+								setTimeout(function(){ $.notify("Abriendo PDF", "info"); $('html,body').scrollTop(0); }, 3000);
+								if(isMobile.mobilecheck()){
+									window.location.href = '<?php echo WP_PLUGIN_URL; ?>'+'/iby/miphp/print_recibo.php?cod_order='+response.cod_order;
+								}else{
+									window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby/miphp/print_recibo.php?cod_order='+response.cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
+								}
 							}
 						});
-						$.notify("Abriendo PDF..", "info");
-						window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby/miphp/print_recibo.php?cod_order='+response.cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
+					
 					}
 				});
 			} else {
@@ -417,10 +429,15 @@
 								build_cart();
 								build_costumer();
 								build_extras();
+								setTimeout(function(){ $.notify("Abriendo PDF", "info"); $('html,body').scrollTop(0); }, 3000);
+								if(isMobile.mobilecheck()){
+									window.location.href = '<?php echo WP_PLUGIN_URL; ?>'+'/iby/miphp/print_factura.php?cod_order='+response.cod_order;
+								}else{
+									window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby/miphp/print_factura.php?cod_order='+response.cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
+								}
 							}
 						});
-						$.notify("Abriendo PDF..", "info");
-						window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby/miphp/print_factura.php?cod_order='+response.cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
+					
 					}
 				});
 			} else {
@@ -554,7 +571,7 @@
 			dataType: "json",
 			success: function (response) {
 				if (response.length == 0) {
-					$('#mitabla').html("<center><h2>Carrito Vacio</h2><img class='img-lg' src='resources/car.png' accept='.png'></center>");						
+					$('#mitabla').html("<center><h6>Carrito Vacio</h6><img class='img-md' src='resources/car.png' accept='.png'></center>");						
 					$('#miextra').prop("disabled", true);
 
 					$('#btn_pago_efectivo').prop("disabled", true);
@@ -568,7 +585,7 @@
 					$('#btn_compra').prop("disabled", true);
 				} else {
 					let table = "";
-					table += "<table class='table'><thead class='text-muted'><tr class='small text-uppercase'><th scope='col'>Productos</th><th scope='col' class='text-center'>Cantidad</th><th scope='col' class='text-center'>Sub Total</th></tr></thead>";
+					table += "<table style='width: 100%;'><thead class='text-muted'><tr class='small text-uppercase'><th scope='col'>Productos</th><th scope='col' class='text-center'>Cantidad</th><th scope='col' class='text-center'>Sub Total</th></tr></thead>";
 					for(var i=0; i < response.length; i++){
 						if (response[i].sku == 'extra') {
 							table += "<tr><td><figure class='itemside'><div class='aside'><img src="+response[i].image+
@@ -587,7 +604,7 @@
 						}
 					}	
 					table += "</tbody></table>";
-					table += "<div class='card-body border-top'><button onclick='cart_clear()' class='btn btn-light'>Limpiar</button></div>";
+					table += "<div class='card-body border-top'><button onclick='cart_clear()' class='btn btn-light btn-sm'>Limpiar Carrito</button></div>";
 					
 					$('#mitabla').html(table);
 					
@@ -728,6 +745,12 @@
 	}
 //----  load JQUERY --------------------
 $(document).ready(function() {
+	let isMobile = {
+		mobilecheck : function() {
+			return (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i.test(navigator.userAgent||navigator.vendor||window.opera)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test((navigator.userAgent||navigator.vendor||window.opera).substr(0,4)))
+		}
+	}
+	// alert(isMobile.mobilecheck());
 
 	$('#milistcatgs').html("<center><img class='img-sm' src='resources/reload.gif'></center>");	
 	$.ajax({
@@ -811,7 +834,7 @@ $(document).ready(function() {
 		// });
 	});
 	//--- Cargando Caja ---------------------------------------------------------
-	$("#criterio_id").focus();
+	// $("#criterio_id").focus();
 	let status_box = "<?php echo $post->post_status;  ?>";
 	let box_id = "<?php echo $post->ID;  ?>";
 	if (status_box == 'pending') {
@@ -929,10 +952,6 @@ $(document).ready(function() {
 			});
 		}
 	});
-
-
-
-
 
 	$("#criterio_id").change(function (e) { 
 		e.preventDefault();

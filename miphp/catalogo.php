@@ -73,7 +73,6 @@
                                             <figcaption class="info align-self-center">
                                                 <a href="#" class="title"><?php echo $key->name ?></a>
                                                 <a href="#" onclick="product_add(<?php echo $key->get_id(); ?>)" class="btn btn-light text-primary btn-sm"> Agregar </a>
-                                                <a href="#" class="btn btn-light text-primary btn-sm"> Agregar </a>
                                             </figcaption>
                                         </figure>
                                     </div>
