@@ -606,7 +606,7 @@
 				}
 			}
 		});
-		$("#criterio_id").focus();
+		// $("#criterio_id").focus();
 	}
 	// -------------- GET TOTALS -------------------------------------------------------------
 	function get_totals(){

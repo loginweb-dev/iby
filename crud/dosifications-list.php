@@ -6,8 +6,9 @@ function lw_dosifications_list() {
     <div class="wrap">
         <h2>Dosificaciones</h2>
         <div class="tablenav top">
+            
             <div class="alignleft actions">
-                <a href="<?php echo admin_url('admin.php?page=dosification-create'); ?>">Agregar Nueva</a>
+                <a class="button"  href="<?php echo admin_url('admin.php?page=dosification-create'); ?>">Agregar Nueva</a>
             </div>
             <br class="clear">
         </div>

@@ -14,17 +14,15 @@ function lw_setting() {
        update_post_meta( $post->ID, 'lw_name_business', $_POST["lw_name_business"]);
        update_post_meta( $post->ID, 'lw_nit', $_POST["lw_nit"]);
        update_post_meta( $post->ID, 'lw_legend', $_POST["lw_legend"]);
+       
+        header('Location: ' . admin_url('admin.php?page=cajas'), true);
+        die();
     } 
     $setting = get_posts( array('post_status' => 'publish', 'post_type' => 'pos_lw_setting') );
     ?>
     <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/iby/css/style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h2>Configuracion del TPV</h2>
-
-        <?php if ($_POST['update']) { ?>
-            <div class="updated"><p>Setting updated</p></div>
-            <a href="<?php echo admin_url('admin.php?page=cajas') ?>">&laquo; Volver a Cajas</a>
-        <?php } ?>
         <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
             <table class='wp-list-table widefat fixed'>
                 <tr><th>ID</th><td><input readonly type="text" name="id" value="<?php echo $setting[0]->ID; ?>"/></td></tr>

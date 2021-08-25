@@ -1,14 +1,9 @@
 <?php
 
 function lw_boxs_create() {
-    $post_content = $_POST["post_content"];
-    $post_title = $_POST["post_title"];
-    //insert
-    $get_user = get_user_by( 'email', 'cliente.generico@gmail.com');
     if (isset($_POST['insert'])) {
-
         $my_box = array(
-            'post_title'    => wp_strip_all_tags( $_POST['post_title'] ),
+            'post_title'    => $_POST['post_title'],
             'post_content'  => $_POST['post_content'],
             'post_status'   => 'pending',
             'post_type'   => 'pos_register',
@@ -20,13 +15,15 @@ function lw_boxs_create() {
                 'outlet' => $_POST['outlet'] , //pos_outlet
                 'receipt' => $_POST['receipt'] , //pos_receipt
                 'customer' => $get_user->id, //user
-                'lw_or' => $_POST['option_restaurant'] , // options restaurnt
+                'lw_or' => $_POST["option_restaurant"]  ? 'true' : 'false', // options restaurnt
             )
+
         );
         
         // Insert the post into the database
-        wp_insert_post( $my_box );
-        $message.="Dato Registrado Correctamente...";
+        $box_id = wp_insert_post( $my_box );
+        header('Location: ' . admin_url('admin.php?page=cajas'), true);
+        die();
     }
     ?>
     <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/iby/css/style-admin.css" rel="stylesheet" />
@@ -66,7 +63,9 @@ function lw_boxs_create() {
                     <th class="ss-th-width">Descripcion</th>
                     <td><Textarea name="post_content" class="ss-field-width"><?php echo $post_content; ?></Textarea></td>
                 </tr>
-                <tr><th>Restaurant</th><td><label><input type="checkbox" name="option_restaurant"  value="<?php echo $_POST['option_restaurant']; ?>"> Habilitar Opciones de Restaurants</label><br></td></tr>
+                <tr><th>Restaurant</th>
+                    <td><label><input type="checkbox" name="option_restaurant" <?php if(get_post_meta($post->ID, 'lw_or', true) == 'true') { echo 'checked'; }; ?> > Habilitar</label></td>
+                </tr>
 
             </table>
             <br>

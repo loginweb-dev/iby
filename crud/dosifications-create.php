@@ -15,7 +15,8 @@ function lw_dosification_create() {
         
         // Insert the post into the database
         wp_insert_post( $my_box );
-        $message.="Dato Registrado Correctamente...";
+        header('Location: ' . admin_url('admin.php?page=cajas'), true);
+        die();
     }
     ?>
     <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/iby/css/style-admin.css" rel="stylesheet" />
