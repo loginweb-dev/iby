@@ -76,8 +76,13 @@
 		</div>
 	</section>
 </header>
-
-<div id="milistsearch"></div>
+<section class="section-content">
+	<div class="container-fluid">
+		<div class="row">
+			<div id="milistsearch"></div>
+		</div>
+	</div>
+</div>
 <!-- <div id="milistcatgs"></div> -->
 
 <!-- ========================= SECTION CONTENT ========================= -->
@@ -909,16 +914,14 @@ $(document).ready(function() {
 							let img = response[i].image ? response[i].image : 'resources/default_product.png';
 							table += "<tr><td><figure class='itemside'><div class='aside'><img src="+img+
 								" class='img-sm'></div><figcaption class='info'><h6>"+response[i].name+
-								"</h6><p class='text-muted small'>  Precio Venta: "+response[i].regular_price+
+								"</h6><button onclick='product_add("+response[i].id+")' type='button' class='btn btn-sm btn-primary'><i class='fa fa-shopping-cart'></i></button><p class='text-muted small'>  Precio Venta: "+response[i].regular_price+
 								"<p class='text-muted small'>  Stock: "+response[i].stock_quantity+
 								"<br> ID: "+response[i].id+"<br> SKU: "+response[i].sku+"<br> MARCAS: "+roleList+"<br> CATEGORIAS: "+roleList2+"</p></figcaption></figure></td>"+
-								"<td><strong>Detalles</strong><br><small>Precio Compra: "+response[i].bought_price+"<br> Estante: "+response[i].lg_estante+"<br> Bloque: "+response[i].lg_bloque+"<br> Vence: "+response[i].lg_date+"</small><br> Etiquetas: "+roleList3+"<br></td>"+
-								"<td><button onclick='product_add("+response[i].id+")' type='button' class='btn btn-sm btn-primary'><i class='fa fa-shopping-cart'></i></button></td></tr>";
+								"<td><strong>Detalles</strong><br><small>Precio Compra: "+response[i].bought_price+"<br> Estante: "+response[i].lg_estante+"<br> Bloque: "+response[i].lg_bloque+"<br> Vence: "+response[i].lg_date+"</small><br> Etiquetas: "+roleList3+"<br></td></tr>";
 						}	
 						table += "</tbody></table>";
 						table += "<p> "+response.length+" resultados para: '"+$("#criterio_id").val()+"' <a href='#' onclick='clear_search_products()' class='btn btn-sm btn-light' id='clear_search_products'>Borrar</a></p>";
 						$('#milistsearch').html(table);	
-
 					}		
 				}
 			});

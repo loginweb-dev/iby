@@ -18,7 +18,7 @@
         
         $item = wc_get_product( $_GET["add"] );
         // $stock = $item->get_stock_quantity();_manage_stock
-        if (get_post_meta($_GET["add"], "_manage_stock" == "no")) {
+        if (get_post_meta($_GET["add"], "_manage_stock") == "no") {
             # code...
             $cart->add($_GET["add"], $_GET["stock"], [
                 "name" => $item->name,
@@ -29,7 +29,7 @@
             ]);
             echo json_encode(array("message" => "Producto Agredado Correctamente."));
         } else {
-            if ($item->get_stock_quantity() < $_GET["stock"]) {
+            if ($item->get_stock_quantity() < $_GET["_stock"]) {
                 # code...
                 echo json_encode(array("message" => "La cantidad solicitada supera el STOCK."));
             } else {
