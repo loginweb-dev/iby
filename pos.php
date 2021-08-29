@@ -53,7 +53,7 @@
 				<div class="col-lg-6 col-md-6 col-sm-12">
 					<!-- <div class="widgets-wrap float-md-right"> -->
 						<div class="widget-header icontext">
-							<a href="#" class="icon icon-sm rounded-circle border"><i class="fa fa-address-book"></i></a>
+							<a href="#" onclick="open_order()" class="icon icon-sm rounded-circle border"><i class="fa fa-address-book"></i></a>
 							<div class="text">
 								<span class="text-muted"><?php echo $post->post_title; ?></span>
 								<input class="form-control" type="text" id="cod_box" value="<?php echo $_GET["box_id"]; ?>" hidden>
@@ -139,23 +139,34 @@
 							</div>
 							<hr>
 							<?php 
-								$results = $wpdb->get_row('SELECT meta_value FROM wp_postmeta WHERE post_id = 366 AND  meta_key = "_product_addons"');
+								$results = $wpdb->get_row('SELECT meta_value FROM wp_postmeta WHERE post_id = 400 AND  meta_key = "_product_addons"');
 								$results = unserialize($results->meta_value);
+								$k=0;
 								foreach ( $results  as $j => $fieldoption ) {
 									if($fieldoption['type'] == "checkbox"){
 										foreach ( $fieldoption['options'] as $i => $option ) {
 											// $id = $option['id'];
 											$title = $option['label'];
 											$price = $option['price'];
+
 											?>
 												<div class="form-check" id="miextra" disabled>
-													<input id='<?php echo $i+1; ?>' onclick="extras('<?php echo $i+1; ?>', '<?php echo $title; ?>', <?php echo $price; ?>)" class="form-check-input" type="checkbox">
+													<input id='<?php echo $i+1; ?>' onclick="extras('<?php echo $k+1; ?>', '<?php echo $title; ?>', <?php echo $price; ?>)" class="form-check-input" type="checkbox">
 													<label for="my-input" class="form-check-label"> <?php echo $title; echo ' - '; echo $price; ?> Bs.</label>
 												</div>
 											<?php
 										}
+									}else if($fieldoption['type'] == "input_multiplier"){
+										?>
+											<div class="input-group">
+												<label for=""><?php echo $fieldoption['name'].' Bs.'.$fieldoption['price']; ?></small>
+												<button class="btn btn-light text-primary btn-sm" type="button" onclick="extras('<?php echo $k+1; ?>', '<?php echo $fieldoption['name']; ?>', <?php echo $fieldoption['price']; ?>)">Agregar</button>
+											</div>
+										<?php
 									}
+									$k++;
 								}
+								
 							?> 
 						</article>
 					</div>
@@ -172,9 +183,15 @@
 							<div class="card-body">
 								<form>
 									<div class="form-group">
-											<input id="customer_search" type="text" class="form-control" placeholder="Buscar cliente">
+											<input id="customer_search" type="text" class="form-control form-control-sm" placeholder="Buscar cliente">
 											<input class="form-control" type="text" id="id_customer" hidden>
 											<div id="list_search_customers"></div>
+									</div>
+									<div class="form-group">
+											<!-- <input id="customer_search" type="text" class="form-control form-control-sm" placeholder="Buscar cliente"> -->
+											<input class="form-control form-control-sm" type="text" id="cupon" placeholder="Ingresa el Cupon">
+											<!-- <div id="list_search_customers"></div> -->
+											<button class="btn btn-light text-primary btn-sm" type="button">Aplicar</button>
 									</div>
 								</form>
 							</div>
@@ -193,15 +210,19 @@
 							<div class="card-body">
 							<dl class="dlist-align">
 							<dt>Total:</dt>
-							<dd class="text-right  h5"><div id="total_numeral"></div></dd>
+							<dd class="text-right  h6"><div id="total_numeral"></div></dd>
 							</dl>
 							<div id="total_literal"></div>
 							<hr>
 							<dl class="dlist-align">
-							<dt>Cantidad:</dt> 
-							<dd class="text-right  h5"><div id="cant_items"></div></dd>
+								<dt>Cantidad:</dt> 
+								<dd class="text-right  h6"><div id="cant_items"></div></dd>
 							</dl>
 							<hr>
+							<small>Notas:</small> 
+							<dl class="dlist-align">
+								<dd class="text-right  h6"><textarea id="note_customer" class="form-control" name="" rows="3"></textarea></dd>
+							</dl>
 							</div>
 						</div>
 					</article>
@@ -217,23 +238,20 @@
 						<div class="filter-content collapse show" id="collapse36">
 							<div class="card-body">
 								<div class= "row">
-									<p class="text-center mb-6 mr-2">
-										<button class="btn btn-light" id="btn_pago_efectivo" onclick="pasarela('Efectivo')" disabled> <i class="fa fa-money-bill-alt"></i> Efectivo</button>
+									<p class="text-center mb-6 mr-1">
+										<button class="btn btn-light btn-sm" id="btn_pago_efectivo" onclick="pasarela('Efectivo')" disabled> <i class="fa fa-money-bill-alt"></i> Efectivo</button>
 									</p>
-									<!-- <p class="text-center mb-3">btn_pago_delivery
-										<button class="btn btn-light" id="btn_pago_delivery" disabled> <i class="fa fa-registered"></i> Delivery </button>
-									</p> -->
-									<p class="text-center mb-6">
-										<button class="btn btn-light" id="btn_pago_tigo_money" onclick="pasarela('Tigo Money')" disabled> <i class="fa fa-registered"></i>Tigo Money</button>
+									<p class="text-center mb-6 mr-1">
+										<button class="btn btn-light btn-sm" id="btn_pago_tigo_money" onclick="pasarela('Tigo Money')" disabled> <i class="fa fa-registered"></i>Tigo Money</button>
 									</p>
-									<p class="text-center mb-6 mr-2">
-										<button class="btn btn-light" id="btn_pago_qr_simple" onclick="pasarela('QR Simple')" disabled> <i class="fa fa-registered"></i>QR Simple</button>
+									<p class="text-center mb-6 mr-1">
+										<button class="btn btn-light btn-sm" id="btn_pago_qr_simple" onclick="pasarela('QR Simple')" disabled> <i class="fa fa-registered"></i>QR Simple</button>
 									</p>
-									<p class="text-center mb-6">
-										<button class="btn btn-light" id="btn_pago_transferencia" onclick="pasarela('Transferencia Bancaria')"  disabled> <i class="fa fa-registered"></i>Transferencia</button>
+									<p class="text-center mb-6 mr-1">
+										<button class="btn btn-light btn-sm" id="btn_pago_transferencia" onclick="pasarela('Transferencia Bancaria')"  disabled> <i class="fa fa-registered"></i>Transferencia</button>
 									</p>
-									<p class="text-center mb-6 mr-2">
-										<button class="btn btn-light" id="btn_pago_tarjeta_cd" onclick="pasarela('Tarjeta Credito/Debito')" disabled> <i class="fa fa-registered"></i>Tarjerta Debito/Credito</button>
+									<p class="text-center mb-6 mr-1">
+										<button class="btn btn-light btn-sm" id="btn_pago_tarjeta_cd" onclick="pasarela('Tarjeta Credito/Debito')" disabled> <i class="fa fa-registered"></i>Tarjerta Debito/Credito</button>
 									</p>
 								</div>
 							</div>
@@ -250,12 +268,14 @@
 						</header>
 						<div class="filter-content collapse" id="collapse37">
 							<div class="card-body">
-								<p class="text-center mb-3">
-									<button class="btn btn-light" id="btn_proforma" disabled> <i class="fa fa-registered"></i>Proforma</button>
-								</p>
-								<p class="text-center mb-3">
-									<button class="btn btn-light" id="btn_compra" disabled> <i class="fa fa-registered"></i>Compra</button>
-								</p>
+								<div class= "row">
+									<p class="text-center mb-6">
+										<button class="btn btn-light btn-sm mr-1" id="btn_proforma" onclick="new_compra()"   disabled> <i class="fa fa-registered"></i> Proforma </button>
+									</p>
+									<p class="text-center mb-6">
+										<button class="btn btn-light btn-sm mr-1" id="btn_compra" onclick="new_compra()"  disabled> <i class="fa fa-registered"></i> Compra </button>
+									</p>
+								</div>
 							</div>
 						</div>
 					</article>
@@ -292,6 +312,19 @@
 <script src="js/notify.js" type="text/javascript"></script>
 <script src="src/index.js"></script>
 <script type="text/javascript">
+
+	function open_order(){
+		$.ajax({
+			url: "miphp/modal_orders.php",
+			dataType: 'html',
+			contentType: 'text/html',
+			data: {"box_id" : <?php echo $_GET["box_id"]; ?>},
+			success: function (response) {
+				$('#box_body').html(response);	
+				$('#modalBox').modal('show');
+			}
+		});
+	}
 	// let notifier = new AWN(globalOptions);
 		// Open cash---------------------------------------------------- 
 		// $("#btn_pago_efectivo").click(function (e) { 
@@ -313,7 +346,6 @@
 							success: function (response) {
 								$('#box_body').html(response);	
 								$('#modalBox').modal('show');
-								$("#entregado").focus();
 							}
 						});
 			
@@ -324,11 +356,12 @@
 
 	//Extras -----------------------------------------------------
 	function extras(id, title, price){
-		$('#'+id).attr("disabled", true);
+		// $('#'+id).attr("disabled", true);
+		var stock = prompt("Cantidad a Ingresar", 1);
 		$.ajax({
 			url: "miphp/micart.php",
 			dataType: "json",
-			data: {"extra": true, "id": id, "title": title, "price": price },
+			data: {"extra": true, "id": id, "title": title, "price": price, "quantity": stock },
 			success: function (response) {
 				$.notify(response.message, "info");
 				build_cart();
@@ -371,6 +404,24 @@
 			}
 		});
 	}
+	//---------------COMPRAS ------------------------------
+	function new_compra(){
+		$.notify("Pedido en Proceso", "info");
+		let id_customer = $("#id_customer").val();
+		let note_customer = $("#note_customer").val();
+		$.ajax({
+			type: "get",
+			url: "miphp/otras_opciones.php",
+			data: { "option": "Compra", "cod_customer": id_customer, "note_customer": note_customer },
+			dataType: "json",
+			success: function (response) {
+				build_cart();
+				build_costumer();
+				build_extras();
+				$.notify(response.text_qr, "info");
+			}
+		});
+	}
 	// Create new Shop Order----------------------------------------------
 	function new_shop_order(type_payment){
 		$('#modalBox').modal('toggle');
@@ -382,12 +433,13 @@
 		let tipo_venta = $("#no_estado").is(":checked") ? "recibo" : "factura";
 		let option_restaurant = $("#em").is(":checked") ? "En Mesa" : $("#rt").is(":checked") ? "Recoger en Tienda" : $("#de").is(":checked") ? "Delivery" : null;
 		let opciones_print = $("#volver").is(":checked") ? false : true;
+		let note_customer = $("#note_customer").val();
 		if (tipo_venta == "recibo" ) {
 			if (opciones_print) {
 				$.ajax({
 					url: "miphp/orders.php",
 					dataType: "json",
-					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment },
+					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment, "note_customer": note_customer },
 					success: function (response) {
 						$.ajax({
 							url: "miphp/barcode.php",
@@ -396,7 +448,7 @@
 								build_cart();
 								build_costumer();
 								build_extras();
-								setTimeout(function(){ $.notify("Abriendo PDF", "info"); $('html,body').scrollTop(0); }, 3000);
+								setTimeout(function(){ $.notify("Abriendo PDF", "info"); $('html, body').scrollTop(0); }, 3000);
 								if(isMobile.mobilecheck()){
 									window.location.href = '<?php echo WP_PLUGIN_URL; ?>'+'/iby/miphp/print_recibo.php?cod_order='+response.cod_order;
 								}else{
@@ -410,7 +462,7 @@
 			} else {
 				$.ajax({
 					url: "miphp/orders.php",
-					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment },
+					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment, "note_customer": note_customer },
 					success: function () {
 						build_cart();
 						build_costumer();
@@ -424,7 +476,7 @@
 				$.ajax({
 					url: "miphp/orders.php",
 					dataType: "json",
-					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment },
+					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment, "note_customer": note_customer },
 					success: function (response) {
 						// $.notify("Creando QR..", "info");
 						$.ajax({
@@ -450,7 +502,7 @@
 				$.ajax({
 					url: "miphp/orders.php",
 					dataType: "json",
-					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment },
+					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment, "note_customer": note_customer },
 					success: function (response) {
 						$.notify("Creando QR..", "info");
 						$.ajax({
@@ -597,7 +649,7 @@
 							" class='img-sm'></div><figcaption class='info'><h6>"+response[i].name+
 							"</h6><p class='text-muted small'>  Precio Venta: "+response[i].price+
 							"<br> ID: "+response[i].id+"<br> SKU: "+response[i].sku+"</p></figcaption></figure></td>"+
-							"<td class='text-center'><p>EXTRA</p></td>"+
+							"<td class='text-center'><p>EXTRA</p><p>"+response[i].quantity+"</p></td>"+
 							"<td class='text-center'><div class='price-wrap'><var class='price h5'>"+response[i].price * response[i].quantity+"</var></div><div class='btn-group' role='group'><button onclick='remove("+response[i].id+")' type='button' class='btn btn-sm btn-warning'><i class='fa fa-trash'></button></div></td></tr>";
 						} else {
 						table += "<tr><td><figure class='itemside'><div class='aside'><img src="+response[i].image+
@@ -668,7 +720,7 @@
 				success: function (response) {
 					let  customer = "<ul class='list-group list-group-flush'>";
 						customer += "<li class='list-group-item'><span>Cliente: </span><small>"+response[0].billing_first_name+"  "+response[0].billing_last_name+"</small></li>";
-						customer += "<li class='list-group-item'><span>NIT O Carnet: </span><small>"+response[0].billing_postcode+"</small></li>";
+						customer += "<li class='list-group-item'><span>NIT/CI: </span><small>"+response[0].billing_postcode+"</small></li>";
 						customer += "<li class='list-group-item'><span>Correo: </span><small>"+response[0].user_email+"</small></li>";
 						customer += "<li class='list-group-item'><span>Telefono: </span><small>"+response[0].billing_phone+"</small></li>";
 						customer += "</ul>";
@@ -687,7 +739,7 @@
 			success: function (response) {
 				let  customer = "<ul class='list-group list-group-flush'>";
 					customer += "<li class='list-group-item'><span>Cliente: </span><small>"+response[0].billing_first_name+"  "+response[0].billing_last_name+"</small></li>";
-					customer += "<li class='list-group-item'><span>NIT O Carnet: </span><small>"+response[0].billing_postcode+"</small></li>";
+					customer += "<li class='list-group-item'><span>NIT/CI: </span><small>"+response[0].billing_postcode+"</small></li>";
 					customer += "<li class='list-group-item'><span>Correo: </span><small>"+response[0].user_email+"</small></li>";
 					customer += "<li class='list-group-item'><span>Telefono: </span><small>"+response[0].billing_phone+"</small></li>";
 					customer += "</ul>";

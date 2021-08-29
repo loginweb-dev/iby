@@ -26,6 +26,12 @@ function loginweb_product_options(){
 		'label'   => 'Bloque',
 		'type'   => 'text'
 	) );
+	woocommerce_wp_text_input( array(
+		'id'      => 'lg_time',
+		'value'   => get_post_meta( get_the_ID(), 'lg_time', true ),
+		'label'   => 'Tiempo',
+		'type'   => 'time'
+	) );
  
 }
 add_action( 'woocommerce_process_product_meta', 'loginweb_save_fields', 10, 2 );
@@ -33,7 +39,7 @@ function loginweb_save_fields( $id, $post ){
  
 	update_post_meta( $id, 'lg_estante', $_POST['lg_estante'] );
 	update_post_meta( $id, 'lg_bloque', $_POST['lg_bloque'] );
-	// update_post_meta( $id, 'lg_date', $_POST['lg_date'] );
+	update_post_meta( $id, 'lg_time', $_POST['lg_time'] );
 
 }
 // add actions list orders -----------------------------------------------
@@ -118,6 +124,7 @@ function lw_create_setting() {
 		'post_type'   => 'pos_lw_setting',
 		'meta_input' => array(
 			'lw_image' => null,
+			'lw_img_extencion' => null,
 			'lw_ceo' => null,
 			'lw_direction' => null,
 			'lw_movil' => null,
@@ -126,6 +133,8 @@ function lw_create_setting() {
 			'lw_name_business' => null,
 			'lw_nit' => null,
 			'lw_legend' => null,
+			'lw_cat_default' => null,
+			'lw_extra_id' => null,
 		)
 	);
 	wp_insert_post( $setting );

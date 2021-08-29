@@ -29,7 +29,7 @@
             ]);
             echo json_encode(array("message" => "Producto Agredado Correctamente."));
         } else {
-            if ($item->get_stock_quantity() < $_GET["_stock"]) {
+            if ($_GET["stock"] > $item->get_stock_quantity()) {
                 # code...
                 echo json_encode(array("message" => "La cantidad solicitada supera el STOCK."));
             } else {
@@ -47,12 +47,13 @@
         
        
     } elseif ($_GET["extra"]){
-        $cart->add($_GET["id"], 1, [
+        $mistock = $_GET["quantity"] ? $_GET["quantity"] : 1;
+        $cart->add($_GET["id"], $mistock, [
             "name" => $_GET["title"],
             "description" => "", 
             "price" => $_GET["price"],  
             "sku" => "extra", 
-            "image" => ""
+            "image" => "resources/extra.png"
         ]);
         echo json_encode(array("message" => "Extra registrado correctamente.."));
     } elseif ($_GET["clear"]){

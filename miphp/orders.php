@@ -1,6 +1,5 @@
 <?php 
     require_once('../../../../wp-load.php');
-    global $woocommerce;
     $current_user = wp_get_current_user();
     require_once('code-control/CodigoControlV7.php');
     require_once 'class.Cart.php';
@@ -9,12 +8,11 @@
         'itemMaxQuantity'  => 99,
         'useCookie'        => false,
     ]);
-
-    $datos_factura = get_posts( array('post_status' => 'publish', 'post_type' => 'pos_lw_setting') );
-    $dosification = get_posts( array('post_status' => 'publish', 'post_type' => 'pos_dosification') );
- 
     // get user -------------------------------
     $get_user = get_user_by( 'id', $_GET['cod_customer']);
+    
+    $datos_factura = get_posts( array('post_status' => 'publish', 'post_type' => 'pos_lw_setting') );
+    $dosification = get_posts( array('post_status' => 'publish', 'post_type' => 'pos_dosification') );
     
     // creando nuevo pedido con cliente -----------------------------
     $order = wc_create_order(array('customer_id'=>$_GET["cod_customer"] ));
@@ -38,7 +36,7 @@
                 wc_update_order_item_meta($item_id, '_line_total' , $cart->getAttributeTotal('price'), false);
                 wc_update_order_item_meta($item_id, '_line_subtotal_tax' , $cart->getAttributeTotal('price'), false);
                 wc_update_order_item_meta($item_id, '_line_tax' , $cart->getAttributeTotal('price'), false);
-                wc_update_order_item_meta($item_id, 'Extras (Bs.'.$item['attributes']['price'].')', $item['attributes']['name'], false);
+                wc_update_order_item_meta($item_id, $item['attributes']['name'].' (Bs.'.$item['attributes']['price'].')', $item['quantity'], false);
             } else {
                 $order->add_product( get_product($item['id']), $item['quantity']);
             }
@@ -48,6 +46,7 @@
     //Agregando facturacion----------------------------------------------------
     // $order->set_address( $address, 'billing' );
     // $order->set_address( $address, 'shipping' );
+    // $order->set_coupon( $address, 'shipping' );
     $order->calculate_totals();
     $order->update_status("wc-completed");
     update_post_meta($order->id, 'lw_pos_type_order', $_GET["tipo_venta"] );
@@ -61,12 +60,9 @@
     update_post_meta($order->id, '_payment_method', 'pos_cash');
     update_post_meta($order->id, '_payment_method_title', $_GET["type_payment"] );
     update_post_meta($order->id, '_order_total', $cart->getAttributeTotal('price') );
-
+    $order->set_customer_note( $_GET["note_customer"] );
+    $order->save();
     
-    
-    
-    
-
     if ($_GET["tipo_venta"] == "factura") {
         // solo para factura --------------------------------------------------------
         $num_factura = count(wc_get_orders( array('meta_query' => array('lw_dosification_key' => $key)) ));
