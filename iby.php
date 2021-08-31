@@ -14,21 +14,21 @@ function loginweb_product_options(){
 
     echo '</div><div class="options_group">'; // New separated section
 	woocommerce_wp_text_input( array(
-		'id'      => 'lg_estante',
-		'value'   => get_post_meta( get_the_ID(), 'lg_estante', true ),
+		'id'      => 'lw_estante',
+		'value'   => get_post_meta( get_the_ID(), 'lw_estante', true ),
 		'label'   => 'Estante',
 		'type'   => 'text'
 	) );
 	
 	woocommerce_wp_text_input( array(
-		'id'      => 'lg_bloque',
-		'value'   => get_post_meta( get_the_ID(), 'lg_bloque', true ),
+		'id'      => 'lw_bloque',
+		'value'   => get_post_meta( get_the_ID(), 'lw_bloque', true ),
 		'label'   => 'Bloque',
 		'type'   => 'text'
 	) );
 	woocommerce_wp_text_input( array(
-		'id'      => 'lg_time',
-		'value'   => get_post_meta( get_the_ID(), 'lg_time', true ),
+		'id'      => 'lw_time',
+		'value'   => get_post_meta( get_the_ID(), 'lw_time', true ),
 		'label'   => 'Tiempo',
 		'type'   => 'time'
 	) );
@@ -37,9 +37,9 @@ function loginweb_product_options(){
 add_action( 'woocommerce_process_product_meta', 'loginweb_save_fields', 10, 2 );
 function loginweb_save_fields( $id, $post ){
  
-	update_post_meta( $id, 'lg_estante', $_POST['lg_estante'] );
-	update_post_meta( $id, 'lg_bloque', $_POST['lg_bloque'] );
-	update_post_meta( $id, 'lg_time', $_POST['lg_time'] );
+	update_post_meta( $id, 'lw_estante', $_POST['lw_estante'] );
+	update_post_meta( $id, 'lw_estante', $_POST['lw_bloque'] );
+	update_post_meta( $id, 'lw_estante', $_POST['lw_time'] );
 
 }
 // add actions list orders -----------------------------------------------
@@ -80,6 +80,7 @@ function custom_shop_order_column($columns)
             $reordered_columns['my-column1'] = __( 'Tipo','theme_domain');
 			$reordered_columns['my-column2'] = __( 'Tickes','theme_domain');
 			$reordered_columns['my-column3'] = __( 'Pago por:','theme_domain');
+			$reordered_columns['my-column4'] = __( 'Conta:','theme_domain');
         }
     }
     return $reordered_columns;
@@ -104,13 +105,20 @@ function custom_orders_list_column_content( $column, $post_id )
 				else
 					echo '<small>(<em>no value</em>)</small>';
 				break;
-				case 'my-column3' :
-					$my_var_one2 = get_post_meta( $post_id, '_payment_method_title', true );
-					if(!empty($my_var_one2))
-						echo $my_var_one2;
-					else
-						echo '<small>(<em>no value</em>)</small>';
-					break;
+			case 'my-column3' :
+				$my_var_one2 = get_post_meta( $post_id, '_payment_method_title', true );
+				if(!empty($my_var_one2))
+					echo $my_var_one2;
+				else
+					echo '<small>(<em>no value</em>)</small>';
+				break;
+			case 'my-column4' :
+				$my_var_one1 = get_post_meta( $post_id, 'lw_accounting', true );
+				if(!empty($my_var_one1))
+					echo $my_var_one1;
+				else
+					echo '<small>(<em>no value</em>)</small>';
+				break;
     }
 }
 

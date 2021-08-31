@@ -373,11 +373,12 @@
 	//Cerrando Caja------------------------------------------------
 	function box_close(){
 		let nota_cierre = $("#nota_cierre").val();
+		let lw_monto_final = $("#lw_monto_final").val();
 		let box_id = "<?php echo $post->ID;  ?>";
 		$.ajax({
 			url: "miphp/boxs.php",
 			dataType: "json",
-			data: {"box_id": box_id, "nota_cierre": nota_cierre },
+			data: {"box_id": box_id, "nota_cierre": nota_cierre, "lw_monto_final": lw_monto_final },
 			success: function (response) {
 				$('#modalBox').modal('toggle');
 				window.location.href = "<?php echo admin_url('admin.php?page=cajas'); ?>";

@@ -15,12 +15,18 @@ function lw_boxs_edit() {
     }
 //delete
     else if (isset($_POST['delete'])) {
-        wp_delete_post($_GET["box_id"], true);
+        
+        wp_delete_post($_POST["post_id"], true);
     } 
     ?>
     <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/iby/css/style-admin.css" rel="stylesheet" />
     <div class="wrap">
-        <h2>Caja</h2>
+        <h2>
+            Caja <a href="<?php echo admin_url('admin.php?page=cajas'); ?>" class='button'> Volver</a> 
+            <input type='submit' name="update" value='Actualizar' class='button'>
+            <a href="<?php echo WP_PLUGIN_URL.'/iby/pos.php?box_id='.$_GET["box_id"]; ?>" class='button'> Abrir</a>
+            
+        </h2>
         <?php if ($_POST['delete']) { ?>
             <div class="updated"><p>Caja Eliminada</p></div>
         <?php } else if ($_POST['update']) { ?>
@@ -56,24 +62,24 @@ function lw_boxs_edit() {
                         </td>
                     </tr>
                     
-                    <tr>
+                    <!-- <tr>
                         <th>Estado</th>
                         <td>
                             <input type="text" name="post_status" value="<?php echo $post->post_status; ?>"/>
                             <p>pusblish=creado, pending=abierto, private=cerrado </p>
                         </td>
                         
-                    </tr>
+                    </tr> -->
                     <tr>
                         <th>Titulo</th><td><input type="text" name="post_title" value="<?php echo $post->post_title; ?>"/></td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <th class="ss-th-width">Nota de Apertura</th>
                         <td><Textarea name="lw_nota_apertura" class="ss-field-width"><?php echo $post->lw_nota_apertura; ?></Textarea></td>
-                    </tr>
-                    <tr>
+                    </tr> -->
+                    <!-- <tr>
                         <th>Monto Inicial</th><td><input type="text" name="lw_monto_inicial" value="<?php echo $post->lw_monto_inicial; ?>"/></td>
-                    </tr>
+                    </tr> -->
                     <tr><th>Restaurant</th>
                         <td>
                             <label><input type="checkbox" name="option_restaurant" <?php if(get_post_meta($post->ID, 'lw_or', true) == 'true') { echo 'checked'; }; ?> > Habilitar</label>
@@ -83,12 +89,71 @@ function lw_boxs_edit() {
                     </tr>
                 </table>
                 <br>
-                <input type='submit' name="update" value='Guardar' class='button'> &nbsp;&nbsp;
-                <input type='submit' name="delete" value='Eliminar' class='button' onclick="return confirm('&iquest;Est&aacute;s seguro de borrar este elemento?')">
-                <a href="<?php echo admin_url('admin.php?page=cajas'); ?>" class='button'> Volver</a>
+                <!-- <input type='submit' name="update" value='Guardar' class='button'> &nbsp;&nbsp; -->
+                <!-- <input type='submit' name="delete" value='Eliminar' class='button' onclick="return confirm('&iquest;Est&aacute;s seguro de borrar este elemento?')"> -->
+                
             </form>
-      
-
     </div>
-    <?php
-}
+    <?php 
+    // require_once('../../../../wp-load.php');
+    $orders = wc_get_orders(array('meta_query' => array('wc_pos_register_id' => $_GET["cod_box"])));
+    $closeds = get_posts(array('post_type' => 'pos_temp_order'));
+?>
+    <h2>Todas las Ventas</h2>
+    <table class="wp-list-table widefat fixed striped posts">
+      <thead>
+        <tr>
+          <!-- <th scope="col">#</th> -->
+          <th scope="col">Fecha</th>
+          <th scope="col">Cliente</th>
+          <th scope="col">Conta</th>
+          <th scope="col">Pago</th>
+          <th scope="col">Atendido</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($orders as $key) { $order = wc_get_order($key->ID); $data = $order->get_data(); ?>
+          <tr>
+            <!-- <th scope="row"><?php echo $order->get_id(); ?></th> -->
+            <td><?php echo '# '.$order->get_id().' '.$order->get_date_created() ?></td>
+            <td><?php echo get_post_meta( $key->ID, '_billing_email', true ); ?></td>
+            <td><?php echo get_post_meta( $key->ID, 'lw_accounting', true ); ?></td>
+            <td><?php echo get_post_meta( $key->ID, '_payment_method_title', true ); ?></td>
+            <td><?php echo get_post_meta( $key->ID, 'wc_pos_served_by_name', true ); ?></td>
+            <td><?php echo $order->get_total(); ?></td>
+          </tr>
+        <?php } ?>
+      </tbody>
+    </table>
+
+    <h2>Todos los Cierres</h2>
+    <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+        <table class="wp-list-table widefat fixed striped posts">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Titulo</th>
+            <!-- <th scope="col">Creado</th> -->
+            <th scope="col">Notas</th>
+            <th scope="col">Total</th>
+            <!-- <th scope="col">Acciones</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($closeds as $key) { ?>
+            <tr>
+                <th scope="row"><?php echo $key->ID; ?></th>
+                <th scope="row"><?php echo $key->post_title; ?><br><small><?php echo $key->post_date; ?></small></th>
+                <!-- <th scope="row"><?php echo $key->post_date; ?></th> -->
+                <td><?php echo get_post_meta( $key->ID, 'lw_nota_apertura', true ); ?><br><?php echo get_post_meta( $key->ID, 'lw_nota_cierre', true ); ?></td>
+                <th scope="row"><?php echo get_post_meta($key->ID, 'lw_monto_final', true ); ?></th>
+                
+                <!-- <td><input type='text' name="post_id" value='<?php echo $key->ID; ?>' hidden><input type='submit' name="delete" value='Eliminar' class='button' onclick="return confirm('&iquest;Est&aacute;s seguro de borrar este elemento?')"></td> -->
+
+            </tr>
+            <?php } ?>
+        </tbody>
+        </table>
+    </form>
+<?php } ?>

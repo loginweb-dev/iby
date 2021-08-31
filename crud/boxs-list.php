@@ -40,8 +40,7 @@ function lw_boxs_list() {
                     <td class="manage-column ss-list-width"><?php echo $rows[$i]->post_status; ?></td>
                     <td>
                         <a href="<?php if($rows[$i]->post_status=='pending' || $rows[$i]->post_status=='publish'){ echo WP_PLUGIN_URL.'/iby/pos.php?box_id='.$rows[$i]->ID; }else{ echo '#'; } ?>"class="button"><?php if($rows[$i]->post_status=='pending' || $rows[$i]->post_status=='publish'){ echo 'Abrir'; }else { echo 'Imprimir'; } ?></a>
-                        <!-- <a href="<?php echo admin_url('admin.php?page=boxs-edit&box_id='.$rows[$i]->ID); ?>" class="button">Informe</a> -->
-                        <a href="<?php echo admin_url('admin.php?page=boxs-edit&box_id='.$rows[$i]->ID); ?>" class="button">Editar</a>
+                        <a href="<?php echo admin_url('admin.php?page=boxs-edit&box_id='.$rows[$i]->ID); ?>" class="button">Ver</a>                      
                     </td>
                     
                     <td class="manage-column ss-list-width"><?php echo $rows[$i]->post_title; ?></td>

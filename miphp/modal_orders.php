@@ -9,27 +9,34 @@
     </button>
   </div>
   <div class="modal-body">
-    <table class="table table-sm">
+    <table class="table table-res table-sm">
       <thead>
-        <tr>
+      <tr>
           <th scope="col">#</th>
           <th scope="col">Fecha</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
+          <th scope="col">Cliente</th>
+          <!-- <th scope="col">Conta</th>
+          <th scope="col">Pago</th>
+          <th scope="col">Atendido</th> -->
+          <th scope="col">Total</th>
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($orders as $key) { $order = wc_get_order($key->ID); $data = $order->get_data(); ?>
+        <?php $tv = 0; foreach ($orders as $key) { $order = wc_get_order($key->ID); $data = $order->get_data(); if (get_post_meta( $key->ID, 'lw_accounting', true )  == 'no') {?>
           <tr>
-            <th scope="row"><?php echo $data['id']; echo $data['billing']['first_name']; ?></th>
-            <td><?php echo $data['date_created']->date('Y-m-d H:i:s'); ?></td>
-            <td><?php echo $data['billing']['first_name']; ?></td>
-            <td>@mdo</td>
+            <th scope="row"><?php echo $order->get_id(); ?></th>
+            <td><small><?php echo $order->get_date_created() ?></small></td>
+            <td><small><?php echo get_post_meta( $key->ID, '_billing_email', true ); ?></small></td>
+            <!-- <td><?php echo get_post_meta( $key->ID, 'lw_accounting', true ); ?></td>
+            <td><?php echo get_post_meta( $key->ID, '_payment_method_title', true ); ?></td>
+            <td><?php echo get_post_meta( $key->ID, 'wc_pos_served_by_name', true ); ?></td> -->
+            <td><?php echo $order->get_total(); $tv= $tv +  $order->get_total() ?></td>
           </tr>
-        <?php } ?>
+        <?php } } ?>
       </tbody>
     </table>
   </div>
   <div class="modal-footer">
-			<button href="#" id="new_shop_order" onclick="new_shop_order('<?php echo $_GET['type_payment']; ?>')" type="button" class="btn btn-primary" > Guardar </button>
+          <label for="">Total: <?php echo $tv; ?> Bs.</label>
+			<!-- <button href="#" id="new_shop_order" onclick="new_shop_order('<?php echo $_GET['type_payment']; ?>')" type="button" class="btn btn-primary" > Guardar </button> -->
 	</div>

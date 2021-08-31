@@ -52,6 +52,7 @@
     update_post_meta($order->id, 'lw_pos_type_order', $_GET["tipo_venta"] );
     update_post_meta($order->id, 'lw_pos_tickes', $num_tickets);
     update_post_meta($order->id, 'lw_or', $_GET["option_restaurant"]);
+    update_post_meta($order->ID, 'lw_accounting', 'no');
     update_post_meta($order->id, 'wc_pos_order_type', 'POS');
     update_post_meta($order->id, 'wc_pos_register_id', $_GET["cod_box"]);
     update_post_meta($order->id, 'wc_pos_served_by_name', $current_user->user_login);

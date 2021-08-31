@@ -18,7 +18,7 @@
         
         $item = wc_get_product( $_GET["add"] );
         // $stock = $item->get_stock_quantity();_manage_stock
-        if (get_post_meta($_GET["add"], "_manage_stock") == "no") {
+        if (get_post_meta($_GET["add"], "_manage_stock", true) == "no") {
             # code...
             $cart->add($_GET["add"], $_GET["stock"], [
                 "name" => $item->name,
