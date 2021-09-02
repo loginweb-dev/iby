@@ -38,7 +38,7 @@
                 wc_update_order_item_meta($item_id, '_line_tax' , $cart->getAttributeTotal('price'), false);
                 wc_update_order_item_meta($item_id, $item['attributes']['name'].' (Bs.'.$item['attributes']['price'].')', $item['quantity'], false);
             } else {
-                $order->add_product( get_product($item['id']), $item['quantity']);
+                $order->add_product( get_product($item['attributes']['product_id']), $item['quantity']);
             }
         }
     }

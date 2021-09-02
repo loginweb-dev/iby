@@ -21,7 +21,7 @@
             // print_r($products);
         ?>
         
-            <?php if ($category->name == 'PRINCIPAL' ) {?>
+            <?php if ($category->name == 'Menu' ) {?>
                 <div class="list-group">
                     <article class="list-group-item">
                         <header class="filter-header">

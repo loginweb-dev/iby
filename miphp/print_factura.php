@@ -20,21 +20,21 @@
 
     // creating PDF-------------------------------------------------
     $border = 0;
-    $position = 2;
+    $position = 1;
     $aling = 'C';
-    $higth = 3;
-    $size_font = 6;
+    $higth = 4;
+    $size_font = 10;
     $type_font = 'Arial';
-    $higth_qr = 77;
+    $higth_qr = 105;
 
-    $pdf = new FPDF('P','mm',array(40,140));
-    $pdf->SetMargins(1, 8, 1);
+    $pdf = new FPDF('P','mm',array(80,190));
+    $pdf->SetMargins(1, 8, 1, 1);
     $pdf->SetFont($type_font, '', $size_font);
     $pdf->AddPage();
     // echo $datos_factura[0]->ID;
         // Encabezado------------------------------------------
-        $pdf->Image(get_post_meta($datos_factura[0]->ID, 'lw_image', true),15,1,12,12,'PNG');
-        $pdf->Ln(6);
+        $pdf->Image(get_post_meta($datos_factura[0]->ID, 'lw_image', true),30,0,20,20,'JPG');
+        $pdf->Ln(14);
         $pdf->Cell(0, $higth, 'De: '.get_post_meta($datos_factura[0]->ID, 'lw_name_business', true), $border, $position, $aling);
         $pdf->Cell(0, $higth, get_post_meta($datos_factura[0]->ID, 'lw_direction', true), $border, $position, $aling);
         $pdf->Cell(0, $higth, 'Cel: '.get_post_meta($datos_factura[0]->ID, 'lw_movil', true), $border, $position, $aling);
@@ -63,38 +63,38 @@
         $pdf->SetFont($type_font, '', $size_font);  
         $pdf->Cell(0, $higth, 'DETALLE DE COMPRA:', 0 , 1, 'L');
         $pdf->SetFont($type_font, '', $size_font-2);  
-        $pdf->Cell(24, $higth, 'PRODUCTO', 0);
-        $pdf->Cell(8, $higth, 'CANT', 0);
-        $pdf->Cell(8, $higth, 'IMP', 0, 1, 'C');
+        $pdf->Cell(50, $higth, 'PRODUCTO', 0);
+        $pdf->Cell(10, $higth, 'CANT', 0);
+        $pdf->Cell(10, $higth, 'IMP', 0, 1, 'C');
         foreach ( $items as $item ) {
-            $pdf->Cell(24, $higth, $item['name'], 0);
-            $pdf->Cell(8, $higth, $item['quantity'], 0);
-            $pdf->Cell(8, $higth, $item['subtotal'], 0, 1, 'C');
-            $higth_qr += 3;
+            $pdf->Cell(50, $higth, $item['name'], 0);
+            $pdf->Cell(10, $higth, $item['quantity'], 0);
+            $pdf->Cell(10, $higth, $item['subtotal'], 0, 1, 'C');
+            $higth_qr += 4;
         }
     $pdf->Cell(0, 0, '', 1 , 1, 'C');
         // Total de la Venta---------------------------------------------
-        $pdf->Cell(20, $higth, '', 0);
-        $pdf->Cell(10, $higth, 'SUB TOTAL: ', 0);
+        $pdf->Cell(30, $higth, '', 0);
+        $pdf->Cell(30, $higth, 'SUB TOTAL: ', 0);
         $pdf->Cell(10, $higth, $order->get_subtotal(), 0, 1, 'C');
-        $pdf->Cell(20, $higth, '', 0);
-        $pdf->Cell(10, $higth, 'DESCUENTO: ', 0);
+        $pdf->Cell(30, $higth, '', 0);
+        $pdf->Cell(30, $higth, 'DESCUENTO: ', 0);
         $pdf->Cell(10, $higth, $order->get_discount_total(), 0, 1, 'C');
-        $pdf->Cell(20, $higth, '', 0);
-        $pdf->Cell(10, $higth, 'TOTAL: ', 0);
+        $pdf->Cell(30, $higth, '', 0);
+        $pdf->Cell(30, $higth, 'TOTAL: ', 0);
         $pdf->Cell(10, $higth, $order->get_total(), 0, 1, 'C');
 
         $pdf->MultiCell(0, $higth, $formatter->toInvoice($order->get_total(), 2, 'BOLIVIANOS'), 0, 1);
 
     $pdf->Cell(0, 0, '', 1 , 1, 'C');
         // datos QR y dosificacion-------------------------------
-        $pdf->Cell(25, $higth, 'FECHA LIMITE DE EMISION: ', 0);
-        $pdf->Cell(15, $higth, $order->get_meta('lw_dosification_date_limit'), 0);
+        $pdf->Cell(50, $higth, 'FECHA LIMITE DE EMISION: ', 0);
+        $pdf->Cell(20, $higth, $order->get_meta('lw_dosification_date_limit'), 0);
         $pdf->Ln();
-        $pdf->Cell(25, $higth, 'CODIGO DE CONTROL: ', 0);
-        $pdf->Cell(15, $higth, $order->get_meta('lw_codigo_control'), 0);
+        $pdf->Cell(50, $higth, 'CODIGO DE CONTROL: ', 0);
+        $pdf->Cell(20, $higth, $order->get_meta('lw_codigo_control'), 0);
         
-        $pdf->Image($QR_BASEDIR.'qrcode/temp/'.$order->id.'.jpg', 11, $higth_qr, 20, 20, 'JPG');
+        $pdf->Image($QR_BASEDIR.'qrcode/temp/'.$order->id.'.jpg', 30, $higth_qr, 20, 20, 'JPG');
         $pdf->Ln(24);
         $pdf->MultiCell(0, $higth, get_post_meta($datos_factura[0]->ID, 'lw_legend', true), $border, $aling);
     $pdf->Cell(0, 0, '', 1 , 1, 'C');

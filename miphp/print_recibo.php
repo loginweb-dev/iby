@@ -20,21 +20,21 @@
 
     // creating PDF-------------------------------------------------
     $border = 0;
-    $position = 2;
+    $position = 1;
     $aling = 'C';
-    $higth = 3;
-    $size_font = 6;
+    $higth = 4;
+    $size_font = 10;
     $type_font = 'Arial';
-    $higth_qr = 77;
+    $higth_qr = 100;
 
-    $pdf = new FPDF('P','mm',array(40,90));
-    $pdf->SetMargins(1, 8, 1);
+    $pdf = new FPDF('P','mm',array(80,190));
+    $pdf->SetMargins(1, 8, 1, 1);
     $pdf->SetFont($type_font, '', $size_font);
     $pdf->AddPage();
     // echo $datos_factura[0]->ID;
         // Encabezado------------------------------------------
-    $pdf->Image(get_post_meta($datos_factura[0]->ID, 'lw_image', true),15,1,12,12,'JPG');
-        $pdf->Ln(6);
+    $pdf->Image(get_post_meta($datos_factura[0]->ID, 'lw_image', true),25,0,20,20,'JPG');
+        $pdf->Ln(13);
         // $pdf->Cell(0, $higth, 'De: '.get_post_meta($datos_factura[0]->ID, 'lw_name_business', true), $border, $position, $aling);
         // $pdf->Cell(0, $higth, get_post_meta($datos_factura[0]->ID, 'lw_direction', true), $border, $position, $aling);
         // $pdf->Cell(0, $higth, 'Cel: '.get_post_meta($datos_factura[0]->ID, 'lw_movil', true), $border, $position, $aling);
@@ -63,32 +63,41 @@
         $pdf->SetFont($type_font, '', $size_font);  
         $pdf->Cell(0, $higth, 'DETALLE DE COMPRA:', 0 , 1, 'L');
         $pdf->SetFont($type_font, '', $size_font-2);  
-        $pdf->Cell(24, $higth, 'PRODUCTO', 0);
-        $pdf->Cell(8, $higth, 'CANT', 0);
-        $pdf->Cell(8, $higth, 'IMP', 0, 1, 'C');
+        $pdf->Cell(40, $higth, 'PRODUCTO', 0);
+        $pdf->SetFont($type_font, '', $size_font-4);  
+        $pdf->Cell(10, $higth, 'CANT', 0);
+        $pdf->Cell(10, $higth, 'PRECIO', 0);
+        $pdf->Cell(10, $higth, 'TOTAL', 0, 1, 'C');
+        $pdf->SetFont($type_font, '', $size_font-2);  
         // $pdf->MultiCell(0, $higth, print_r($items), 0, 1);
         foreach ( $items as $item ) {
             $extra = $item->get_meta_data();
+            $product = $item->get_product();
             // $title = $extra[0]->key ? $item['name'].' <br> '.$extra[1]->key : $item['name'];
-            $pdf->Cell(24, $higth, $item['name'], 0);
-            $pdf->Cell(8, $higth, $item['quantity'], 0);
-            $pdf->Cell(8, $higth, $item['subtotal'], 0, 1, 'C');
+            $pdf->Cell(40, $higth, $item['name'], 0);
+            $pdf->Cell(10, $higth, $item['quantity'], 0);
+            $pdf->Cell(10, $higth, $product->get_price(), 0);
+            $pdf->Cell(10, $higth, $product->get_price() * $item['quantity'], 0, 1, 'C');
             for ($i=0; $i < count($extra); $i++) { 
-                $pdf->Cell(8, $higth, $extra[$i]->key.' : '.$extra[$i]->value, 0, 1, 'L');
+                if($extra[$i]->key == '_wc_cog_item_cost' || $extra[$i]->key == '_wc_cog_item_total_cost'){
+
+                }else{
+                    $pdf->Cell(50, $higth, $extra[$i]->key.' : '.$extra[$i]->value, 0, 1, 'L');
+                }
             }
             
-            $higth_qr += 3;
+            $higth_qr += 4;
         }
     $pdf->Cell(0, 0, '', 1 , 1, 'C');
         // Total de la Venta---------------------------------------------
-        $pdf->Cell(20, $higth, '', 0);
-        $pdf->Cell(10, $higth, 'SUB TOTAL: ', 0);
-        $pdf->Cell(10, $higth, $order->get_subtotal(), 0, 1, 'C');
-        $pdf->Cell(20, $higth, '', 0);
-        $pdf->Cell(10, $higth, 'DESCUENTO: ', 0);
+        // $pdf->Cell(30, $higth, '', 0);
+        // $pdf->Cell(30, $higth, 'SUB TOTAL: ', 0);
+        // $pdf->Cell(10, $higth, $order->get_subtotal(), 0, 1, 'C');
+        $pdf->Cell(30, $higth, '', 0);
+        $pdf->Cell(30, $higth, 'DESCUENTO: ', 0);
         $pdf->Cell(10, $higth, $order->get_discount_total(), 0, 1, 'C');
-        $pdf->Cell(20, $higth, '', 0);
-        $pdf->Cell(10, $higth, 'TOTAL: ', 0);
+        $pdf->Cell(30, $higth, '', 0);
+        $pdf->Cell(30, $higth, 'TOTAL: ', 0);
         $pdf->Cell(10, $higth, $order->get_total(), 0, 1, 'C');
 
         $pdf->MultiCell(0, $higth, $formatter->toInvoice($order->get_total(), 2, 'BOLIVIANOS'), 0, 1);
@@ -108,7 +117,7 @@
         $pdf->Cell(0, $higth, 'ATENDIDO POR: '.$order->get_meta('wc_pos_served_by_name'), 0, 1, 'L');
         $pdf->Cell(0, $higth, 'TICKES # : '.$order->get_meta('lw_pos_tickes'), 0, 1, 'L');
         $pdf->Cell(0, $higth, 'NOTAS : '.$order->customer_message, 0, 1, 'L');
-        $pdf->Image($QR_BASEDIR.'qrcode/temp/'.$order->id.'.jpg', 9, $higth_qr-25, 20, 20, 'JPG');
+        $pdf->Image($QR_BASEDIR.'qrcode/temp/'.$order->id.'.jpg', 23, $higth_qr-25, 25, 25, 'JPG');
         
     $pdf->Output();
 ?>

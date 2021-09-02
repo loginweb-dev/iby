@@ -139,7 +139,7 @@
 							</div>
 							<hr>
 							<?php 
-								$results = $wpdb->get_row('SELECT meta_value FROM wp_postmeta WHERE post_id = 400 AND  meta_key = "_product_addons"');
+								$results = $wpdb->get_row('SELECT meta_value FROM wp_postmeta WHERE post_id = 401 AND  meta_key = "_product_addons"');
 								$results = unserialize($results->meta_value);
 								$k=0;
 								foreach ( $results  as $j => $fieldoption ) {
@@ -653,11 +653,12 @@
 							"<td class='text-center'><p>EXTRA</p><p>"+response[i].quantity+"</p></td>"+
 							"<td class='text-center'><div class='price-wrap'><var class='price h5'>"+response[i].price * response[i].quantity+"</var></div><div class='btn-group' role='group'><button onclick='remove("+response[i].id+")' type='button' class='btn btn-sm btn-warning'><i class='fa fa-trash'></button></div></td></tr>";
 						} else {
+							let hash = response[i].id;
 						table += "<tr><td><figure class='itemside'><div class='aside'><img src="+response[i].image+
 							" class='img-sm'></div><figcaption class='info'><h6>"+response[i].name+
 							"</h6><p class='text-muted small'>  Precio Venta: "+response[i].price+
 							"<br> ID: "+response[i].id+"<br> SKU: "+response[i].sku+"</p></figcaption></figure></td>"+
-							"<td class='text-center'><div class='btn-group' role='group'><button onclick='update_rest("+response[i].id+")' type='button' class='btn btn-sm btn-light'>-</button><h5> "+response[i].quantity+" </h5><button onclick='update_sum("+response[i].id+")' type='button' class='btn btn-sm btn-light'>+</button></div></td>"+
+							"<td class='text-center'><div class='btn-group' role='group'><button onclick='update_rest("+response[i].id+")' type='button' class='btn btn-sm btn-light'>-</button><h5> "+response[i].quantity+" </h5><button onclick='update_sum("+hash+")' type='button' class='btn btn-sm btn-light'>+</button></div></td>"+
 							"<td class='text-center'><div class='price-wrap'><var class='price h5'>"+response[i].price * response[i].quantity+"</var></div><div class='btn-group' role='group'><button onclick='remove("+response[i].id+")' type='button' class='btn btn-sm btn-warning'><i class='fa fa-trash'></button></div></td></tr>";
 						}
 					}	
