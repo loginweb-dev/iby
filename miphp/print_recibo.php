@@ -45,6 +45,8 @@
         // datos de factura------------------------------------------
         $pdf->SetFont($type_font, '', $size_font);
         $pdf->Cell(0, $higth, 'RECIBO #'.$data['id'], $border , $position, $aling);
+        $pdf->Cell(0, $higth, 'TICKES #'.$order->get_meta('lw_pos_tickes'), $border , $position, $aling);
+        // $pdf->Cell(0, $higth, 'TICKES # : '.$order->get_meta('lw_pos_tickes'), 0, 1, 'L');
         $pdf->SetFont($type_font, '', $size_font -1);
         // $pdf->Cell(0, $higth, 'NIT: '.get_post_meta($datos_factura[0]->ID, 'lw_nit', true), $border , $position, $aling);
         // $pdf->Cell(0, $higth, 'AUTORIZACION: '.$order->get_meta('lw_dosification_autoritation'), $border , $position, $aling);
@@ -117,7 +119,7 @@
         $pdf->Cell(0, $higth, 'ATENDIDO POR: '.$order->get_meta('wc_pos_served_by_name'), 0, 1, 'L');
         $pdf->Cell(0, $higth, 'TICKES # : '.$order->get_meta('lw_pos_tickes'), 0, 1, 'L');
         $pdf->Cell(0, $higth, 'NOTAS : '.$order->customer_message, 0, 1, 'L');
-        $pdf->Image($QR_BASEDIR.'qrcode/temp/'.$order->id.'.jpg', 23, $higth_qr-25, 25, 25, 'JPG');
+        $pdf->Image($QR_BASEDIR.'qrcode/temp/'.$order->id.'.jpg', 23, $higth_qr-15, 25, 25, 'JPG');
         
     $pdf->Output();
 ?>

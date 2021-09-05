@@ -18,7 +18,7 @@
                 'status' => 'publish'
             );
             $products = wc_get_products($args);
-            // print_r($products);
+            // print_r($_GET["json"]);
         ?>
         
             <?php if ($category->name == 'Menu' ) {?>
@@ -76,15 +76,31 @@
                     <div class="card">
                             <div class="row">
                                 <?php foreach ($products as $key) { ?>
-                                    <div class="col-md-6">
-                                        <figure class="itemside">
-                                            <div class="aside"><img src="<?php echo get_the_post_thumbnail_url($key->id) ? get_the_post_thumbnail_url($key->id) : 'resources/default_product.png'; ?>" class="border img-sm"></div>
-                                            <figcaption class="info align-self-center">
-                                                <a href="#" class="title"><?php echo $key->name ?></a>
-                                                <a href="#" onclick="product_add(<?php echo $key->get_id(); ?>)" class="btn btn-light text-primary btn-sm"> Agregar </a>
-                                            </figcaption>
-                                        </figure>
-                                    </div>
+                                    <?php $item = wc_get_product( $key->get_id() ); if ($item->get_type() == "variable") { ?>
+                                        <?php foreach ($key->get_available_variations() as $variation) { $var = wc_get_product($variation['variation_id']); ?>
+                                                <div class="col-lg-4 col-sm-12 col-md-6">
+                                                    <figure class="itemside">
+                                                        <div class="aside"><img src="<?php echo get_the_post_thumbnail_url($key->id) ? get_the_post_thumbnail_url($key->id) : 'resources/default_product.png'; ?>" class="border img-sm"></div>
+                                                        <figcaption class="info align-self-center">
+                                                            <p><small><?php echo $var->name ?></small></p>
+                                                            <p><?php echo $var->regular_price ?> Bs.</p>
+                                                            <a href="#" onclick="product_add(<?php echo $variation['variation_id']; ?>)" class="btn btn-light text-primary btn-sm"> Agregar </a>
+                                                        </figcaption>
+                                                    </figure>
+                                                </div>
+                                            <?php } ?>
+                                    <?php }else{ ?>
+                                        <div class="col-lg-4 col-sm-12 col-md-6">
+                                            <figure class="itemside">
+                                                <div class="aside"><img src="<?php echo get_the_post_thumbnail_url($key->id) ? get_the_post_thumbnail_url($key->id) : 'resources/default_product.png'; ?>" class="border img-sm"></div>
+                                                <figcaption class="info align-self-center">
+                                                    <p><small><?php echo $key->name ?></small></p>
+                                                    <p><?php echo $key->regular_price ?> Bs.</p>
+                                                    <a href="#" onclick="product_add(<?php echo $key->id ?>)" class="btn btn-light text-primary btn-sm"> Agregar </a>
+                                                </figcaption>
+                                            </figure>
+                                        </div>
+                                    <?php } ?>
                                 <?php } ?>
                             </div>
                         </div> 

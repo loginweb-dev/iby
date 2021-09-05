@@ -607,17 +607,17 @@
 		}
 			
 		$.ajax({
-				url: "miphp/micart.php",
-				dataType: "json",
-				success: function (response) {
-					for(var i=0; i < response.length; i++){
-						if(response[i].sku == 'extra'){
-							$('#'+response[i].id).prop("checked", true);
-							$('#'+response[i].id).attr("disabled", true);	
-						}
+			url: "miphp/micart.php",
+			dataType: "json",
+			success: function (response) {
+				for(var i=0; i < response.length; i++){
+					if(response[i].sku == 'extra'){
+						$('#'+response[i].id).prop("checked", true);
+						$('#'+response[i].id).attr("disabled", true);	
 					}
 				}
-			});
+			}
+		});
 				
 	}
 	// building cart list ----------------------------------------------------------------------------
@@ -625,63 +625,95 @@
 		$('#mitabla').html("<center><img class='img-sm' src='resources/reload.gif'></center>");	
 		get_totals();
 		$.ajax({
-			url: "miphp/micart.php",
-			dataType: "json",
+			url: "miphp/car_list.php",
+			dataType: 'html',
+			contentType: 'text/html',
 			success: function (response) {
-				if (response.length == 0) {
-					$('#mitabla').html("<center><h6>Carrito Vacio</h6><img class='img-md' src='resources/car.png' accept='.png'></center>");						
-					$('#miextra').prop("disabled", true);
+				$.ajax({
+					url: "miphp/micart.php",
+					dataType: "json",
+					data: {"get_totals": true },
+					success: function (response1) {
+						if (response1.cant_items == 0) {
+							$('#mitabla').html("<center><h6>Carrito Vacio</h6><img class='img-md' src='resources/car.png' accept='.png'></center>");						
+							$('#miextra').prop("disabled", true);
 
-					$('#btn_pago_efectivo').prop("disabled", true);
-					// $('#btn_pago_delivery').prop("disabled", true);
-					$('#btn_pago_tigo_money').prop("disabled", true);
-					$('#btn_pago_qr_simple').prop("disabled", true);
-					$('#btn_pago_transferencia').prop("disabled", true);
-					$('#btn_pago_tarjeta_cd').prop("disabled", true);
+							$('#btn_pago_efectivo').prop("disabled", true);
+							// $('#btn_pago_delivery').prop("disabled", true);
+							$('#btn_pago_tigo_money').prop("disabled", true);
+							$('#btn_pago_qr_simple').prop("disabled", true);
+							$('#btn_pago_transferencia').prop("disabled", true);
+							$('#btn_pago_tarjeta_cd').prop("disabled", true);
 
-					$('#btn_proforma').prop("disabled", true);
-					$('#btn_compra').prop("disabled", true);
-				} else {
-					let table = "";
-					table += "<table style='width: 100%;'><thead class='text-muted'><tr class='small text-uppercase'><th scope='col'>Productos</th><th scope='col' class='text-center'>Cantidad</th><th scope='col' class='text-center'>Sub Total</th></tr></thead>";
-					for(var i=0; i < response.length; i++){
-						if (response[i].sku == 'extra') {
-							table += "<tr><td><figure class='itemside'><div class='aside'><img src="+response[i].image+
-							" class='img-sm'></div><figcaption class='info'><h6>"+response[i].name+
-							"</h6><p class='text-muted small'>  Precio Venta: "+response[i].price+
-							"<br> ID: "+response[i].id+"<br> SKU: "+response[i].sku+"</p></figcaption></figure></td>"+
-							"<td class='text-center'><p>EXTRA</p><p>"+response[i].quantity+"</p></td>"+
-							"<td class='text-center'><div class='price-wrap'><var class='price h5'>"+response[i].price * response[i].quantity+"</var></div><div class='btn-group' role='group'><button onclick='remove("+response[i].id+")' type='button' class='btn btn-sm btn-warning'><i class='fa fa-trash'></button></div></td></tr>";
+							$('#btn_proforma').prop("disabled", true);
+							$('#btn_compra').prop("disabled", true);
 						} else {
-							let hash = response[i].id;
-						table += "<tr><td><figure class='itemside'><div class='aside'><img src="+response[i].image+
-							" class='img-sm'></div><figcaption class='info'><h6>"+response[i].name+
-							"</h6><p class='text-muted small'>  Precio Venta: "+response[i].price+
-							"<br> ID: "+response[i].id+"<br> SKU: "+response[i].sku+"</p></figcaption></figure></td>"+
-							"<td class='text-center'><div class='btn-group' role='group'><button onclick='update_rest("+response[i].id+")' type='button' class='btn btn-sm btn-light'>-</button><h5> "+response[i].quantity+" </h5><button onclick='update_sum("+hash+")' type='button' class='btn btn-sm btn-light'>+</button></div></td>"+
-							"<td class='text-center'><div class='price-wrap'><var class='price h5'>"+response[i].price * response[i].quantity+"</var></div><div class='btn-group' role='group'><button onclick='remove("+response[i].id+")' type='button' class='btn btn-sm btn-warning'><i class='fa fa-trash'></button></div></td></tr>";
+							$('#mitabla').html(response);
+							
+							$('#miextra').prop("disabled", false);
+
+							$('#btn_pago_efectivo').prop("disabled", false);
+							// $('#btn_pago_delivery').prop("disabled", false);
+							$('#btn_pago_tigo_money').prop("disabled", false);
+							$('#btn_pago_qr_simple').prop("disabled", false);
+							$('#btn_pago_transferencia').prop("disabled", false);
+							$('#btn_pago_tarjeta_cd').prop("disabled", false);
+
+							$('#btn_proforma').prop("disabled", false);
+							$('#btn_compra').prop("disabled", false);
 						}
-					}	
-					table += "</tbody></table>";
-					table += "<div class='card-body border-top'><button onclick='cart_clear()' class='btn btn-light btn-sm'>Limpiar Carrito</button></div>";
-					
-					$('#mitabla').html(table);
-					
-					$('#miextra').prop("disabled", false);
-
-					$('#btn_pago_efectivo').prop("disabled", false);
-					// $('#btn_pago_delivery').prop("disabled", false);
-					$('#btn_pago_tigo_money').prop("disabled", false);
-					$('#btn_pago_qr_simple').prop("disabled", false);
-					$('#btn_pago_transferencia').prop("disabled", false);
-					$('#btn_pago_tarjeta_cd').prop("disabled", false);
-
-					$('#btn_proforma').prop("disabled", false);
-					$('#btn_compra').prop("disabled", false);
-					
-				}
+					}
+				});
 			}
 		});
+		// $.ajax({
+		// 	url: "miphp/car_list.php",
+		// 	dataType: 'html',
+		// 	contentType: 'text/html',
+		// 	success: function (response) {
+		
+				// if (response.length == 0) {
+				// 	$('#mitabla').html("<center><h6>Carrito Vacio</h6><img class='img-md' src='resources/car.png' accept='.png'></center>");						
+				// 	$('#miextra').prop("disabled", true);
+
+				// 	$('#btn_pago_efectivo').prop("disabled", true);
+				// 	// $('#btn_pago_delivery').prop("disabled", true);
+				// 	$('#btn_pago_tigo_money').prop("disabled", true);
+				// 	$('#btn_pago_qr_simple').prop("disabled", true);
+				// 	$('#btn_pago_transferencia').prop("disabled", true);
+				// 	$('#btn_pago_tarjeta_cd').prop("disabled", true);
+
+				// 	$('#btn_proforma').prop("disabled", true);
+				// 	$('#btn_compra').prop("disabled", true);
+				// } else {
+				// 	let table = "";
+				// 	table += "<table style='width: 100%;'><thead class='text-muted'><tr class='small text-uppercase'><th scope='col'>Productos</th><th scope='col' class='text-center'>Cantidad</th><th scope='col' class='text-center'>Sub Total</th></tr></thead>";
+				// 	for(var i=0; i < response.length; i++){
+				// 		if (response[i].sku == 'extra') {
+				// 			table += "<tr><td><figure class='itemside'><div class='aside'><img src="+response[i].image+
+				// 			" class='img-sm'></div><figcaption class='info'><h6>"+response[i].name+
+				// 			"</h6><p class='text-muted small'>  Precio Venta: "+response[i].price+
+				// 			"<br> ID: "+response[i].id+"<br> SKU: "+response[i].sku+"</p></figcaption></figure></td>"+
+				// 			"<td class='text-center'><p>EXTRA</p><p>"+response[i].quantity+"</p></td>"+
+				// 			"<td class='text-center'><div class='price-wrap'><var class='price h5'>"+response[i].price * response[i].quantity+"</var></div><div class='btn-group' role='group'><button onclick='remove("+response[i].id+")' type='button' class='btn btn-sm btn-warning'><i class='fa fa-trash'></button></div></td></tr>";
+				// 		} else {
+				// 			let hash = response[i].id;
+				// 		table += "<tr><td><figure class='itemside'><div class='aside'><img src="+response[i].image+
+				// 			" class='img-sm'></div><figcaption class='info'><h6>"+response[i].name+
+				// 			"</h6><p class='text-muted small'>  Precio Venta: "+response[i].price+
+				// 			"<br> ID: "+response[i].id+"<br> SKU: "+response[i].sku+"</p></figcaption></figure></td>"+
+				// 			"<td class='text-center'><div class='btn-group' role='group'><button onclick='update_rest("+response[i].id+")' type='button' class='btn btn-sm btn-light'>-</button><h5> "+response[i].quantity+" </h5><button onclick='update_sum("+hash+")' type='button' class='btn btn-sm btn-light'>+</button></div></td>"+
+				// 			"<td class='text-center'><div class='price-wrap'><var class='price h5'>"+response[i].price * response[i].quantity+"</var></div><div class='btn-group' role='group'><button onclick='remove("+response[i].id+")' type='button' class='btn btn-sm btn-warning'><i class='fa fa-trash'></button></div></td></tr>";
+				// 		}
+				// 	}	
+				// 	table += "</tbody></table>";
+				// 	table += "<div class='card-body border-top'><button onclick='cart_clear()' class='btn btn-light btn-sm'>Limpiar Carrito</button></div>";
+					
+				
+					
+				// }
+			// }
+		// });
 		// $("#criterio_id").focus();
 	}
 	// -------------- GET TOTALS -------------------------------------------------------------
@@ -695,8 +727,7 @@
 				$('#total_literal').html("<samll>"+response.total_literal+"</samll>");
 				$('#cant_items').html("<strong>"+response.cant_items+"</strong>");
 			}
-		});
-				
+		});	
 	}
 	// -----------------  Clear Cart -----------------------------------------------------
 	function cart_clear(){

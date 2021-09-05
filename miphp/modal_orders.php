@@ -13,10 +13,10 @@
       <thead>
       <tr>
           <th scope="col">#</th>
-          <th scope="col">Fecha</th>
-          <th scope="col">Cliente</th>
-          <!-- <th scope="col">Conta</th>
-          <th scope="col">Pago</th>
+          <!-- <th scope="col">Fecha</th> -->
+          <!-- <th scope="col">Cliente</th> -->
+          <th scope="col">Productos</th>
+          <!-- <th scope="col">Pago</th>
           <th scope="col">Atendido</th> -->
           <th scope="col">Total</th>
         </tr>
@@ -25,10 +25,21 @@
         <?php $tv = 0; foreach ($orders as $key) { $order = wc_get_order($key->ID); $data = $order->get_data(); if (get_post_meta( $key->ID, 'lw_accounting', true )  == 'no') {?>
           <tr>
             <th scope="row"><?php echo $order->get_id(); ?></th>
-            <td><small><?php echo $order->get_date_created() ?></small></td>
-            <td><small><?php echo get_post_meta( $key->ID, '_billing_email', true ); ?></small></td>
-            <!-- <td><?php echo get_post_meta( $key->ID, 'lw_accounting', true ); ?></td>
-            <td><?php echo get_post_meta( $key->ID, '_payment_method_title', true ); ?></td>
+            <!-- <td><small><?php echo $order->get_date_created() ?></small></td> -->
+            <!-- <td><small><?php echo get_post_meta( $key->ID, '_billing_email', true ); ?></small></td> -->
+            <td>
+              <?php $items = $order->get_items(); foreach ( $items as $item ) { $extra = $item->get_meta_data(); $product = $item->get_product(); ?>
+                <small>
+                  <?php echo $item['name']; ?>
+                </small>
+                <br>
+                <?php for ($i=0; $i < count($extra); $i++) { ?>
+                  <small><?php echo $extra[$i]->key; ?></small>
+                <?php } ?> 
+              <?php } ?>
+              
+            </td>
+            <!-- <td><?php echo get_post_meta( $key->ID, '_payment_method_title', true ); ?></td>
             <td><?php echo get_post_meta( $key->ID, 'wc_pos_served_by_name', true ); ?></td> -->
             <td><?php echo $order->get_total(); $tv= $tv +  $order->get_total() ?></td>
           </tr>

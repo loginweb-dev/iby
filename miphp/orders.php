@@ -25,17 +25,17 @@
     foreach ($allItems as $items) {
         foreach ($items as $item) {
             if ($item['attributes']['sku'] == 'extra') {
-                $carts = $order->get_items();
-                foreach ( $carts as $value ) {
-                    // echo $item->get_name();
-                    $product = wc_get_product($value->get_product_id());
-                    // echo $item->get_id();
-                    $item_id = $value->get_id();
-                }
-                wc_update_order_item_meta($item_id, '_line_subtotal' , $cart->getAttributeTotal('price'), false);
-                wc_update_order_item_meta($item_id, '_line_total' , $cart->getAttributeTotal('price'), false);
-                wc_update_order_item_meta($item_id, '_line_subtotal_tax' , $cart->getAttributeTotal('price'), false);
-                wc_update_order_item_meta($item_id, '_line_tax' , $cart->getAttributeTotal('price'), false);
+                // $carts = $order->get_items();
+                // foreach ( $carts as $value ) {
+                //     // echo $item->get_name();
+                //     $product = wc_get_product($value->get_product_id());
+                //     // echo $item->get_id();
+                //     $item_id = $value->get_id();
+                // }
+                // wc_update_order_item_meta($item_id, '_line_subtotal' , $cart->getAttributeTotal('price'), false);
+                // wc_update_order_item_meta($item_id, '_line_total' , $cart->getAttributeTotal('price'), false);
+                // wc_update_order_item_meta($item_id, '_line_subtotal_tax' , $cart->getAttributeTotal('price'), false);
+                // wc_update_order_item_meta($item_id, '_line_tax' , $cart->getAttributeTotal('price'), false);
                 wc_update_order_item_meta($item_id, $item['attributes']['name'].' (Bs.'.$item['attributes']['price'].')', $item['quantity'], false);
             } else {
                 $order->add_product( get_product($item['attributes']['product_id']), $item['quantity']);
