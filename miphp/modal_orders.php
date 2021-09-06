@@ -24,20 +24,20 @@
       <tbody>
         <?php $tv = 0; foreach ($orders as $key) { $order = wc_get_order($key->ID); $data = $order->get_data(); if (get_post_meta( $key->ID, 'lw_accounting', true )  == 'no') {?>
           <tr>
-            <th scope="row"><?php echo $order->get_id(); ?></th>
+            <th scope="row"><a href="<?php echo admin_url('post.php?post='.$order->get_id().'&action=edit'); ?>"><?php echo $order->get_id(); ?></a></th>
             <!-- <td><small><?php echo $order->get_date_created() ?></small></td> -->
             <!-- <td><small><?php echo get_post_meta( $key->ID, '_billing_email', true ); ?></small></td> -->
             <td>
               <?php $items = $order->get_items(); foreach ( $items as $item ) { $extra = $item->get_meta_data(); $product = $item->get_product(); ?>
                 <small>
-                  <?php echo $item['name']; ?>
+                  <a  href="<?php echo admin_url('post.php?post='.$item['product_id'].'&action=edit'); ?>"><?php echo $item['name']; ?></a>
                 </small>
                 <br>
                 <?php for ($i=0; $i < count($extra); $i++) { ?>
                   <?php if ($extra[$i]->key == '_wc_cog_item_cost' || $extra[$i]->key == '_wc_cog_item_total_cost' ) { ?>
                     
                     <?php }else{ ?> 
-                      <small><?php echo $extra[$i]->key.': '.$extra[$i]->value; ?></small>
+                      <small><?php echo $extra[$i]->key.': '.$extra[$i]->value; ?></small><br>
                   <?php } ?> 
                 <?php } ?> 
               <?php } ?>

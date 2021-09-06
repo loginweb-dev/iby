@@ -191,9 +191,9 @@
 									<div class="form-group">
 											<!-- <input id="customer_search" type="text" class="form-control form-control-sm" placeholder="Buscar cliente"> -->
 											
-											<input class="form-control form-control-sm" type="text" id="cupon_code" onclick="descuento()" placeholder="Ingresa el Cupon" value="<?php echo wc_get_coupon_code_by_id( '474' ); ?>">
+											<input class="form-control form-control-sm" type="text" id="cupon_code" placeholder="Ingresa el Cupon" value="<?php echo wc_get_coupon_code_by_id( '474' ); ?>">
 											<!-- <div id="list_search_customers"></div> -->
-											<button class="btn btn-light text-primary btn-sm" type="button">Aplicar</button>
+											<button onclick="descuento()" class="btn btn-light text-primary btn-sm" type="button">Aplicar</button>
 									</div>
 								</form>
 							</div>
@@ -317,7 +317,7 @@
 
 	function open_order(){
 		$.ajax({
-			url: "miphp/barcode.php",
+			url: "miphp/modal_orders.php",
 			dataType: 'html',
 			contentType: 'text/html',
 			data: {"box_id" : <?php echo $_GET["box_id"]; ?>},
@@ -329,20 +329,20 @@
 	}
 
 	function descuento(){
-		let code = $("#cupon_code").val();
+		let cupon_code = $("#cupon_code").val();
 		$.ajax({
 			url: "miphp/coupons.php",
 			dataType: 'json',
 			data: {"cupon_code" : cupon_code},
 			success: function (response) {
-				
+				$.notify(response.cupon_id, "info");
 				$.ajax({
 					url: "miphp/micart.php",
 					dataType: 'json',
-					data: {"descuento" : true, "cupon_id" : response.cupon_id;},
-					success: function (response) {
-						
-
+					data: {"descuento" : true, "cupon_id" : response.cupon_id},
+					success: function (response1) {
+						$.notify(response1.message, "info");
+						build_cart();
 					}
 				});
 			}

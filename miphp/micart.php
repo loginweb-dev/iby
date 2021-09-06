@@ -70,11 +70,11 @@
             "order" => count($cart->getItems()) + 1,
             "name" => "Cupon",
             "description" => "", 
-            "price" => $_GET["price"],  
-            "sku" => "extra", 
-            "image" => "resources/extra.png"
+            "price" => get_post_meta($post->ID, 'coupon_amount', true) * -1,  
+            "sku" => "descuento", 
+            "image" => "resources/descuento.png"
         ]);
-        echo json_encode(array("message" => "Extra registrado correctamente.."));
+        echo json_encode(array("message" => "Descuento Aplicado correctamente.."));
     } elseif ($_GET["clear"]){
         $cart->clear();
         echo json_encode(array("message" => "Carrito Vacio."));

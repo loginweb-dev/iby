@@ -22,6 +22,9 @@
     
     $item_id = null;
     $product = null;
+    $descuento = false;
+    $descuento_code = null;
+    $descuento_price = null;
     foreach ($allItems as $items) {
         foreach ($items as $item) {
             if ($item['attributes']['sku'] == 'extra') {
@@ -37,6 +40,10 @@
                 // wc_update_order_item_meta($item_id, '_line_subtotal_tax' , $cart->getAttributeTotal('price'), false);
                 // wc_update_order_item_meta($item_id, '_line_tax' , $cart->getAttributeTotal('price'), false);
                 wc_update_order_item_meta($item_id, $item['attributes']['name'].' (Bs.'.$item['attributes']['price'].')', $item['quantity'], false);
+            }elseif ($item['attributes']['sku'] == 'descuento') {
+                $desuento = true;
+                $descuento_code = $item['attributes']['product_id'];
+                $descuento_price = $item['attributes']['descuento_price'];
             } else {
                 $order->add_product( get_product($item['attributes']['product_id']), $item['quantity']);
             }
@@ -47,6 +54,10 @@
     // $order->set_address( $address, 'billing' );
     // $order->set_address( $address, 'shipping' );
     // $order->set_coupon( $address, 'shipping' );
+    if ($desuento) {
+        $order->add_coupon( $descuento_code, $descuento_price );
+    }
+    
     $order->calculate_totals();
     $order->update_status("wc-completed");
     update_post_meta($order->id, 'lw_pos_type_order', $_GET["tipo_venta"] );
