@@ -1,7 +1,7 @@
 <?php
 function lw_boxs_list() {
     ?>
-    <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/iby/css/style-admin.css" rel="stylesheet" />
+    <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/iby-master/css/style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h2>Listado de Cajas</h2>
         <!-- <div class="tablenav top"> -->
@@ -39,7 +39,7 @@ function lw_boxs_list() {
                     <!-- <td class="manage-column ss-list-width"><?php // echo $rows[$i]->ID; ?></td> -->
                     <td class="manage-column ss-list-width"><?php echo $rows[$i]->post_status; ?></td>
                     <td>
-                        <a href="<?php if($rows[$i]->post_status=='pending' || $rows[$i]->post_status=='publish'){ echo WP_PLUGIN_URL.'/iby/pos.php?box_id='.$rows[$i]->ID; }else{ echo '#'; } ?>"class="button"><?php if($rows[$i]->post_status=='pending' || $rows[$i]->post_status=='publish'){ echo 'Abrir'; }else { echo 'Imprimir'; } ?></a>
+                        <a href="<?php if($rows[$i]->post_status=='pending' || $rows[$i]->post_status=='publish'){ echo WP_PLUGIN_URL.'/iby-master/pos.php?box_id='.$rows[$i]->ID; }else{ echo '#'; } ?>"class="button"><?php if($rows[$i]->post_status=='pending' || $rows[$i]->post_status=='publish'){ echo 'Abrir'; }else { echo 'Imprimir'; } ?></a>
                         <a href="<?php echo admin_url('admin.php?page=boxs-edit&box_id='.$rows[$i]->ID); ?>" class="button">Ver</a>                      
                     </td>
                     

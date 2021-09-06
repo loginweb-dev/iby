@@ -1,6 +1,6 @@
 <?php
 /**
-* Plugin Name: iBy - Modulo TPV Inteligente
+* Plugin Name: iBy v.20 - Modulo TPV Inteligente
 * Plugin URI: https://loginweb.dev/iby/
 * Description: Plugins Diseñado y Desarrollado por Loginweb, para Gestionar la Facturacion Computarizada, Flujo de Caja, Compras.
 * Version: 1.0
@@ -62,6 +62,24 @@ function add_custom_order_status_actions_button( $actions, $order ) {
     return $actions;
 }
 
+add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'lw_settings_link' );
+function lw_settings_link( $links ) {
+	// Build and escape the URL.
+	// $url = esc_url( add_query_arg(
+	// 	'page',
+	// 	'setting',
+	// 	get_admin_url() . 'admin.php'
+	// ) );
+	$url = admin_url('admin.php?page=setting');
+	// Create the link.
+	$settings_link = "<a href='$url'>" . __( 'Settings' ) . '</a>';
+	// Adds the link to the end of the array.
+	array_push(
+		$links,
+		$settings_link
+	);
+	return $links;
+}//end nc_settings_link()
 // Set Here the WooCommerce icon for your action button
 // add_action( 'admin_head', 'add_custom_order_status_actions_button_css' );
 // function add_custom_order_status_actions_button_css() {
@@ -132,16 +150,16 @@ function lw_create_setting() {
 		'post_type'   => 'pos_lw_setting',
 		'meta_input' => array(
 			'lw_image' => null,
-			'lw_img_extencion' => null,
-			'lw_ceo' => null,
-			'lw_direction' => null,
-			'lw_movil' => null,
-			'lw_city' => null,
-			'lw_activity' => null,
-			'lw_name_business' => null,
-			'lw_nit' => null,
-			'lw_legend' => null,
-			'lw_cat_default' => null,
+			'lw_img_extencion' => 'PNG',
+			'lw_ceo' => 'Ing. Percy Alvarez Cruz',
+			'lw_direction' => 'Trinidad - Beni',
+			'lw_movil' => '+591 71130523',
+			'lw_city' => 'TRINIDAD',
+			'lw_activity' => 'Ingenieria y Negocios',
+			'lw_name_business' => 'LoginWeb @2021',
+			'lw_nit' => '5619016018',
+			'lw_legend' => 'EL ESTADO ES NUESTRO ENEMIGO',
+			'lw_cat_default' => 'Menu',
 			'lw_extra_id' => null,
 		)
 	);

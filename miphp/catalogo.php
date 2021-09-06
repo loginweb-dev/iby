@@ -7,6 +7,7 @@
             'taxonomy'   =>  'product_cat' // mention taxonomy here. 
         )
      );
+    $setting = get_posts( array('post_status' => 'publish', 'post_type' => 'pos_lw_setting') );
 
     ?>
     <?php $index = 0; foreach( $categories as $category ){ ?>
@@ -21,7 +22,7 @@
             // print_r($_GET["json"]);
         ?>
         
-            <?php if ($category->name == 'Menu' ) {?>
+            <?php if ($category->name == get_post_meta($setting[0]->ID, 'lw_cat_default', true) ) {?>
                 <div class="list-group">
                     <article class="list-group-item">
                         <header class="filter-header">

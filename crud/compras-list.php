@@ -2,7 +2,7 @@
 
 function lw_compras_list() {
     ?>
-    <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/iby/css/style-admin.css" rel="stylesheet" />
+    <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/iby-master/css/style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h2>Compras</h2>
         <div class="tablenav top">

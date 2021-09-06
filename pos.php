@@ -138,6 +138,7 @@
 								</label>
 							</div>
 							<hr>
+							<p for="" class="text-center"><u>Extras</u></p>
 							<?php 
 								$results = $wpdb->get_row('SELECT meta_value FROM wp_postmeta WHERE post_id = 401 AND  meta_key = "_product_addons"');
 								$results = unserialize($results->meta_value);
@@ -189,7 +190,8 @@
 									</div>
 									<div class="form-group">
 											<!-- <input id="customer_search" type="text" class="form-control form-control-sm" placeholder="Buscar cliente"> -->
-											<input class="form-control form-control-sm" type="text" id="cupon" placeholder="Ingresa el Cupon">
+											
+											<input class="form-control form-control-sm" type="text" id="cupon_code" onclick="descuento()" placeholder="Ingresa el Cupon" value="<?php echo wc_get_coupon_code_by_id( '474' ); ?>">
 											<!-- <div id="list_search_customers"></div> -->
 											<button class="btn btn-light text-primary btn-sm" type="button">Aplicar</button>
 									</div>
@@ -315,13 +317,34 @@
 
 	function open_order(){
 		$.ajax({
-			url: "miphp/modal_orders.php",
+			url: "miphp/barcode.php",
 			dataType: 'html',
 			contentType: 'text/html',
 			data: {"box_id" : <?php echo $_GET["box_id"]; ?>},
 			success: function (response) {
 				$('#box_body').html(response);	
 				$('#modalBox').modal('show');
+			}
+		});
+	}
+
+	function descuento(){
+		let code = $("#cupon_code").val();
+		$.ajax({
+			url: "miphp/coupons.php",
+			dataType: 'json',
+			data: {"cupon_code" : cupon_code},
+			success: function (response) {
+				
+				$.ajax({
+					url: "miphp/micart.php",
+					dataType: 'json',
+					data: {"descuento" : true, "cupon_id" : response.cupon_id;},
+					success: function (response) {
+						
+
+					}
+				});
 			}
 		});
 	}
@@ -451,9 +474,9 @@
 								build_extras();
 								setTimeout(function(){ $.notify("Abriendo PDF", "info"); $('html, body').scrollTop(0); }, 3000);
 								if(isMobile.mobilecheck()){
-									window.location.href = '<?php echo WP_PLUGIN_URL; ?>'+'/iby/miphp/print_recibo.php?cod_order='+response.cod_order;
+									window.location.href = '<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_recibo.php?cod_order='+response.cod_order;
 								}else{
-									window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby/miphp/print_recibo.php?cod_order='+response.cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
+									window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_recibo.php?cod_order='+response.cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
 								}
 							}
 						});
@@ -489,9 +512,9 @@
 								build_extras();
 								setTimeout(function(){ $.notify("Abriendo PDF", "info"); $('html,body').scrollTop(0); }, 3000);
 								if(isMobile.mobilecheck()){
-									window.location.href = '<?php echo WP_PLUGIN_URL; ?>'+'/iby/miphp/print_factura.php?cod_order='+response.cod_order;
+									window.location.href = '<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_factura.php?cod_order='+response.cod_order;
 								}else{
-									window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby/miphp/print_factura.php?cod_order='+response.cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
+									window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_factura.php?cod_order='+response.cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
 								}
 							}
 						});

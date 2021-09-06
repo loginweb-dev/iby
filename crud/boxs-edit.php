@@ -19,7 +19,7 @@ function lw_boxs_edit() {
         wp_delete_post($_POST["post_id"], true);
     } 
     ?>
-    <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/iby/css/style-admin.css" rel="stylesheet" />
+    <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/iby-master/css/style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h2>
             Caja <a href="<?php echo admin_url('admin.php?page=cajas'); ?>" class='button'> Volver</a> 

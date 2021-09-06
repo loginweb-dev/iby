@@ -63,6 +63,18 @@
         ]);
         echo json_encode(array("message" => "Extra registrado correctamente.."));
        
+    } elseif ($_GET["descuento"]){
+        $post = get_post( $_GET["cupon_id"] );
+        $cart->add(bin2hex(random_bytes(18)), 1, [
+            "product_id" => $_GET["cupon_id"],
+            "order" => count($cart->getItems()) + 1,
+            "name" => "Cupon",
+            "description" => "", 
+            "price" => $_GET["price"],  
+            "sku" => "extra", 
+            "image" => "resources/extra.png"
+        ]);
+        echo json_encode(array("message" => "Extra registrado correctamente.."));
     } elseif ($_GET["clear"]){
         $cart->clear();
         echo json_encode(array("message" => "Carrito Vacio."));

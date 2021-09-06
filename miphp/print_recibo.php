@@ -33,7 +33,7 @@
     $pdf->AddPage();
     // echo $datos_factura[0]->ID;
         // Encabezado------------------------------------------
-    $pdf->Image(get_post_meta($datos_factura[0]->ID, 'lw_image', true),25,0,20,20,'JPG');
+    // $pdf->Image(get_post_meta($datos_factura[0]->ID, 'lw_image', true),25,0,20,20, get_post_meta($datos_factura[0]->ID, 'lw_img_extencion', true));
         $pdf->Ln(13);
         // $pdf->Cell(0, $higth, 'De: '.get_post_meta($datos_factura[0]->ID, 'lw_name_business', true), $border, $position, $aling);
         // $pdf->Cell(0, $higth, get_post_meta($datos_factura[0]->ID, 'lw_direction', true), $border, $position, $aling);
@@ -76,12 +76,14 @@
             $extra = $item->get_meta_data();
             $product = $item->get_product();
             // $title = $extra[0]->key ? $item['name'].' <br> '.$extra[1]->key : $item['name'];
-            $pdf->Cell(40, $higth, $item['name'], 0);
+            // $pdf->SetFont($type_font, '', $size_font-2); 
+                $pdf->Cell(40, $higth, $item['name'], 0);
+            // $pdf->SetFont($type_font, '', $size_font-3); 
             $pdf->Cell(10, $higth, $item['quantity'], 0);
             $pdf->Cell(10, $higth, $product->get_price(), 0);
             $pdf->Cell(10, $higth, $product->get_price() * $item['quantity'], 0, 1, 'C');
             for ($i=0; $i < count($extra); $i++) { 
-                if($extra[$i]->key == '_wc_cog_item_cost' || $extra[$i]->key == '_wc_cog_item_total_cost'){
+                if($extra[$i]->key == '_wc_cog_item_cost' || $extra[$i]->key == '_wc_cog_item_total_cost' || $extra[$i]->key == 'pa_sabores-refrescos' || $extra[$i]->key == 'pa_sabores-gaseosas'){
 
                 }else{
                     $pdf->Cell(50, $higth, $extra[$i]->key.' : '.$extra[$i]->value, 0, 1, 'L');

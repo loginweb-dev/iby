@@ -34,7 +34,11 @@
                 </small>
                 <br>
                 <?php for ($i=0; $i < count($extra); $i++) { ?>
-                  <small><?php echo $extra[$i]->key; ?></small>
+                  <?php if ($extra[$i]->key == '_wc_cog_item_cost' || $extra[$i]->key == '_wc_cog_item_total_cost' ) { ?>
+                    
+                    <?php }else{ ?> 
+                      <small><?php echo $extra[$i]->key.': '.$extra[$i]->value; ?></small>
+                  <?php } ?> 
                 <?php } ?> 
               <?php } ?>
               
