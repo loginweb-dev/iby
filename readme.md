@@ -1,5 +1,5 @@
-Pos (Point of Sale) con Facturacion, Plugin para wordpres y woocommerce.
-<h1 align="center">iBy v1.5 - TPV con Facturacion Computarizada</h1>
+Pos (Point of Sale) con Facturacion, Plugin para wordpress y woocommerce.
+<h1 align="center">iBy v2.0 - TPV con Facturacion Computarizada</h1>
 
 ## Acerca de
 

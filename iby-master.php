@@ -1,6 +1,6 @@
 <?php
 /**
-* Plugin Name: iBy v.20 - Modulo TPV Inteligente
+* Plugin Name: iBy v2.0 - Modulo TPV Inteligente
 * Plugin URI: https://loginweb.dev/iby/
 * Description: Plugins Diseñado y Desarrollado por Loginweb, para Gestionar la Facturacion Computarizada, Flujo de Caja, Compras.
 * Version: 1.0

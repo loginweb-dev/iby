@@ -24,13 +24,19 @@
       <tbody>
         <?php $tv = 0; foreach ($orders as $key) { $order = wc_get_order($key->ID); $data = $order->get_data(); if (get_post_meta( $key->ID, 'lw_accounting', true )  == 'no') {?>
           <tr>
-            <th scope="row"><a href="<?php echo admin_url('post.php?post='.$order->get_id().'&action=edit'); ?>"><?php echo $order->get_id(); ?></a></th>
+            <td>
+              <a href="<?php echo admin_url('post.php?post='.$order->get_id().'&action=edit'); ?>"> <?php echo $order->get_id(); ?></a> 
+              <br> 
+              <?php echo $order->get_date_created()->date('Y-m-d H:i:s') ?>
+            </td>
             <!-- <td><small><?php echo $order->get_date_created() ?></small></td> -->
             <!-- <td><small><?php echo get_post_meta( $key->ID, '_billing_email', true ); ?></small></td> -->
             <td>
+              <?php echo get_post_meta( $key->ID, '_billing_email', true ); ?>
+              <br>
               <?php $items = $order->get_items(); foreach ( $items as $item ) { $extra = $item->get_meta_data(); $product = $item->get_product(); ?>
                 <small>
-                  <a  href="<?php echo admin_url('post.php?post='.$item['product_id'].'&action=edit'); ?>"><?php echo $item['name']; ?></a>
+                  <a href="<?php echo admin_url('post.php?post='.$item['product_id'].'&action=edit'); ?>"><?php echo $item['name']; ?></a>
                 </small>
                 <br>
                 <?php for ($i=0; $i < count($extra); $i++) { ?>
@@ -45,13 +51,17 @@
             </td>
             <!-- <td><?php echo get_post_meta( $key->ID, '_payment_method_title', true ); ?></td>
             <td><?php echo get_post_meta( $key->ID, 'wc_pos_served_by_name', true ); ?></td> -->
-            <td><?php echo $order->get_total(); $tv= $tv +  $order->get_total() ?></td>
+            <td>
+              <?php echo $order->get_total(); $tv= $tv +  $order->get_total() ?>
+              <br>
+			        <button onclick="re_imprimir('<?php echo $order->get_id(); ?>')" type="button" class="btn btn-primary btn-sm"> Imprimir </button>
+            </td>
           </tr>
         <?php } } ?>
       </tbody>
     </table>
   </div>
   <div class="modal-footer">
-          <label for="">Total: <?php echo $tv; ?> Bs.</label>
+          <label for="">Total Bs.<?php echo $tv; ?></label>
 			<!-- <button href="#" id="new_shop_order" onclick="new_shop_order('<?php echo $_GET['type_payment']; ?>')" type="button" class="btn btn-primary" > Guardar </button> -->
 	</div>

@@ -33,7 +33,7 @@
     $pdf->AddPage();
     // echo $datos_factura[0]->ID;
         // Encabezado------------------------------------------
-    // $pdf->Image(get_post_meta($datos_factura[0]->ID, 'lw_image', true),25,0,20,20, get_post_meta($datos_factura[0]->ID, 'lw_img_extencion', true));
+    $pdf->Image(get_post_meta($datos_factura[0]->ID, 'lw_image', true),25,0,20,20, get_post_meta($datos_factura[0]->ID, 'lw_img_extencion', true));
         $pdf->Ln(13);
         // $pdf->Cell(0, $higth, 'De: '.get_post_meta($datos_factura[0]->ID, 'lw_name_business', true), $border, $position, $aling);
         // $pdf->Cell(0, $higth, get_post_meta($datos_factura[0]->ID, 'lw_direction', true), $border, $position, $aling);
@@ -76,9 +76,9 @@
             $extra = $item->get_meta_data();
             $product = $item->get_product();
             // $title = $extra[0]->key ? $item['name'].' <br> '.$extra[1]->key : $item['name'];
-            // $pdf->SetFont($type_font, '', $size_font-2); 
+            $pdf->SetFont($type_font, '', $size_font-4); 
                 $pdf->Cell(40, $higth, $item['name'], 0);
-            // $pdf->SetFont($type_font, '', $size_font-3); 
+            // $pdf->SetFont($type_font, '', $size_font-4); 
             $pdf->Cell(10, $higth, $item['quantity'], 0);
             $pdf->Cell(10, $higth, $product->get_price(), 0);
             $pdf->Cell(10, $higth, $product->get_price() * $item['quantity'], 0, 1, 'C');
@@ -92,13 +92,17 @@
             
             $higth_qr += 4;
         }
+    $pdf->SetFont($type_font, '', $size_font-2);
     $pdf->Cell(0, 0, '', 1 , 1, 'C');
         // Total de la Venta---------------------------------------------
         // $pdf->Cell(30, $higth, '', 0);
         // $pdf->Cell(30, $higth, 'SUB TOTAL: ', 0);
         // $pdf->Cell(10, $higth, $order->get_subtotal(), 0, 1, 'C');
         $pdf->Cell(30, $higth, '', 0);
-        $pdf->Cell(30, $higth, 'DESCUENTO: ', 0);
+        // $order_items = $order->get_items('coupon');
+        $micupon = $order->get_used_coupons();
+        $valor = get_post_meta($micupon[0], 'coupon_amount', true);
+        $pdf->Cell(30, $higth, 'DESCUENTO: ', $valor);
         $pdf->Cell(10, $higth, $order->get_discount_total(), 0, 1, 'C');
         $pdf->Cell(30, $higth, '', 0);
         $pdf->Cell(30, $higth, 'TOTAL: ', 0);
@@ -121,7 +125,7 @@
         $pdf->Cell(0, $higth, 'ATENDIDO POR: '.$order->get_meta('wc_pos_served_by_name'), 0, 1, 'L');
         $pdf->Cell(0, $higth, 'TICKES # : '.$order->get_meta('lw_pos_tickes'), 0, 1, 'L');
         $pdf->Cell(0, $higth, 'NOTAS : '.$order->customer_message, 0, 1, 'L');
-        $pdf->Image($QR_BASEDIR.'qrcode/temp/'.$order->id.'.jpg', 23, $higth_qr-15, 25, 25, 'JPG');
+        $pdf->Image($QR_BASEDIR.'qrcode/temp/'.$order->id.'.jpg', 23, $higth_qr-30, 25, 25, 'JPG');
         
     $pdf->Output();
 ?>

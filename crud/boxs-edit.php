@@ -24,7 +24,7 @@ function lw_boxs_edit() {
         <h2>
             Caja <a href="<?php echo admin_url('admin.php?page=cajas'); ?>" class='button'> Volver</a> 
             <input type='submit' name="update" value='Actualizar' class='button'>
-            <a href="<?php echo WP_PLUGIN_URL.'/iby/pos.php?box_id='.$_GET["box_id"]; ?>" class='button'> Abrir</a>
+            <a href="<?php echo WP_PLUGIN_URL.'/iby-master/pos.php?box_id='.$_GET["box_id"]; ?>" class='button'> Abrir</a>
             
         </h2>
         <?php if ($_POST['delete']) { ?>
@@ -107,23 +107,54 @@ function lw_boxs_edit() {
           <th scope="col">Fecha</th>
           <th scope="col">Cliente</th>
           <th scope="col">Conta</th>
-          <th scope="col">Pago</th>
+          <!-- <th scope="col">Pago</th> -->
           <th scope="col">Atendido</th>
           <th scope="col">Total</th>
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($orders as $key) { $order = wc_get_order($key->ID); $data = $order->get_data(); ?>
+        <?php $mitotal=0; foreach ($orders as $key) { $order = wc_get_order($key->ID); $data = $order->get_data(); ?>
           <tr>
-            <!-- <th scope="row"><?php echo $order->get_id(); ?></th> -->
-            <td><?php echo '# '.$order->get_id().' '.$order->get_date_created() ?></td>
-            <td><?php echo get_post_meta( $key->ID, '_billing_email', true ); ?></td>
+
+            <td>
+                # <a href="<?php echo admin_url('post.php?post='.$order->get_id().'&action=edit'); ?>"><?php echo $order->get_id(); ?></a>
+                <br>
+                <?php echo $order->get_date_created()->date('Y-m-d H:i:s') ?>
+            </td>
+            <td>
+                <?php echo get_post_meta( $key->ID, '_billing_email', true ); ?>
+                <br>
+                <?php $items = $order->get_items(); foreach ( $items as $item ) { $extra = $item->get_meta_data(); $product = $item->get_product(); ?>
+                
+                    <small>
+                        <a  href="<?php echo admin_url('post.php?post='.$item['product_id'].'&action=edit'); ?>"><?php echo $item['name']; ?></a>
+                    </small>
+                    <br>
+                    <?php for ($i=0; $i < count($extra); $i++) { ?>
+                    <?php if ($extra[$i]->key == '_wc_cog_item_cost' || $extra[$i]->key == '_wc_cog_item_total_cost' ) { ?>                        
+                        <?php }else{ ?> 
+                            <small><?php echo $extra[$i]->key.': '.$extra[$i]->value; ?></small><br>
+                        <?php } ?> 
+                    <?php } ?> 
+                <?php } ?>
+            </td>
             <td><?php echo get_post_meta( $key->ID, 'lw_accounting', true ); ?></td>
-            <td><?php echo get_post_meta( $key->ID, '_payment_method_title', true ); ?></td>
-            <td><?php echo get_post_meta( $key->ID, 'wc_pos_served_by_name', true ); ?></td>
-            <td><?php echo $order->get_total(); ?></td>
+            <td>
+                <?php echo get_post_meta( $key->ID, '_payment_method_title', true ); ?>
+                <br>
+                <?php echo get_post_meta( $key->ID, 'wc_pos_served_by_name', true ); ?>
+            </td>
+            
+            <td><?php $mitotal = $mitotal + $order->get_total(); echo $order->get_total(); ?></td>
           </tr>
         <?php } ?>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Total</td>
+            <td>Bolivianos:</td>
+            <td><?php echo  number_format($mitotal, 2, '.', ''); ?></td>
+        </tr>
       </tbody>
     </table>
 

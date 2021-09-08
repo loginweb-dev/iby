@@ -66,7 +66,7 @@
 							<div class="text">
 								<span class="text-muted">Hola <?php echo $current_user->display_name ?>!</span>
 								<div> 
-									<a href="/"> Volver al Panel</a>
+									<a href="<?php echo admin_url('admin.php?page=cajas'); ?>"> Volver al Panel</a>
 								</div>
 							</div>
 						</div>
@@ -315,6 +315,13 @@
 <script src="src/index.js"></script>
 <script type="text/javascript">
 
+function re_imprimir(cod_order) {
+	if(isMobile.mobilecheck()){
+		window.location.href = '<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_recibo.php?cod_order='+cod_order;
+	}else{
+		window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_recibo.php?cod_order='+cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
+	}
+}
 	function open_order(){
 		$.ajax({
 			url: "miphp/modal_orders.php",
