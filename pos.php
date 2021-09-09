@@ -45,14 +45,23 @@
 	<section class="header-main border-bottom">
 		<div class="container-fluid">
 			<div class="row align-items-center">
-				<div class="col-lg-6 col-md-6 col-sm-12">
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Buscar Productos" id="criterio_id">
-					</div>
+				<div class="col-lg-5 col-md-4 col-sm-12">
+							<div class="form-group">
+								<input type="text" class="form-control mb-2 mr-sm-2" placeholder="Buscar Productos" id="criterio_id">
+							</div>
+
 				</div>
-				<div class="col-lg-6 col-md-6 col-sm-12">
-					<!-- <div class="widgets-wrap float-md-right"> -->
-						<div class="widget-header icontext">
+				<div class="col-lg-1 col-md-2 col-sm-12">
+						
+						<div class="form-check mb-2 mr-sm-2">
+							<input class="form-check-input" type="checkbox" id="qr_barra" checked>
+							<label class="form-check-label" for="inlineFormCheck">
+								QR/Barra
+							</label>
+						</div>
+				</div>
+				<div class="col-lg-2 col-md-3 col-sm-12">
+						<div class="icontext">
 							<a href="#" onclick="open_order()" class="icon icon-sm rounded-circle border"><i class="fa fa-address-book"></i></a>
 							<div class="text">
 								<span class="text-muted"><?php echo $post->post_title; ?></span>
@@ -61,17 +70,22 @@
 								
 							</div>
 						</div>
-						<div class="widget-header icontext">
-							<a href="#" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>
-							<div class="text">
-								<span class="text-muted">Hola <?php echo $current_user->display_name ?>!</span>
-								<div> 
-									<a href="<?php echo admin_url('admin.php?page=cajas'); ?>"> Volver al Panel</a>
-								</div>
+					
+				</div>
+
+				<div class="col-lg-3 col-md-3 col-sm-12">
+				
+					<div class="icontext">
+						<a href="#" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>
+						<div class="text">
+							<span class="text-muted">Hola <?php echo $current_user->display_name ?>!</span>
+							<div> 
+								<a href="<?php echo admin_url('admin.php?page=cajas'); ?>"> Volver al Panel</a>
 							</div>
 						</div>
-					<!-- </div> -->
+					</div>
 				</div>
+
 			</div>
 		</div>
 	</section>
@@ -191,9 +205,9 @@
 									<div class="form-group">
 											<!-- <input id="customer_search" type="text" class="form-control form-control-sm" placeholder="Buscar cliente"> -->
 											
-											<input class="form-control form-control-sm" type="text" id="cupon_code" placeholder="Ingresa el Cupon" value="<?php echo wc_get_coupon_code_by_id( '474' ); ?>">
+											<input class="form-control form-control-sm" type="text" id="cupon_code" placeholder="Ingresa el Cupon" value="">
 											<!-- <div id="list_search_customers"></div> -->
-											<button onclick="descuento()" class="btn btn-light text-primary btn-sm" type="button">Aplicar</button>
+											<!-- <button onclick="descuento()" class="btn btn-light text-primary btn-sm" type="button">Aplicar</button> -->
 									</div>
 								</form>
 							</div>
@@ -315,13 +329,13 @@
 <script src="src/index.js"></script>
 <script type="text/javascript">
 
-function re_imprimir(cod_order) {
-	if(isMobile.mobilecheck()){
-		window.location.href = '<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_recibo.php?cod_order='+cod_order;
-	}else{
-		window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_recibo.php?cod_order='+cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
+	function re_imprimir(cod_order) {
+		if(isMobile.mobilecheck()){
+			window.location.href = '<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_recibo.php?cod_order='+cod_order;
+		}else{
+			window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_recibo.php?cod_order='+cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
+		}
 	}
-}
 	function open_order(){
 		$.ajax({
 			url: "miphp/modal_orders.php",
@@ -335,26 +349,26 @@ function re_imprimir(cod_order) {
 		});
 	}
 
-	function descuento(){
-		let cupon_code = $("#cupon_code").val();
-		$.ajax({
-			url: "miphp/coupons.php",
-			dataType: 'json',
-			data: {"cupon_code" : cupon_code},
-			success: function (response) {
-				$.notify(response.cupon_id, "info");
-				$.ajax({
-					url: "miphp/micart.php",
-					dataType: 'json',
-					data: {"descuento" : true, "cupon_id" : response.cupon_id},
-					success: function (response1) {
-						$.notify(response1.message, "info");
-						build_cart();
-					}
-				});
-			}
-		});
-	}
+	// function descuento(){
+	// 	let cupon_code = $("#cupon_code").val();
+	// 	$.ajax({
+	// 		url: "miphp/coupons.php",
+	// 		dataType: 'json',
+	// 		data: {"cupon_code" : cupon_code},
+	// 		success: function (response) {
+	// 			$.notify(response.cupon_id, "info");
+	// 			$.ajax({
+	// 				url: "miphp/micart.php",
+	// 				dataType: 'json',
+	// 				data: {"descuento" : true, "cupon_id" : response.cupon_id},
+	// 				success: function (response1) {
+	// 					$.notify(response1.message, "info");
+	// 					build_cart();
+	// 				}
+	// 			});
+	// 		}
+	// 	});
+	// }
 	// let notifier = new AWN(globalOptions);
 		// Open cash---------------------------------------------------- 
 		// $("#btn_pago_efectivo").click(function (e) { 
@@ -609,7 +623,7 @@ function re_imprimir(cod_order) {
 	}
 	// -------------  REMOVE ITEM ---------------------------------------------------------
 	function remove(product_id){
-		console.log(product_id);
+		// console.log(product_id);
 		$.ajax({
 			url: "miphp/micart.php",
 			dataType: "json",
@@ -865,10 +879,17 @@ function re_imprimir(cod_order) {
 	}
 //----  load JQUERY --------------------
 $(document).ready(function() {
+
+
 	let isMobile = {
 		mobilecheck : function() {
 			return (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i.test(navigator.userAgent||navigator.vendor||window.opera)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test((navigator.userAgent||navigator.vendor||window.opera).substr(0,4)))
 		}
+	}
+	if(isMobile.mobilecheck()){
+		
+	}else{
+		$("#criterio_id").focus();
 	}
 	// alert(isMobile.mobilecheck());
 
@@ -988,58 +1009,95 @@ $(document).ready(function() {
 
 	// searchs products --------------------------------------------------------------
 	$("#criterio_id").on('keyup', function (e) {
+		e.preventDefault();
+		
 		if (e.key === 'Enter' || e.keyCode === 13) {
-			$('#milistsearch').html("<center><img class='img-sm' src='resources/reload.gif'></center>");	
-			$.ajax({
-				url: "miphp/search.php",
-				dataType: "json",
-				data: { "get_products": $("#criterio_id").val() },
-				success: function (response) {
-					if (response.length == 0) {
-						$('#milistsearch').html("<p>Sin Resultados  <a href='<?php echo get_site_url(); ?>/wp-admin/post-new.php?post_type=product' target='_blank' class='btn btn-sm btn-primary'>Crear Nuevo</a></p>");	
-					} else {
-						
-						let table = "";
-						
-						
-						table += "<table class='table'><tbody>";
-						for(var i=0; i< response.length; i++){
-							var userObjList = JSON.parse(response[i].brands);
-							let roleList = '';
-							if (userObjList.length > 0) {								
-								userObjList.forEach(userObj => {
-									roleList += userObj.name+', ';
-								});
-							}
+			// $type_search = get_products
+			if ($("#qr_barra").is(":checked")) {
+				// console.log(" SI Barra");
+				$('#mitabla').html("<center><img class='img-sm' src='resources/reload.gif'></center>");	
+
+				$.ajax({
+					url: "miphp/search.php",
+					dataType: "json",
+					data: { "get_sku": $("#criterio_id").val() },
+					success: function (response) {
+						if (response.length == 0) {
+							$('#milistsearch').html("<p>Sin Resultados  <a href='<?php echo get_site_url(); ?>/wp-admin/post-new.php?post_type=product' target='_blank' class='btn btn-sm btn-primary'>Crear Nuevo</a></p>");	
+						} else {
 							
-							var userObjList2 = JSON.parse(response[i].cats);
-							let roleList2 = '';
-							if (userObjList2.length > 0) {
-								userObjList2.forEach(userObj => {
-									roleList2 += userObj.name+', ';
-								});
-							}
-							var userObjList3 = JSON.parse(response[i].tags);
-							let roleList3 = '';
-							if (userObjList3.length > 0) {
-								userObjList3.forEach(userObj => {
-									roleList3 += userObj.name+', ';
-								});
-							}
-							let img = response[i].image ? response[i].image : 'resources/default_product.png';
-							table += "<tr><td><figure class='itemside'><div class='aside'><img src="+img+
-								" class='img-sm'></div><figcaption class='info'><h6>"+response[i].name+
-								"</h6><button onclick='product_add("+response[i].id+")' type='button' class='btn btn-sm btn-primary'><i class='fa fa-shopping-cart'></i></button><p class='text-muted small'>  Precio Venta: "+response[i].regular_price+
-								"<p class='text-muted small'>  Stock: "+response[i].stock_quantity+
-								"<br> ID: "+response[i].id+"<br> SKU: "+response[i].sku+"<br> MARCAS: "+roleList+"<br> CATEGORIAS: "+roleList2+"</p></figcaption></figure></td>"+
-								"<td><strong>Detalles</strong><br><small>Precio Compra: "+response[i].bought_price+"<br> Estante: "+response[i].lg_estante+"<br> Bloque: "+response[i].lg_bloque+"<br> Vence: "+response[i].lg_date+"</small><br> Etiquetas: "+roleList3+"<br></td></tr>";
-						}	
-						table += "</tbody></table>";
-						table += "<p> "+response.length+" resultados para: '"+$("#criterio_id").val()+"' <a href='#' onclick='clear_search_products()' class='btn btn-sm btn-light' id='clear_search_products'>Borrar</a></p>";
-						$('#milistsearch').html(table);	
-					}		
-				}
-			});
+							$.ajax({
+								url: "miphp/micart.php",
+								data: { "add": response.product_id },
+								dataType: "json",
+								success: function (response1) {
+									build_cart();
+									$.notify(response1.message, "info");
+									$("#criterio_id").focus();
+									$("#criterio_id").val("");
+								}
+							});
+						}		
+					}
+				});
+
+			}else{
+				// console.log(" No Barra");
+				$('#milistsearch').html("<center><img class='img-sm' src='resources/reload.gif'></center>");	
+			
+				$.ajax({
+					url: "miphp/search.php",
+					dataType: "json",
+					data: { "get_products": $("#criterio_id").val() },
+					success: function (response) {
+						if (response.length == 0) {
+							$('#milistsearch').html("<p>Sin Resultados  <a href='<?php echo get_site_url(); ?>/wp-admin/post-new.php?post_type=product' target='_blank' class='btn btn-sm btn-primary'>Crear Nuevo</a></p>");	
+						} else {
+							
+							let table = "";
+							
+							
+							table += "<table class='table'><tbody>";
+							for(var i=0; i< response.length; i++){
+								var userObjList = JSON.parse(response[i].brands);
+								let roleList = '';
+								if (userObjList.length > 0) {								
+									userObjList.forEach(userObj => {
+										roleList += userObj.name+', ';
+									});
+								}
+								
+								var userObjList2 = JSON.parse(response[i].cats);
+								let roleList2 = '';
+								if (userObjList2.length > 0) {
+									userObjList2.forEach(userObj => {
+										roleList2 += userObj.name+', ';
+									});
+								}
+								var userObjList3 = JSON.parse(response[i].tags);
+								let roleList3 = '';
+								if (userObjList3.length > 0) {
+									userObjList3.forEach(userObj => {
+										roleList3 += userObj.name+', ';
+									});
+								}
+								let img = response[i].image ? response[i].image : 'resources/default_product.png';
+								table += "<tr><td><figure class='itemside'><div class='aside'><img src="+img+
+									" class='img-sm'></div><figcaption class='info'><h6>"+response[i].name+
+									"</h6><button onclick='product_add("+response[i].id+")' type='button' class='btn btn-sm btn-primary'><i class='fa fa-shopping-cart'></i></button><p class='text-muted small'>  Precio Venta: "+response[i].regular_price+
+									"<p class='text-muted small'>  Stock: "+response[i].stock_quantity+
+									"<br> ID: "+response[i].id+"<br> SKU: "+response[i].sku+"<br> MARCAS: "+roleList+"<br> CATEGORIAS: "+roleList2+"</p></figcaption></figure></td>"+
+									"<td><strong>Detalles</strong><br><small>Precio Compra: "+response[i].bought_price+"<br> Estante: "+response[i].lg_estante+"<br> Bloque: "+response[i].lg_bloque+"<br> Vence: "+response[i].lg_date+"</small><br> Etiquetas: "+roleList3+"<br></td></tr>";
+							}	
+							table += "</tbody></table>";
+							table += "<p> "+response.length+" resultados para: '"+$("#criterio_id").val()+"' <a href='#' onclick='clear_search_products()' class='btn btn-sm btn-light' id='clear_search_products'>Borrar</a></p>";
+							$('#milistsearch').html(table);	
+						}		
+					}
+				});
+
+				
+			}
 		}
 	});
 	
@@ -1070,6 +1128,38 @@ $(document).ready(function() {
 			});
 		}
 	});
+
+		// aplicar cuppon --------------------------------------------------------------
+		$("#cupon_code").on('keyup', function (e) {
+		if (e.key === 'Enter' || e.keyCode === 13) {
+
+			$.notify("Iniciando el proceso..", "info");
+			let cupon_code = $("#cupon_code").val();
+				$.ajax({
+					url: "miphp/coupons.php",
+					dataType: 'json',
+					data: {"cupon_code" : cupon_code},
+					success: function (response) {
+						
+						if (response.cupon_id) {
+							$.ajax({
+							url: "miphp/micart.php",
+							dataType: 'json',
+							data: {"descuento" : true, "cupon_id" : response.cupon_id},
+							success: function (response1) {
+								$.notify(response1.message, "info");
+								build_cart();
+								$("#cupon_code").val("");
+							}
+						});
+						} else {
+							$.notify("Error en el Cupon");
+						}
+					
+					}
+				});
+			}
+		});
 
 	$("#criterio_id").change(function (e) { 
 		e.preventDefault();

@@ -43,7 +43,7 @@
             }elseif ($item['attributes']['sku'] == 'descuento') {
                 $desuento = true;
                 $descuento_code = $item['attributes']['product_id'];
-                $descuento_price = $item['attributes']['descuento_price'];
+                $descuento_price = $item['attributes']['price'];
             } else {
                 $order->add_product( get_product($item['attributes']['product_id']), $item['quantity']);
             }
@@ -57,7 +57,6 @@
     if ($desuento) {
         $order->add_coupon( $descuento_code, $descuento_price );
     }
-    
     $order->calculate_totals();
     $order->update_status("wc-completed");
     update_post_meta($order->id, 'lw_pos_type_order', $_GET["tipo_venta"] );

@@ -17,8 +17,8 @@
                 )
              ),
         );
-        //--------------------------------------type tags-----------
         $json = array();
+        //--------------------------------------type tags-----------
         $loop = wc_get_products($args);
         if (count($loop) == 0 ) {
             $args = array(
@@ -30,7 +30,7 @@
             );
             $loop = wc_get_products($args);
         }
-        
+
         foreach ($loop as $key) {
             $item = wc_get_product( $key->get_id() );
             if ($item->get_type() == "variable") {//-------------------------------
@@ -76,6 +76,11 @@
             }
         }
        echo json_encode($json);
+    } else if($_GET["get_sku"]) {
+       $product_id = wc_get_product_id_by_sku( $_GET["get_sku"] );
+    //    $product = wc_get_product( $product_id );
+        
+       echo json_encode(array("product_id" => $product_id )); 
     } else if($_GET["get_customer_id"]) {
 
          $args = array(

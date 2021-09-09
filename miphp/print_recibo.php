@@ -16,7 +16,7 @@
     $order = wc_get_order( $cod_order );
     $items = $order->get_items();
     $data = $order->get_data();
-
+    $cupon = get_post_meta($order->ID, 'lw_coupon_code', true);
 
     // creating PDF-------------------------------------------------
     $border = 0;
@@ -100,10 +100,10 @@
         // $pdf->Cell(10, $higth, $order->get_subtotal(), 0, 1, 'C');
         $pdf->Cell(30, $higth, '', 0);
         // $order_items = $order->get_items('coupon');
-        $micupon = $order->get_used_coupons();
-        $valor = get_post_meta($micupon[0], 'coupon_amount', true);
-        $pdf->Cell(30, $higth, 'DESCUENTO: ', $valor);
-        $pdf->Cell(10, $higth, $order->get_discount_total(), 0, 1, 'C');
+        $micupon = $order->get_coupon_codes(); //get_used_coupons
+        // $mic= $order->id;
+        $pdf->Cell(30, $higth, 'DESCUENTO: ', 0);
+        $pdf->Cell(10, $higth, get_post_meta($micupon[0], "coupon_amount", true) ? get_post_meta($micupon[0], "coupon_amount", true) : 0 , 0, 1, 'C');
         $pdf->Cell(30, $higth, '', 0);
         $pdf->Cell(30, $higth, 'TOTAL: ', 0);
         $pdf->Cell(10, $higth, $order->get_total(), 0, 1, 'C');

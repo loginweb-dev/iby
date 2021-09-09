@@ -69,7 +69,7 @@
             "product_id" => $_GET["cupon_id"],
             "order" => count($cart->getItems()) + 1,
             "name" => "Cupon",
-            "description" => "", 
+            "description" => $post->post_content, 
             "price" => get_post_meta($post->ID, 'coupon_amount', true) * -1,  
             "sku" => "descuento", 
             "image" => "resources/descuento.png"
@@ -81,6 +81,8 @@
     } elseif ($_GET["remove"]){
         $theItem = $cart->getItem($_GET["remove"]);
         $cart->remove($theItem['id'], [
+            "product_id" => $theItem['attributes']['product_id'],
+            "order" => $theItem['attributes']['order'],
             "name" => $theItem['attributes']['name'],
             "description" => $theItem['attributes']['description'], 
             "price" => $theItem['attributes']['price'], 
@@ -116,8 +118,8 @@
     }elseif ($_GET["get_totals"]){
         $json = array(
             "total_numeral" => $cart->getAttributeTotal('price'),
-            "total_literal" => $formatter->toInvoice($cart->getAttributeTotal('price'), 2, 'BOB'), 
-            "cant_items" => $cart->getTotalQuantity(),
+            // "total_literal" => $formatter->toInvoice($cart->getAttributeTotal('price'), 2, 'BOB'), 
+            // "cant_items" => $cart->getTotalQuantity(),
         );
         echo json_encode($json);
     } else{

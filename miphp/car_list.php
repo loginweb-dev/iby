@@ -35,6 +35,8 @@
                                         <figcaption class="info">
                                             <a href="#" class="title text-dark"><?php echo $item['attributes']['name'] ?></a>
                                             <p class="text-muted small">ID: <?php echo $item['attributes']['product_id'] ?> <br> SKU: <?php echo $item['attributes']['sku'] ?></p>
+                                            <p class="text-muted small">Info: <?php echo $item['attributes']['description'] ?></p>
+
                                         </figcaption>
                                     </figure>
                                 </td>
@@ -55,7 +57,7 @@
                                 </td>
                                 <td class="text-right"> 
                                 <!-- <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>  -->
-                                <a href="" class="btn btn-light btn-sm"> Quitar</a>
+                                <a href="#" onclick="remove('<?php echo $item['id'];  ?>')" class="btn btn-light btn-sm"> Quitar</a>
                                 </td>
                             </tr>
 

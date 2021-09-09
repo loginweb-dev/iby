@@ -23,7 +23,7 @@ function lw_boxs_edit() {
     <div class="wrap">
         <h2>
             Caja <a href="<?php echo admin_url('admin.php?page=cajas'); ?>" class='button'> Volver</a> 
-            <input type='submit' name="update" value='Actualizar' class='button'>
+            <!-- <input type='submit' name="update" value='Actualizar' class='button'> -->
             <a href="<?php echo WP_PLUGIN_URL.'/iby-master/pos.php?box_id='.$_GET["box_id"]; ?>" class='button'> Abrir</a>
             
         </h2>
@@ -96,8 +96,30 @@ function lw_boxs_edit() {
     </div>
     <?php 
     // require_once('../../../../wp-load.php');
-    $orders = wc_get_orders(array('meta_query' => array('wc_pos_register_id' => $_GET["cod_box"])));
-    $closeds = get_posts(array('post_type' => 'pos_temp_order'));
+    // $orders = wc_get_orders(array('meta_query' => array('wc_pos_register_id' => $_GET["box_id"])));
+
+    // $orders = wc_get_orders( array(
+    //     'orderby'   => 'date',
+    //     'order'     => 'DESC',
+    //     'meta_query' => array(
+    //         array(
+    //             'key' => 'wc_pos_register_id',
+    //             'value' => $_GET["box_id"],
+    //             'compare' => '='
+    //         )
+    //     )
+    // ));
+    echo  $_GET["box_id"];
+    $args = array(
+        'orderby'          => 'date',
+        'order'            => 'DESC',
+        'meta_key'         => 'wc_pos_register_id',
+        'meta_value'       => $_GET["box_id"],
+        'post_type'        => 'shop_order',
+    );
+    $orders = get_posts($args);
+    print_r($orders);
+    $closeds = get_posts(array('post_type' => 'pos_temp_order', 'post_parent' => $_GET["box_id"]));
 ?>
     <h2>Todas las Ventas</h2>
     <table class="wp-list-table widefat fixed striped posts">
@@ -167,6 +189,7 @@ function lw_boxs_edit() {
             <th scope="col">Titulo</th>
             <!-- <th scope="col">Creado</th> -->
             <th scope="col">Notas</th>
+            <th scope="col">Montos</th>
             <th scope="col">Total</th>
             <!-- <th scope="col">Acciones</th> -->
             </tr>
@@ -178,6 +201,7 @@ function lw_boxs_edit() {
                 <th scope="row"><?php echo $key->post_title; ?><br><small><?php echo $key->post_date; ?></small></th>
                 <!-- <th scope="row"><?php echo $key->post_date; ?></th> -->
                 <td><?php echo get_post_meta( $key->ID, 'lw_nota_apertura', true ); ?><br><?php echo get_post_meta( $key->ID, 'lw_nota_cierre', true ); ?></td>
+                <td><?php echo get_post_meta( $key->ID, 'lw_monto_inicial', true ); ?><br><?php echo get_post_meta( $key->ID, 'lw_monto_final', true ); ?></td>
                 <th scope="row"><?php echo get_post_meta($key->ID, 'lw_monto_final', true ); ?></th>
                 
                 <!-- <td><input type='text' name="post_id" value='<?php echo $key->ID; ?>' hidden><input type='submit' name="delete" value='Eliminar' class='button' onclick="return confirm('&iquest;Est&aacute;s seguro de borrar este elemento?')"></td> -->
