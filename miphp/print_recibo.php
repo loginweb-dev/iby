@@ -33,8 +33,11 @@
     $pdf->AddPage();
     // echo $datos_factura[0]->ID;
         // Encabezado------------------------------------------
-    $pdf->Image(get_post_meta($datos_factura[0]->ID, 'lw_image', true),25,0,20,20, get_post_meta($datos_factura[0]->ID, 'lw_img_extencion', true));
-        $pdf->Ln(13);
+        $pdf->SetFont($type_font, '', $size_font+10);
+        $pdf->Cell(0, $higth, 'TICKET #'.$order->get_meta('lw_pos_tickes'), $border , $position, $aling);
+        $pdf->Ln(2);
+    $pdf->Image(get_post_meta($datos_factura[0]->ID, 'lw_image', true),25,15,20,20, get_post_meta($datos_factura[0]->ID, 'lw_img_extencion', true));
+        $pdf->Ln(22);
         // $pdf->Cell(0, $higth, 'De: '.get_post_meta($datos_factura[0]->ID, 'lw_name_business', true), $border, $position, $aling);
         // $pdf->Cell(0, $higth, get_post_meta($datos_factura[0]->ID, 'lw_direction', true), $border, $position, $aling);
         // $pdf->Cell(0, $higth, 'Cel: '.get_post_meta($datos_factura[0]->ID, 'lw_movil', true), $border, $position, $aling);
@@ -45,7 +48,7 @@
         // datos de factura------------------------------------------
         $pdf->SetFont($type_font, '', $size_font);
         $pdf->Cell(0, $higth, 'RECIBO #'.$data['id'], $border , $position, $aling);
-        $pdf->Cell(0, $higth, 'TICKES #'.$order->get_meta('lw_pos_tickes'), $border , $position, $aling);
+        // $pdf->Cell(0, $higth, 'TICKES #'.$order->get_meta('lw_pos_tickes'), $border , $position, $aling);
         // $pdf->Cell(0, $higth, 'TICKES # : '.$order->get_meta('lw_pos_tickes'), 0, 1, 'L');
         $pdf->SetFont($type_font, '', $size_font -1);
         // $pdf->Cell(0, $higth, 'NIT: '.get_post_meta($datos_factura[0]->ID, 'lw_nit', true), $border , $position, $aling);
@@ -76,7 +79,7 @@
             $extra = $item->get_meta_data();
             $product = $item->get_product();
             // $title = $extra[0]->key ? $item['name'].' <br> '.$extra[1]->key : $item['name'];
-            $pdf->SetFont($type_font, '', $size_font-4); 
+            // $pdf->SetFont($type_font, '', $size_font-2); 
                 $pdf->Cell(40, $higth, $item['name'], 0);
             // $pdf->SetFont($type_font, '', $size_font-4); 
             $pdf->Cell(10, $higth, $item['quantity'], 0);
@@ -123,9 +126,13 @@
         // $pdf->MultiCell(0, $higth, get_post_meta($datos_factura[0]->ID, 'lw_legend', true), $border, $aling);
     $pdf->Cell(0, 0, '', 1 , 1, 'C');
         $pdf->Cell(0, $higth, 'ATENDIDO POR: '.$order->get_meta('wc_pos_served_by_name'), 0, 1, 'L');
-        $pdf->Cell(0, $higth, 'TICKES # : '.$order->get_meta('lw_pos_tickes'), 0, 1, 'L');
+        // $pdf->Cell(0, $higth, 'TICKES # : '.$order->get_meta('lw_pos_tickes'), 0, 1, 'L');
         $pdf->Cell(0, $higth, 'NOTAS : '.$order->customer_message, 0, 1, 'L');
-        $pdf->Image($QR_BASEDIR.'qrcode/temp/'.$order->id.'.jpg', 23, $higth_qr-30, 25, 25, 'JPG');
-        
+        $pdf->Image($QR_BASEDIR.'qrcode/temp/'.$order->id.'.jpg', 23, $higth_qr-20, 25, 25, 'JPG');
+    
+    $pdf->Ln(40);
+    $pdf->SetFont($type_font, '', $size_font+10);
+    $pdf->Cell(0, $higth, 'TICKET #'.$order->get_meta('lw_pos_tickes'), $border , $position, $aling);
+
     $pdf->Output();
 ?>

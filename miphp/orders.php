@@ -28,13 +28,13 @@
     foreach ($allItems as $items) {
         foreach ($items as $item) {
             if ($item['attributes']['sku'] == 'extra') {
-                // $carts = $order->get_items();
-                // foreach ( $carts as $value ) {
-                //     // echo $item->get_name();
-                //     $product = wc_get_product($value->get_product_id());
-                //     // echo $item->get_id();
-                //     $item_id = $value->get_id();
-                // }
+                $carts = $order->get_items();
+                foreach ( $carts as $value ) {
+                    // echo $item->get_name();
+                    $product = wc_get_product($value->get_product_id());
+                    // echo $item->get_id();
+                    $item_id = $value->get_id();
+                }
                 // wc_update_order_item_meta($item_id, '_line_subtotal' , $cart->getAttributeTotal('price'), false);
                 // wc_update_order_item_meta($item_id, '_line_total' , $cart->getAttributeTotal('price'), false);
                 // wc_update_order_item_meta($item_id, '_line_subtotal_tax' , $cart->getAttributeTotal('price'), false);
@@ -49,7 +49,16 @@
             }
         }
     }
-    $num_tickets = count(wc_get_orders( array('meta_query' => array('wc_pos_register_id' => $_GET["cod_box"] ) ) ) );
+
+    // $num_tickets = count(wc_get_orders( array('meta_query' => array('wc_pos_register_id' => $_GET["cod_box"]) ) ) );
+    $num_tickets =1;
+    $ts = wc_get_orders(array());
+    foreach ($ts as $key) {
+        # code...
+        if (get_post_meta($key->ID, 'lw_accounting', true ) == 'no' && get_post_meta($key->ID, 'wc_pos_register_id', true ) == $_GET["cod_box"] ) {
+            $num_tickets = $num_tickets  + 1;
+        }
+    }
     //Agregando facturacion----------------------------------------------------
     // $order->set_address( $address, 'billing' );
     // $order->set_address( $address, 'shipping' );

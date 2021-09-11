@@ -23,7 +23,7 @@
                         <th scope="col" width="350">Producto</th>
                         <th scope="col" width="120">Cant</th>
                         <th scope="col" width="120">Precio</th>
-                        <th scope="col" class="text-right" width="60"> </th>
+                        <!-- <th scope="col" class="text-right" width="40"> </th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -41,7 +41,18 @@
                                     </figure>
                                 </td>
                                 <td> 
-                                    <label for=""><?php echo $item['quantity'];  ?></label>
+                                    <div class="input-group text-center">
+                                        <!-- <div class="input-group-prepend"> -->
+                                            <a href="#" onclick="update_rest('<?php echo $item['id'];  ?>')" class="btn btn-light btn-sm"> - </a>
+                                        <!-- </div> -->
+                                        
+                                            <h4 class="m-1"> <?php echo $item['quantity'];  ?></h4>
+                                     
+                                        <!-- <div class="input-group-append"> -->
+                                            <a href="#" onclick="update_sum('<?php echo $item['id'];  ?>')" class="btn btn-light btn-sm"> + </a>
+                                        <!-- </div> -->
+                                    <div>
+                                        
                                     <!-- <select class="form-control">
                                         <option>1</option>
                                         <option>2</option>	
@@ -53,12 +64,11 @@
                                     <div class="price-wrap"> 
                                         <var class="price"><?php echo $item['attributes']['price'] ?> Bs</var> 
                                         <!-- <small class="text-muted"> $315.20 each </small>  -->
+                                        <br>
+                                        <a href="#" onclick="remove('<?php echo $item['id'];  ?>')" class="btn btn-light btn-sm"> Quitar</a>
                                     </div> <!-- price-wrap .// -->
                                 </td>
-                                <td class="text-right"> 
-                                <!-- <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>  -->
-                                <a href="#" onclick="remove('<?php echo $item['id'];  ?>')" class="btn btn-light btn-sm"> Quitar</a>
-                                </td>
+                                
                             </tr>
 
 

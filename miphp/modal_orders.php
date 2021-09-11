@@ -1,6 +1,6 @@
 <?php 
     require_once('../../../../wp-load.php');
-    $orders = wc_get_orders(array('meta_query' => array('wc_pos_register_id' => $_GET["cod_box"])));
+    $orders = wc_get_orders(array());
 ?>
   <div class="modal-header text-center">
     <h5 class="modal-title text-center" id="exampleModalLabel">Pedidos</h5>
@@ -22,17 +22,15 @@
         </tr>
       </thead>
       <tbody>
-        <?php $tv = 0; foreach ($orders as $key) { $order = wc_get_order($key->ID); $data = $order->get_data(); if (get_post_meta( $key->ID, 'lw_accounting', true )  == 'no') {?>
+        <?php $tv = 0; foreach ($orders as $key) { $order = wc_get_order($key->ID); $data = $order->get_data(); if (get_post_meta( $key->ID, 'lw_accounting', true )  == 'no' && get_post_meta( $key->ID, 'wc_pos_register_id', true )  == $_GET["box_id"]  ) { ?>
           <tr>
             <td>
               <a href="<?php echo admin_url('post.php?post='.$order->get_id().'&action=edit'); ?>"> <?php echo $order->get_id(); ?></a> 
               <br> 
               <?php echo $order->get_date_created()->date('Y-m-d H:i:s') ?>
             </td>
-            <!-- <td><small><?php echo $order->get_date_created() ?></small></td> -->
-            <!-- <td><small><?php echo get_post_meta( $key->ID, '_billing_email', true ); ?></small></td> -->
             <td>
-              <?php echo get_post_meta( $key->ID, '_billing_email', true ); ?>
+              <small><?php echo get_post_meta( $key->ID, '_billing_email', true ); ?></small>
               <br>
               <?php $items = $order->get_items(); foreach ( $items as $item ) { $extra = $item->get_meta_data(); $product = $item->get_product(); ?>
                 <small>
@@ -49,14 +47,13 @@
               <?php } ?>
               
             </td>
-            <!-- <td><?php echo get_post_meta( $key->ID, '_payment_method_title', true ); ?></td>
-            <td><?php echo get_post_meta( $key->ID, 'wc_pos_served_by_name', true ); ?></td> -->
             <td>
               <?php echo $order->get_total(); $tv= $tv +  $order->get_total() ?>
               <br>
 			        <button onclick="re_imprimir('<?php echo $order->get_id(); ?>')" type="button" class="btn btn-primary btn-sm"> Imprimir </button>
             </td>
           </tr>
+
         <?php } } ?>
       </tbody>
     </table>

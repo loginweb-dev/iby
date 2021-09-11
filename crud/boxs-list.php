@@ -27,10 +27,10 @@ function lw_boxs_list() {
                 <th class="manage-column ss-list-width">Acciones</th>
                 <th class="manage-column ss-list-width">Nombre</th>
                 <th class="manage-column ss-list-width">Creado</th>
-                <th class="manage-column ss-list-width">Nota Apertura</th>
+                <!-- <th class="manage-column ss-list-width">Nota Apertura</th>
                 <th class="manage-column ss-list-width">Nota Cierre</th>
                 <th class="manage-column ss-list-width">Monto Inicial</th>
-                <th class="manage-column ss-list-width">Monto Final</th>
+                <th class="manage-column ss-list-width">Monto Final</th> -->
                 <!-- <th class="manage-column ss-list-width">Usuario</th> -->
                 
             </tr>
@@ -45,11 +45,11 @@ function lw_boxs_list() {
                     
                     <td class="manage-column ss-list-width"><?php echo $rows[$i]->post_title; ?></td>
                     <td class="manage-column ss-list-width"><?php echo $rows[$i]->post_date; ?></td>
-                    <td class="manage-column ss-list-width"><?php echo get_post_meta( $rows[$i]->ID, 'lw_nota_apertura', true ); ?></td>
+                    <!-- <td class="manage-column ss-list-width"><?php echo get_post_meta( $rows[$i]->ID, 'lw_nota_apertura', true ); ?></td>
                     <td class="manage-column ss-list-width"><?php echo get_post_meta( $rows[$i]->ID, 'lw_nota_cierre', true ); ?></td>
                     <td class="manage-column ss-list-width"><?php echo get_post_meta( $rows[$i]->ID, 'lw_monto_inicial', true ); ?></td>
                     <td class="manage-column ss-list-width"><?php echo get_post_meta( $rows[$i]->ID, 'lw_monto_final', true ); ?></td>
-                    
+                     -->
                     <!-- <td class="manage-column ss-list-width"><?php //echo $user->display_name; ?></td> -->
                     
                    

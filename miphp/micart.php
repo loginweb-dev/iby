@@ -18,7 +18,6 @@
     if ($_GET["add"]) {
         
         $item = wc_get_product( $_GET["add"] );
-        // $stock = $item->get_stock_quantity();_manage_stock
         if (get_post_meta($_GET["add"], "_manage_stock", true) == "no") {
             $cart->add(bin2hex(random_bytes(18)), $_GET["stock"], [
                 "product_id" => $_GET["add"],
@@ -106,7 +105,7 @@
     elseif ($_GET["update_rest"]){
         $theItem = $cart->getItem($_GET["update_rest"]);
         $cart->update($theItem['id'], $theItem['quantity'] - 1, [
-            "mihash" => $theItem['attributes']['mihash'],
+            "product_id" => $theItem['attributes']['product_id'],
             "order" => $theItem['attributes']['order'],
             "name" => $theItem['attributes']['name'],
             "description" => $theItem['attributes']['description'], 
@@ -118,31 +117,16 @@
     }elseif ($_GET["get_totals"]){
         $json = array(
             "total_numeral" => $cart->getAttributeTotal('price'),
-            // "total_literal" => $formatter->toInvoice($cart->getAttributeTotal('price'), 2, 'BOB'), 
-            // "cant_items" => $cart->getTotalQuantity(),
+            "total_literal" => $formatter->toInvoice($cart->getAttributeTotal('price'), 2, 'BOB'), 
+            "cant_items" => $cart->getTotalQuantity(),
         );
         echo json_encode($json);
     } else{
         $allItems = $cart->getItems();
-        // print_r($cart->getItems());
-        
         $json = array();
         $count=0;
         foreach ($allItems as $items) {
             foreach ($items as $item) {
-                // if($json[$count]["order"] > $json[$count-1]["order"]){
-                //     array_push($json, array(
-                //         "id" => $item['id'],
-                //         "quantity" => $item['quantity'], 
-                //         "order" => $item['attributes']['order'],
-                //         "name" => $item['attributes']['name'],
-                //         "description" => $item['attributes']['description'], 
-                //         "price" => $item['attributes']['price'], 
-                //         "sku" => $item['attributes']['sku'], 
-                //         "image" => $item['attributes']['image'] ? $item['attributes']['image'] : 'resources/default_product.png'
-                //     ));
-       
-                // }else{
                     array_push($json, array(
                         "id" => $item['id'],
                         "quantity" => $item['quantity'], 
@@ -154,19 +138,12 @@
                         "sku" => $item['attributes']['sku'], 
                         "image" => $item['attributes']['image'] ? $item['attributes']['image'] : 'resources/default_product.png'
                     ));
-                    
-                // }
-                
             }
-            // $count++;
         }
         foreach ($json as $key => $row) {
             $aux[$key] = $row['order'];
-            // echo $row['order'];
         }
         array_multisort($aux, SORT_ASC, $json);
-        // print_r($allItems);
         echo json_encode($json);
-        // echo count($allItems);
     }
 ?>
