@@ -96,6 +96,8 @@ function lw_boxs_edit() {
                         # <a href="<?php echo admin_url('post.php?post='.$order->get_id().'&action=edit'); ?>"><?php echo $order->get_id(); ?></a>
                         <br>
                         <?php echo $order->get_date_created()->date('Y-m-d H:i:s') ?>
+                        <br>
+                        <?php echo get_post_meta( $key->ID, 'lw_pos_type_order', true ); ?>
                     </td>
                     <td>
                         <?php echo get_post_meta( $key->ID, '_billing_email', true ); ?>

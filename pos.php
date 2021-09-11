@@ -193,7 +193,11 @@
 											<div id="list_search_customers"></div>
 									</div>
 									<div class="form-group">
+											<!-- <input id="customer_search" type="text" class="form-control form-control-sm" placeholder="Buscar cliente"> -->
+											
 											<input class="form-control form-control-sm" type="text" id="cupon_code" placeholder="Ingresa el Cupon" value="">
+											<!-- <div id="list_search_customers"></div> -->
+											<!-- <button onclick="descuento()" class="btn btn-light text-primary btn-sm" type="button">Aplicar</button> -->
 									</div>
 								</form>
 							</div>
@@ -315,11 +319,19 @@
 <script src="src/index.js"></script>
 <script type="text/javascript">
 
-	function re_imprimir(cod_order) {
+	function re_imprimir(cod_order, type) {
 		if(isMobile.mobilecheck()){
-			window.location.href = '<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_recibo.php?cod_order='+cod_order;
+			if (type == 'recibo') {
+				window.location.href = '<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_recibo.php?cod_order='+cod_order;
+			} else {
+				window.location.href = '<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_factura.php?cod_order='+cod_order;
+			}
 		}else{
-			window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_recibo.php?cod_order='+cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');
+			if (type == 'recibo') {
+				window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_recibo.php?cod_order='+cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');				
+			} else {
+				window.open('<?php echo WP_PLUGIN_URL; ?>'+'/iby-master/miphp/print_factura.php?cod_order='+cod_order, '_blank', 'location=yes,height=600,width=400,scrollbars=yes,status=yes');				
+			}
 		}
 	}
 	function open_order(){
@@ -468,12 +480,19 @@
 			} else {
 				$.ajax({
 					url: "miphp/orders.php",
+					dataType: "json",
 					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment, "note_customer": note_customer },
-					success: function () {
-						build_cart();
-						build_costumer();
-						build_extras();
-						$.notify("Venta Tipo Recibo Sin Imprimir, Realizada Correctamente..", "info");
+					success: function (response) {
+						$.ajax({
+							url: "miphp/barcode.php",
+							data: {"cod_order": response.cod_order, "text_qr": response.text_qr },
+							success: function () {
+								build_cart();
+								build_costumer();
+								build_extras();
+								$.notify("Venta Tipo Recibo Sin Imprimir, Realizada Correctamente..", "info");
+							}
+						});
 					}
 				});
 			}
@@ -484,7 +503,6 @@
 					dataType: "json",
 					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment, "note_customer": note_customer },
 					success: function (response) {
-						// $.notify("Creando QR..", "info");
 						$.ajax({
 							url: "miphp/barcode.php",
 							data: {"cod_order": response.cod_order, "text_qr": response.text_qr },
@@ -504,21 +522,25 @@
 					}
 				});
 			} else {
-				
 				$.ajax({
 					url: "miphp/orders.php",
 					dataType: "json",
 					data: {"cod_customer": id_customer, "cod_box": cod_box, "entregado": entregado, "cambio": cambio, "tipo_venta": tipo_venta, "option_restaurant": option_restaurant, "type_payment": type_payment, "note_customer": note_customer },
 					success: function (response) {
-						$.notify("Creando QR..", "info");
 						$.ajax({
 							url: "miphp/barcode.php",
 							data: {"cod_order": response.cod_order, "text_qr": response.text_qr },
 							success: function () {
-								build_cart();
-								build_costumer();
-								build_extras();
-								$.notify("Venta Realizada sin Imprecion..", "info");
+								$.ajax({
+									url: "miphp/barcode.php",
+									data: {"cod_order": response.cod_order, "text_qr": response.text_qr },
+									success: function () {
+										build_cart();
+										build_costumer();
+										build_extras();
+										$.notify("Venta Realizada sin Imprecion..", "info");
+									}
+								});
 							}
 						});
 					}
@@ -799,6 +821,7 @@ $(document).ready(function() {
 		
 	}else{
 		$("#criterio_id").focus();
+	}
 
 	$('#milistcatgs').html("<center><img class='img-sm' src='resources/reload.gif'></center>");	
 	$.ajax({
@@ -809,6 +832,8 @@ $(document).ready(function() {
 			$('#milistcatgs').html(response);	
 		}
 	});
+
+
 	// show box -------------------------------------------------------
 	$("#box_show").click(function (e) { 
 		e.preventDefault();		
@@ -832,6 +857,7 @@ $(document).ready(function() {
 
 	});
 	//--- Cargando Caja ---------------------------------------------------------
+	// $("#criterio_id").focus();
 	let status_box = "<?php echo $post->post_status;  ?>";
 	let box_id = "<?php echo $post->ID;  ?>";
 	if (status_box == 'pending') {
@@ -846,7 +872,7 @@ $(document).ready(function() {
 			}
 		});
 	} else if(status_box == 'publish') {
-
+		
 	}else{ 
 
 	}
