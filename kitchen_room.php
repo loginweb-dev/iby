@@ -28,10 +28,28 @@
 </head>
 <body style="background-color: #F6F7F9;">
 <h2>Monitor de Cocina</h2>
+
+
+
+
 <script src="js/jquery-2.0.0.min.js" type="text/javascript"></script>
+<script>
+	$(document).ready(function () {
+		var conn = new WebSocket('ws://localhost:8080/');
+		conn.onopen = function(e) {
+			console.log("Connection established!");
+		};
+
+		conn.onmessage = function(e) {
+			console.log(e.data);
+		};
+	});
+
+</script>
 <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
 <script src="js/script.js" type="text/javascript"></script>
 <script src="js/notify.js" type="text/javascript"></script>
 <script src="js/mijs.js" type="text/javascript"></script>
+
 </body>
 </html>

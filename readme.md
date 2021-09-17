@@ -36,7 +36,7 @@ Para la instalación se deben seguir algunos pasos que se describen a continuaci
 
 - *Clonar el proyecto desde le repositorio*
     ```bash
-    git clone https://github.com/loginweb-dev/iby.git
+    git clone https://github.com/loginweb-dev/iby-master.git
 
 - *Permisos de la app*
     ```bash
