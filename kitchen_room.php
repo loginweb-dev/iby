@@ -1,8 +1,11 @@
 <?php 
 	require_once('../../../wp-load.php');
-	
+	$current_user = wp_get_current_user();
+	if (!isset($current_user->display_name)) {
+		header('Location: ' . '/', true);
+   		die();
+	}
 ?>
-
 <!DOCTYPE HTML>
 <html lang="es">
 <head>
@@ -11,7 +14,7 @@
 <meta http-equiv="cache-control" content="max-age=604800" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>Monitor de Cocina</title>
+<title>Monitor Cocina</title>
 
 <link rel="icon" href="images/favicon.ico">
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
@@ -27,29 +30,85 @@
 </script>
 </head>
 <body style="background-color: #F6F7F9;">
-<h2>Monitor de Cocina</h2>
+<header class="section-header" style="background-color: #FFFFFF;">
+	<section class="header-main border-bottom">
+		<div class="container-fluid">
+			<div class="row">
+				
+				<div class="col-lg-7 col-md-7 col-sm-12">
+					<div class="form-group">
+						<input type="text" class="form-control mb-2 mr-sm-2" placeholder="Buscar pedidos" id="criterio_id">
+					</div>
+				</div>
+		
+				<div class="col-lg-3 col-md-3 col-sm-12">
+						<div class="icontext">
+						<a href="#" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>
+						<div class="text">
+							<span class="text-muted">Hola <?php echo $current_user->display_name ?>!</span>
+							<div> 
+								<a href="<?php echo admin_url('admin.php?page=cajas'); ?>"> Volver al Panel</a>
+							</div>
+						</div>
+					</div>
+				</div>
 
+			</div>
+		</div>
+	</section>
+</header>
 
+<section class="section-content">
+	<div class="container-fluid">
+		<div class="row">
+			<main class="col-md-12">
+				<div class="card mt-1">
+					<div id="list_kitchen"></div>
+				</div>
+			</main>
+		</div> 
+	</div>
+</section>  
 
+<!-- ========================= FOOTER ========================= -->
+<footer class="section-footer border-top text-center mt-1">
+	<small>App Creada por la Empresa LoginWeb @2021</small>
+</footer>
+<!-- ========================= FOOTER END // ========================= -->
+
+<!-- Modal  APertura de Caja -->
+<div class="modal fade" id="modalBox" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div id="box_body"></div>
+		</div>
+	</div>
+</div>
 
 <script src="js/jquery-2.0.0.min.js" type="text/javascript"></script>
-<script>
-	$(document).ready(function () {
-		var conn = new WebSocket('ws://localhost:8080/');
-		conn.onopen = function(e) {
-			console.log("Connection established!");
-		};
-
-		conn.onmessage = function(e) {
-			console.log(e.data);
-		};
-	});
-
-</script>
 <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
 <script src="js/script.js" type="text/javascript"></script>
 <script src="js/notify.js" type="text/javascript"></script>
 <script src="js/mijs.js" type="text/javascript"></script>
+<script>
+	$('document').ready(function () {
+		setInterval(function () {getRealData()}, 1000);//request every x seconds
 
+		}); 
+		function getRealData() {
+		$.ajax({
+				url: "number.php",
+				type: "POST",
+				data: {
+					name: name
+				},
+				cache: false,
+				success: function () {
+					/// some code to get result
+				}
+			});
+		}
+</script>
 </body>
 </html>
+

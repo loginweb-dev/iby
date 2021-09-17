@@ -40,4 +40,4 @@ Para la instalación se deben seguir algunos pasos que se describen a continuaci
 
 - *Permisos de la app*
     ```bash
-    chown -R www-data:www-data iby/
+    chown -R www-data:www-data iby-master/
