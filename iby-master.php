@@ -279,6 +279,7 @@ function lw_add_menu() {
 	'manage_options', //capability
 	'setting', //menu slug
 	'lw_setting'); //function
+
 }
 
 //menu TPV items --------------------------------------------------------------------

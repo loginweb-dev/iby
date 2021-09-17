@@ -24,6 +24,7 @@ function lw_setting() {
     $setting = get_posts( array('post_status' => 'publish', 'post_type' => 'pos_lw_setting') );
     ?>
     <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/iby-master/css/style-admin.css" rel="stylesheet" />
+    <script src="<?php echo WP_PLUGIN_URL; ?>/iby-master/js/mijs.js"></script>
     <div class="wrap">
         <h2>Configuracion del TPV</h2>
         <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
@@ -31,7 +32,7 @@ function lw_setting() {
                 <tr><th>ID</th><td><input readonly type="text" name="id" value="<?php echo $setting[0]->ID; ?>"/> </td></tr>
                 <tr><th>Image o Logo</th><td>
                     <input class="form-control" type="text" name="lw_image" value="<?php echo get_post_meta($setting[0]->ID, 'lw_image', true); ?>"/>
-                    <a href="upload.php" target="_blank" class='button'> Galeria</a>
+                    <a href="#" onclick="open_modal_galery()" class='button'> Galeria</a>
                     <br><input class="form-control" type="text" name="lw_img_extencion" value="<?php echo get_post_meta($setting[0]->ID, 'lw_img_extencion', true); ?>">
                 </td></tr>
                 <tr><th>CEO</th><td><input type="text" name="lw_ceo" value="<?php echo get_post_meta($setting[0]->ID, 'lw_ceo', true); ?>"/></td></tr>

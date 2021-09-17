@@ -44,6 +44,8 @@
                 $desuento = true;
                 $descuento_code = $item['attributes']['product_id'];
                 $descuento_price = $item['attributes']['price'];
+            }elseif ($item['attributes']['sku'] == 'linea') {
+                update_post_meta($order->id, 'lw_line'.$item['attributes']['order'], $item['attributes']['order']);
             } else {
                 $order->add_product( get_product($item['attributes']['product_id']), $item['quantity']);
             }

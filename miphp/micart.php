@@ -62,6 +62,18 @@
         ]);
         echo json_encode(array("message" => "Extra registrado correctamente.."));
        
+    } elseif ($_GET["linea"]){
+        $cart->add(bin2hex(random_bytes(18)), $mistock, [
+            "product_id" => 0,
+            "order" => count($cart->getItems()) + 1,
+            "name" => "Linea",
+            "description" => "", 
+            "price" => 0,  
+            "sku" => "linea", 
+            "image" => "resources/extra.png"
+        ]);
+        echo json_encode(array("message" => "Linea registrado correctamente.."));
+
     } elseif ($_GET["descuento"]){
         $post = get_post( $_GET["cupon_id"] );
         $cart->add(bin2hex(random_bytes(18)), 1, [

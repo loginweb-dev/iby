@@ -24,11 +24,9 @@
 
 <title>POS</title>
 
-<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+<link rel="icon" href="images/favicon.ico">
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
-<!-- Font awesome 5 -->
 <link href="fonts/fontawesome/css/all.min.css" type="text/css" rel="stylesheet">
-<!-- custom style -->
 <link href="css/ui.css" rel="stylesheet" type="text/css"/>
 <link href="css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
 <script>
@@ -173,6 +171,13 @@
 								}
 								
 							?> 
+							<hr>
+							<p for="" class="text-center">
+								<u>Linea</u>
+								<br />
+								<button class="btn btn-light text-primary btn-sm" type="button" onclick="linea()">Agregar</button>								
+							</p>
+							
 						</article>
 					</div>
 				<?php } ?>
@@ -308,15 +313,12 @@
 	</div>
 </div>
 
-
-<!-- custom javascript -->
-<!-- jQuery -->
 <script src="js/jquery-2.0.0.min.js" type="text/javascript"></script>
-<!-- Bootstrap4 files-->
 <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
 <script src="js/script.js" type="text/javascript"></script>
 <script src="js/notify.js" type="text/javascript"></script>
-<script src="src/index.js"></script>
+<script src="js/mijs.js" type="text/javascript"></script>
+<!-- <script src="src/index.js"></script> -->
 <script type="text/javascript">
 
 	function re_imprimir(cod_order, type) {
@@ -387,6 +389,7 @@
 		});
 		
 	}
+
 	//Cerrando Caja------------------------------------------------
 	function box_close(){
 		let nota_cierre = $("#nota_cierre").val();
