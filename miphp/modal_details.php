@@ -46,7 +46,7 @@ require_once('../../../../wp-load.php');
         </div> -->
         <div class="form-group">
             <label><u>Monto Final = <?php echo get_post_meta($post->ID, 'lw_monto_inicial', true); ?> + <?php echo $tv; ?></u> (MI+TV)</label>
-            <input id="lw_monto_final" type="text" class="form-control" placeholder="" value="<?php echo $tv + get_post_meta($post->ID, 'lw_monto_inicial', true); ?>">
+            <input id="lw_monto_final" type="text" class="form-control" placeholder="" value="<?php echo $tv + get_post_meta($post->ID, 'lw_monto_inicial', true); ?>" readonly>
         </div>
     </div>    
     <div class="modal-footer">
