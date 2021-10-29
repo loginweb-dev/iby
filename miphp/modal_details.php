@@ -2,7 +2,7 @@
 require_once('../../../../wp-load.php');
     $post = get_post( $_GET["box_id"] );
     $tv=0;
-    $orders = wc_get_orders(array('meta_query' => array('wc_pos_register_id' => $_GET["cod_box"])));
+    $orders = wc_get_orders(array('limit' => 100, 'meta_query' => array('wc_pos_register_id' => $_GET["cod_box"])));
     foreach ($orders as $key) {
         if (get_post_meta( $key->ID, 'lw_accounting', true )  == 'no') {
             $tv = $tv + get_post_meta( $key->ID, '_order_total', true );
@@ -16,18 +16,10 @@ require_once('../../../../wp-load.php');
         </button>
     </div>
 	<div class="modal-body">
-        <!-- <div class="form-group">
-            <label><u>Estado</u></label>
-            <input id="" type="text" class="form-control" placeholder="" value="<?php echo $post->post_status; ?>">
-        </div> -->
         <div class="form-group">
             <label><u>Titulo</u></label>
             <input id="" type="text" class="form-control" placeholder="" value="<?php echo $post->post_title; ?>" readonly>
         </div>
-        <!-- <div class="form-group">
-            <label><u>Descripcion</u></label>
-            <textarea id="" class="form-control"><?php echo $post->post_content;  ?></textarea>
-        </div> -->
         <div class="form-group">
             <label><u>Nota de Apertura</u></label>
             <textarea id="" class="form-control" readonly><?php echo get_post_meta($post->ID, 'lw_nota_apertura', true);  ?></textarea>
@@ -36,17 +28,9 @@ require_once('../../../../wp-load.php');
             <label><u>Nota de Cierre</u></label>
             <textarea id="nota_cierre" class="form-control"></textarea>
         </div>
-        <!-- <div class="form-group">
-            <label><u>Monto Inicial</u></label>
-            <input id="" type="text" class="form-control" placeholder="" value="<?php echo get_post_meta($post->ID, 'lw_monto_inicial', true); ?>">
-        </div> -->
-        <!-- <div class="form-group">
-            <label><u>Pedidos</u></label>
-            <input id="" type="text" class="form-control" placeholder="" value="<?php echo count(wc_get_orders( array('meta_query' => array('wc_pos_register_id' => $_GET["cod_box"])) )); ?>">
-        </div> -->
         <div class="form-group">
             <label><u>Monto Final = <?php echo get_post_meta($post->ID, 'lw_monto_inicial', true); ?> + <?php echo $tv; ?></u> (MI+TV)</label>
-            <input id="lw_monto_final" type="text" class="form-control" placeholder="" value="<?php echo $tv + get_post_meta($post->ID, 'lw_monto_inicial', true); ?>" readonly>
+            <input id="lw_monto_final" type="text" class="form-control" placeholder="" value="<?php echo $tv + get_post_meta($post->ID, 'lw_monto_inicial', true); ?>">
         </div>
     </div>    
     <div class="modal-footer">

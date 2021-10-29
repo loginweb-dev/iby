@@ -5,11 +5,11 @@
     if(isset($_GET["nota_cierre"])){
         $my_post = array(
             'post_title'    => wp_strip_all_tags( 'POS Register #'.$_GET["box_id"] ),
-            'post_content'  => null,
+            //'post_content'  => null,
             'post_type'  => 'pos_temp_order',
             'post_status'   => 'publish',
             'post_parent'   => $_GET["box_id"],
-            'post_author'   => $user_login->id,
+            'post_author'   => $current_user->id,
             'meta_input' => array(
                 'lw_nota_apertura' => $post->lw_nota_apertura,
                 'lw_nota_cierre' => $_GET["nota_cierre"],

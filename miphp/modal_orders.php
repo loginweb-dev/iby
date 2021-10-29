@@ -1,6 +1,6 @@
 <?php 
     require_once('../../../../wp-load.php');
-    $orders = wc_get_orders(array());
+    $orders = wc_get_orders(array('limit' => 100, 'orderby' => 'date'));
 ?>
   <div class="modal-header text-center">
     <h5 class="modal-title text-center" id="exampleModalLabel">Pedidos</h5>
@@ -18,15 +18,15 @@
         </tr>
       </thead>
       <tbody>
-        <?php $tv = 0; foreach ($orders as $key) { $order = wc_get_order($key->ID); $data = $order->get_data(); if (get_post_meta( $key->ID, 'lw_accounting', true )  == 'no' && get_post_meta( $key->ID, 'wc_pos_register_id', true )  == $_GET["box_id"]  ) { ?>
+        <?php $tv = 0; $iter=0; foreach ($orders as $key) { $order = wc_get_order($key->ID); $data = $order->get_data(); if (get_post_meta( $key->ID, 'lw_accounting', true )  == 'no' && get_post_meta( $key->ID, 'wc_pos_register_id', true )  == $_GET["box_id"]  ) { ?>
           <tr>
             <td>
-              <a href="<?php echo admin_url('post.php?post='.$order->get_id().'&action=edit'); ?>"> <?php echo $order->get_id(); ?></a> 
+              #<?php $iter++; echo $iter; ?> - <a href="<?php echo admin_url('post.php?post='.$order->get_id().'&action=edit'); ?>"> <?php echo $order->get_id(); ?></a> 
               <br> 
               <?php echo $order->get_date_created()->date('Y-m-d H:i:s') ?>
               <br>
               <?php echo get_post_meta( $key->ID, 'lw_pos_type_order', true ); ?>
-            </td>
+            </=>
             <td>
               <small><?php echo get_post_meta( $key->ID, '_billing_email', true ); ?></small>
               <br>
